@@ -700,9 +700,8 @@
                     <div style="background: #1a3a1a; border: 2px solid #00ff00; padding: 12px; margin-bottom: 15px;">
                         <h5 style="color: #00ff00; margin-bottom: 10px; font-size: 1em;">QUICK DEPOSIT - Add Money Fast</h5>
                         <div class="control-row" style="margin-bottom: 8px;">
-                            <select id="quickDepositCaptain" style="width: 100%; padding: 10px; font-size: 1em;">
-                                <option value="">-- Select Captain --</option>
-                            </select>
+                            <input type="text" id="quickDepositCaptain" list="captainsList" placeholder="Enter captain name..." style="width: 100%; padding: 10px; font-size: 1em; text-transform: uppercase;">
+                            <datalist id="captainsList"></datalist>
                         </div>
                         <div id="selectedCaptainBalance" style="color: #ffcc00; text-align: center; margin-bottom: 10px; font-weight: bold;"></div>
                         <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 10px;">
@@ -1410,38 +1409,58 @@
         // QUICK DEPOSIT FUNCTIONS
         // ==========================================
         function updateQuickDepositSelect() {
-            const select = document.getElementById('quickDepositCaptain');
-            if (!select) return;
+            const input = document.getElementById('quickDepositCaptain');
+            const datalist = document.getElementById('captainsList');
+            if (!input || !datalist) return;
 
-            select.innerHTML = '<option value="">-- Select Captain --</option>';
+            // Populate datalist with captain names for autocomplete
+            datalist.innerHTML = '';
             gameData.captains.forEach(captain => {
-                select.innerHTML += `<option value="${captain}">${captain}</option>`;
+                datalist.innerHTML += `<option value="${captain}">`;
             });
 
-            // Add change event listener
-            select.onchange = function() {
+            // Add input event listener for real-time balance update
+            input.oninput = function() {
                 updateSelectedCaptainBalance();
             };
         }
 
+        function findCaptainByName(inputName) {
+            // Find captain by name (case insensitive)
+            const name = inputName.trim().toUpperCase();
+            return gameData.captains.find(c => c.toUpperCase() === name);
+        }
+
         function updateSelectedCaptainBalance() {
-            const captain = document.getElementById('quickDepositCaptain').value;
+            const inputValue = document.getElementById('quickDepositCaptain').value;
             const balanceDiv = document.getElementById('selectedCaptainBalance');
+            const captain = findCaptainByName(inputValue);
 
             if (captain && gameData.captainMoney[captain] !== undefined) {
-                balanceDiv.textContent = `Current Balance: ${gameData.captainMoney[captain]} YEN`;
+                balanceDiv.textContent = `${captain}: ${gameData.captainMoney[captain]} YEN`;
+                balanceDiv.style.display = 'block';
+            } else if (inputValue.trim()) {
+                balanceDiv.textContent = 'Captain not found';
+                balanceDiv.style.color = '#ff6666';
                 balanceDiv.style.display = 'block';
             } else {
                 balanceDiv.textContent = '';
                 balanceDiv.style.display = 'none';
             }
+            balanceDiv.style.color = captain ? '#ffcc00' : '#ff6666';
         }
 
         function quickDeposit(amount) {
-            const captain = document.getElementById('quickDepositCaptain').value;
+            const inputValue = document.getElementById('quickDepositCaptain').value;
+            const captain = findCaptainByName(inputValue);
+
+            if (!inputValue.trim()) {
+                alert('Please enter a captain name!');
+                return;
+            }
 
             if (!captain) {
-                alert('Please select a captain first!');
+                alert(`Captain "${inputValue}" not found!`);
                 return;
             }
 
@@ -1454,11 +1473,17 @@
         }
 
         function quickDepositCustom() {
-            const captain = document.getElementById('quickDepositCaptain').value;
+            const inputValue = document.getElementById('quickDepositCaptain').value;
+            const captain = findCaptainByName(inputValue);
             const amount = parseInt(document.getElementById('customDepositAmount').value);
 
+            if (!inputValue.trim()) {
+                alert('Please enter a captain name!');
+                return;
+            }
+
             if (!captain) {
-                alert('Please select a captain first!');
+                alert(`Captain "${inputValue}" not found!`);
                 return;
             }
 
