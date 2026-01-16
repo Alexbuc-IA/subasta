@@ -673,6 +673,7 @@
 
     <!-- Navigation -->
     <nav class="top-nav">
+        <img src="nice.jpg" alt="Logo" style="height: 40px; margin-right: 15px;">
         <div class="nav-title">SUNRISE CITY SLAMDOWN</div>
         <div class="nav-buttons">
             <button class="nav-btn" id="navAdmin" onclick="showAdminLogin()">ADMIN</button>
@@ -709,6 +710,12 @@
                             <button onclick="quickDeposit(250)" class="quick-buy-btn">BUY<br>+250</button>
                             <button onclick="quickDeposit(500)" class="quick-buy-btn">BUY<br>+500</button>
                             <button onclick="quickDeposit(1000)" class="quick-buy-btn">BUY<br>+1000</button>
+                        </div>
+                        <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 10px;">
+                            <button onclick="quickDeposit(-100)" class="quick-buy-btn" style="background: #ff4444;">REDUCIR<br>-100</button>
+                            <button onclick="quickDeposit(-250)" class="quick-buy-btn" style="background: #ff4444;">REDUCIR<br>-250</button>
+                            <button onclick="quickDeposit(-500)" class="quick-buy-btn" style="background: #ff4444;">REDUCIR<br>-500</button>
+                            <button onclick="quickDeposit(-1000)" class="quick-buy-btn" style="background: #ff4444;">REDUCIR<br>-1000</button>
                         </div>
                         <div class="control-row" style="margin-bottom: 0;">
                             <input type="number" id="customDepositAmount" placeholder="Custom amount" style="flex: 2;">
@@ -825,13 +832,10 @@
     <div id="spectatorPanel" class="main-container">
         <h2 style="color: #0099ff; margin-bottom: 20px;">SPECTATOR VIEW</h2>
 
-        <!-- Cloud Load Section for Spectators -->
-        <div style="background: #1a1a3a; border: 2px solid #0099ff; padding: 12px; margin-bottom: 20px; display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
-            <span style="color: #0099ff; font-weight: bold;">☁️ LOAD DATA:</span>
-            <input type="text" id="spectatorBinId" placeholder="Enter Bin ID from admin" style="flex: 1; min-width: 200px; padding: 8px;">
-            <button onclick="spectatorLoadFromCloud()" style="background: #0099ff; color: #fff; padding: 8px 15px;">LOAD</button>
-            <button onclick="spectatorRefresh()" style="background: #00aa00; color: #fff; padding: 8px 15px;">🔄 REFRESH</button>
-            <span id="spectatorSyncStatus" style="color: #aaa; font-size: 0.85em;"></span>
+        <!-- Cloud Sync for Spectators -->
+        <div style="background: #1a1a3a; border: 2px solid #0099ff; padding: 12px; margin-bottom: 20px; display: flex; gap: 10px; align-items: center; justify-content: center;">
+            <button onclick="loadFromCloudPublic()" style="background: #00aa00; color: #fff; padding: 12px 30px; font-size: 1.1em;">🔄 REFRESH DATA</button>
+            <span id="spectatorSyncStatus" style="color: #aaa; font-size: 0.9em;"></span>
         </div>
 
         <div class="betting-grid">
