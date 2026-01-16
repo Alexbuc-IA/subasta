@@ -592,6 +592,29 @@
             }
         }
 
+        /* Quick Buy Buttons */
+        .quick-buy-btn {
+            padding: 12px 8px;
+            background: linear-gradient(180deg, #00cc00, #009900);
+            color: #fff;
+            border: 2px solid #00ff00;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 0.9em;
+            transition: all 0.2s;
+            text-align: center;
+        }
+
+        .quick-buy-btn:hover {
+            background: linear-gradient(180deg, #00ff00, #00cc00);
+            transform: scale(1.05);
+            box-shadow: 0 0 10px #00ff00;
+        }
+
+        .quick-buy-btn:active {
+            transform: scale(0.95);
+        }
+
         /* Scrollbar */
         ::-webkit-scrollbar {
             width: 8px;
@@ -672,13 +695,28 @@
 
                 <div class="admin-controls-section" style="margin-top: 15px;">
                     <h4>QUICK ACTIONS</h4>
-                    <div class="control-row">
-                        <select id="adminCaptainSelect">
-                            <option value="">Select Captain</option>
-                        </select>
-                        <input type="number" id="addMoneyAmount" placeholder="Amount">
-                        <button onclick="addMoney()">Add Money</button>
+
+                    <!-- Quick Deposit Section -->
+                    <div style="background: #1a3a1a; border: 2px solid #00ff00; padding: 12px; margin-bottom: 15px;">
+                        <h5 style="color: #00ff00; margin-bottom: 10px; font-size: 1em;">QUICK DEPOSIT - Add Money Fast</h5>
+                        <div class="control-row" style="margin-bottom: 8px;">
+                            <select id="quickDepositCaptain" style="width: 100%; padding: 10px; font-size: 1em;">
+                                <option value="">-- Select Captain --</option>
+                            </select>
+                        </div>
+                        <div id="selectedCaptainBalance" style="color: #ffcc00; text-align: center; margin-bottom: 10px; font-weight: bold;"></div>
+                        <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 10px;">
+                            <button onclick="quickDeposit(100)" class="quick-buy-btn">BUY<br>+100</button>
+                            <button onclick="quickDeposit(250)" class="quick-buy-btn">BUY<br>+250</button>
+                            <button onclick="quickDeposit(500)" class="quick-buy-btn">BUY<br>+500</button>
+                            <button onclick="quickDeposit(1000)" class="quick-buy-btn">BUY<br>+1000</button>
+                        </div>
+                        <div class="control-row" style="margin-bottom: 0;">
+                            <input type="number" id="customDepositAmount" placeholder="Custom amount" style="flex: 2;">
+                            <button onclick="quickDepositCustom()" style="background: #00ff00; color: #000; flex: 1;">BUY</button>
+                        </div>
                     </div>
+
                     <div class="control-row">
                         <button onclick="openPlayerEditModal()" style="width: 100%;">Edit All Players & Prices</button>
                     </div>
@@ -972,6 +1010,7 @@
             renderUsageStats();
             renderUnavailablePlayers();
             updateAdminCaptainSelect();
+            updateQuickDepositSelect();
         }
 
         function renderCaptainSelector() {
@@ -1366,6 +1405,118 @@
 
             alert(`Added ${amount} YEN to ${captain}!`);
         }
+
+        // ==========================================
+        // QUICK DEPOSIT FUNCTIONS
+        // ==========================================
+        function updateQuickDepositSelect() {
+            const select = document.getElementById('quickDepositCaptain');
+            if (!select) return;
+
+            select.innerHTML = '<option value="">-- Select Captain --</option>';
+            gameData.captains.forEach(captain => {
+                select.innerHTML += `<option value="${captain}">${captain}</option>`;
+            });
+
+            // Add change event listener
+            select.onchange = function() {
+                updateSelectedCaptainBalance();
+            };
+        }
+
+        function updateSelectedCaptainBalance() {
+            const captain = document.getElementById('quickDepositCaptain').value;
+            const balanceDiv = document.getElementById('selectedCaptainBalance');
+
+            if (captain && gameData.captainMoney[captain] !== undefined) {
+                balanceDiv.textContent = `Current Balance: ${gameData.captainMoney[captain]} YEN`;
+                balanceDiv.style.display = 'block';
+            } else {
+                balanceDiv.textContent = '';
+                balanceDiv.style.display = 'none';
+            }
+        }
+
+        function quickDeposit(amount) {
+            const captain = document.getElementById('quickDepositCaptain').value;
+
+            if (!captain) {
+                alert('Please select a captain first!');
+                return;
+            }
+
+            gameData.captainMoney[captain] += amount;
+            saveData();
+            renderAdminPanel();
+
+            // Show success feedback
+            showQuickDepositSuccess(captain, amount);
+        }
+
+        function quickDepositCustom() {
+            const captain = document.getElementById('quickDepositCaptain').value;
+            const amount = parseInt(document.getElementById('customDepositAmount').value);
+
+            if (!captain) {
+                alert('Please select a captain first!');
+                return;
+            }
+
+            if (!amount || amount <= 0) {
+                alert('Enter a valid amount!');
+                return;
+            }
+
+            gameData.captainMoney[captain] += amount;
+            document.getElementById('customDepositAmount').value = '';
+            saveData();
+            renderAdminPanel();
+
+            // Show success feedback
+            showQuickDepositSuccess(captain, amount);
+        }
+
+        function showQuickDepositSuccess(captain, amount) {
+            // Create floating notification
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background: linear-gradient(180deg, #00aa00, #006600);
+                color: #fff;
+                padding: 20px 40px;
+                border: 3px solid #00ff00;
+                border-radius: 10px;
+                font-size: 1.3em;
+                font-weight: bold;
+                text-align: center;
+                z-index: 9999;
+                box-shadow: 0 0 30px #00ff00;
+                animation: fadeInOut 1.5s ease-in-out;
+            `;
+            notification.innerHTML = `+${amount} YEN<br><span style="font-size: 0.8em; color: #ffcc00;">${captain}</span>`;
+            document.body.appendChild(notification);
+
+            // Remove after animation
+            setTimeout(() => notification.remove(), 1500);
+
+            // Update balance display
+            updateSelectedCaptainBalance();
+        }
+
+        // Add CSS animation for notification
+        const styleSheet = document.createElement('style');
+        styleSheet.textContent = `
+            @keyframes fadeInOut {
+                0% { opacity: 0; transform: translate(-50%, -50%) scale(0.5); }
+                20% { opacity: 1; transform: translate(-50%, -50%) scale(1.1); }
+                80% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+                100% { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
+            }
+        `;
+        document.head.appendChild(styleSheet);
 
         // ==========================================
         // PLAYER EDIT MODAL
