@@ -732,16 +732,10 @@
                         <div class="control-row" style="margin-bottom: 8px;">
                             <input type="text" id="jsonbinApiKey" placeholder="JSONBin API Key" style="width: 100%; padding: 8px; font-size: 0.9em;">
                         </div>
-                        <div class="control-row" style="margin-bottom: 8px;">
-                            <input type="text" id="jsonbinBinId" placeholder="Bin ID (leave empty to create new)" style="width: 100%; padding: 8px; font-size: 0.9em;">
-                        </div>
                         <div id="cloudSyncStatus" style="color: #aaa; text-align: center; margin-bottom: 10px; font-size: 0.85em;"></div>
                         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
-                            <button onclick="saveToCloud()" style="background: #0099ff; color: #fff; padding: 10px;">⬆️ SAVE TO CLOUD</button>
-                            <button onclick="loadFromCloud()" style="background: #00aa00; color: #fff; padding: 10px;">⬇️ LOAD FROM CLOUD</button>
-                        </div>
-                        <div style="margin-top: 8px; font-size: 0.75em; color: #888;">
-                            Share your Bin ID with spectators so they can load data
+                            <button onclick="saveToCloud()" style="background: #0099ff; color: #fff; padding: 10px;">⬆️ SAVE</button>
+                            <button onclick="loadFromCloud()" style="background: #00aa00; color: #fff; padding: 10px;">⬇️ LOAD</button>
                         </div>
                     </div>
                 </div>
@@ -825,13 +819,10 @@
     <div id="spectatorPanel" class="main-container">
         <h2 style="color: #0099ff; margin-bottom: 20px;">SPECTATOR VIEW</h2>
 
-        <!-- Cloud Load Section for Spectators -->
-        <div style="background: #1a1a3a; border: 2px solid #0099ff; padding: 12px; margin-bottom: 20px; display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
-            <span style="color: #0099ff; font-weight: bold;">☁️ LOAD DATA:</span>
-            <input type="text" id="spectatorBinId" placeholder="Enter Bin ID from admin" style="flex: 1; min-width: 200px; padding: 8px;">
-            <button onclick="spectatorLoadFromCloud()" style="background: #0099ff; color: #fff; padding: 8px 15px;">LOAD</button>
-            <button onclick="spectatorRefresh()" style="background: #00aa00; color: #fff; padding: 8px 15px;">🔄 REFRESH</button>
-            <span id="spectatorSyncStatus" style="color: #aaa; font-size: 0.85em;"></span>
+        <!-- Cloud Sync for Spectators -->
+        <div style="background: #1a1a3a; border: 2px solid #0099ff; padding: 12px; margin-bottom: 20px; display: flex; gap: 10px; align-items: center; justify-content: center;">
+            <button onclick="loadFromCloudPublic()" style="background: #00aa00; color: #fff; padding: 12px 30px; font-size: 1.1em;">🔄 REFRESH DATA</button>
+            <span id="spectatorSyncStatus" style="color: #aaa; font-size: 0.9em;"></span>
         </div>
 
         <div class="betting-grid">
@@ -945,6 +936,11 @@
         let currentMatchIndex = 0;
 
         // ==========================================
+        // CLOUD CONFIGURATION (JSONBin.io)
+        // ==========================================
+        const CLOUD_BIN_ID = '696ab0ee43b1c97be9357b81';
+
+        // ==========================================
         // LOCAL STORAGE
         // ==========================================
         function saveData() {
@@ -978,30 +974,18 @@
         // ==========================================
         function loadCloudSettings() {
             const apiKey = localStorage.getItem('jsonbinApiKey');
-            const binId = localStorage.getItem('jsonbinBinId');
             if (apiKey && document.getElementById('jsonbinApiKey')) {
                 document.getElementById('jsonbinApiKey').value = apiKey;
-            }
-            if (binId) {
-                if (document.getElementById('jsonbinBinId')) {
-                    document.getElementById('jsonbinBinId').value = binId;
-                }
-                if (document.getElementById('spectatorBinId')) {
-                    document.getElementById('spectatorBinId').value = binId;
-                }
             }
         }
 
         function saveCloudSettings() {
             const apiKey = document.getElementById('jsonbinApiKey')?.value || '';
-            const binId = document.getElementById('jsonbinBinId')?.value || '';
             localStorage.setItem('jsonbinApiKey', apiKey);
-            localStorage.setItem('jsonbinBinId', binId);
         }
 
         async function saveToCloud() {
             const apiKey = document.getElementById('jsonbinApiKey').value.trim();
-            let binId = document.getElementById('jsonbinBinId').value.trim();
             const statusEl = document.getElementById('cloudSyncStatus');
 
             if (!apiKey) {
@@ -1013,41 +997,20 @@
             statusEl.style.color = '#ffcc00';
 
             try {
-                let response;
-
-                if (binId) {
-                    // Update existing bin
-                    response = await fetch(`https://api.jsonbin.io/v3/b/${binId}`, {
-                        method: 'PUT',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-Master-Key': apiKey
-                        },
-                        body: JSON.stringify(gameData)
-                    });
-                } else {
-                    // Create new bin (public so spectators can read)
-                    response = await fetch('https://api.jsonbin.io/v3/b', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'X-Master-Key': apiKey,
-                            'X-Bin-Name': 'SunriseCitySlamdown',
-                            'X-Bin-Private': 'false'
-                        },
-                        body: JSON.stringify(gameData)
-                    });
-                }
+                const response = await fetch(`https://api.jsonbin.io/v3/b/${CLOUD_BIN_ID}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Master-Key': apiKey
+                    },
+                    body: JSON.stringify(gameData)
+                });
 
                 const result = await response.json();
 
                 if (response.ok) {
-                    if (!binId && result.metadata?.id) {
-                        binId = result.metadata.id;
-                        document.getElementById('jsonbinBinId').value = binId;
-                    }
                     saveCloudSettings();
-                    statusEl.textContent = `Saved! Bin ID: ${binId}`;
+                    statusEl.textContent = 'Saved!';
                     statusEl.style.color = '#00ff00';
                 } else {
                     throw new Error(result.message || 'Failed to save');
@@ -1061,7 +1024,6 @@
 
         async function loadFromCloud() {
             const apiKey = document.getElementById('jsonbinApiKey').value.trim();
-            const binId = document.getElementById('jsonbinBinId').value.trim();
             const statusEl = document.getElementById('cloudSyncStatus');
 
             if (!apiKey) {
@@ -1069,16 +1031,11 @@
                 return;
             }
 
-            if (!binId) {
-                alert('Please enter a Bin ID to load from!');
-                return;
-            }
-
             statusEl.textContent = 'Loading...';
             statusEl.style.color = '#ffcc00';
 
             try {
-                const response = await fetch(`https://api.jsonbin.io/v3/b/${binId}/latest`, {
+                const response = await fetch(`https://api.jsonbin.io/v3/b/${CLOUD_BIN_ID}/latest`, {
                     headers: {
                         'X-Master-Key': apiKey
                     }
@@ -1092,7 +1049,7 @@
                     saveData();
                     saveCloudSettings();
                     renderAll();
-                    statusEl.textContent = 'Loaded successfully!';
+                    statusEl.textContent = 'Loaded!';
                     statusEl.style.color = '#00ff00';
                 } else {
                     throw new Error(result.message || 'Failed to load');
@@ -1104,51 +1061,39 @@
             }
         }
 
-        async function spectatorLoadFromCloud() {
-            const binId = document.getElementById('spectatorBinId').value.trim();
+        async function loadFromCloudPublic() {
             const statusEl = document.getElementById('spectatorSyncStatus');
-
-            if (!binId) {
-                alert('Please enter the Bin ID shared by the admin!');
-                return;
+            if (statusEl) {
+                statusEl.textContent = 'Loading...';
+                statusEl.style.color = '#ffcc00';
             }
 
-            statusEl.textContent = 'Loading...';
-            statusEl.style.color = '#ffcc00';
-
             try {
-                // Public bins can be read without authentication
-                const response = await fetch(`https://api.jsonbin.io/v3/b/${binId}/latest`);
+                const response = await fetch(`https://api.jsonbin.io/v3/b/${CLOUD_BIN_ID}/latest`);
                 const result = await response.json();
 
                 if (!response.ok) {
-                    throw new Error(result.message || 'Bin not found or not accessible');
+                    throw new Error(result.message || 'Failed to load data');
                 }
 
                 if (result.record) {
                     gameData = { ...gameData, ...result.record };
                     initializeCaptains();
-                    localStorage.setItem('jsonbinBinId', binId);
                     saveData();
                     renderAll();
-                    statusEl.textContent = 'Loaded!';
-                    statusEl.style.color = '#00ff00';
+                    if (statusEl) {
+                        statusEl.textContent = 'Updated!';
+                        statusEl.style.color = '#00ff00';
+                    }
                 } else {
-                    throw new Error('Invalid data format');
+                    throw new Error('Invalid data');
                 }
             } catch (error) {
-                statusEl.textContent = `Error: ${error.message}`;
-                statusEl.style.color = '#ff6666';
-                console.error('Spectator load error:', error);
-            }
-        }
-
-        function spectatorRefresh() {
-            const binId = document.getElementById('spectatorBinId').value.trim();
-            if (binId) {
-                spectatorLoadFromCloud();
-            } else {
-                alert('Enter a Bin ID first, then click LOAD');
+                if (statusEl) {
+                    statusEl.textContent = `Error: ${error.message}`;
+                    statusEl.style.color = '#ff6666';
+                }
+                console.error('Cloud load error:', error);
             }
         }
 
@@ -2269,6 +2214,9 @@
         // ==========================================
         loadData();
         switchView('spectator');
+
+        // Auto-load from cloud on page load
+        loadFromCloudPublic();
     </script>
 </body>
 </html>
