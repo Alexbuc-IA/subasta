@@ -370,6 +370,178 @@
             font-size: 0.85em;
         }
 
+        .login-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+        }
+
+        .login-box {
+            background: #2a2a2a;
+            padding: 30px;
+            border: 3px solid #ffcc00;
+            border-radius: 10px;
+            min-width: 300px;
+        }
+
+        .login-box h2 {
+            color: #ffcc00;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .login-input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            background: #333;
+            color: #fff;
+            border: 1px solid #555;
+            font-size: 1em;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 10px;
+            background: #00ff00;
+            color: #000;
+            border: none;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 1em;
+        }
+
+        .login-btn:hover {
+            background: #00dd00;
+        }
+
+        .player-edit-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1500;
+        }
+
+        .player-edit-box {
+            background: #2a2a2a;
+            padding: 20px;
+            border: 2px solid #00ff00;
+            border-radius: 8px;
+            max-height: 80vh;
+            overflow-y: auto;
+            min-width: 400px;
+        }
+
+        .player-edit-box h3 {
+            color: #00ff00;
+            margin-bottom: 15px;
+        }
+
+        .edit-player-row {
+            background: #333;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-left: 3px solid #ffcc00;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .edit-player-row input {
+            background: #444;
+            color: #fff;
+            border: 1px solid #555;
+            padding: 5px;
+        }
+
+        .edit-player-row button {
+            padding: 5px;
+            background: #aa0000;
+            color: #fff;
+            cursor: pointer;
+            border: none;
+        }
+
+        .bets-panel {
+            background: #1a3a1a;
+            border: 2px solid #00ff00;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+        }
+
+        .bets-panel h3 {
+            color: #00ff00;
+            margin-bottom: 12px;
+        }
+
+        .bet-option {
+            background: #333;
+            padding: 10px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            border: 2px solid #555;
+            transition: all 0.3s;
+        }
+
+        .bet-option:hover {
+            border-color: #00ff00;
+            background: #444;
+        }
+
+        .bet-option.selected {
+            border-color: #ffcc00;
+            background: #444400;
+        }
+
+        .betting-input {
+            width: 100%;
+            padding: 8px;
+            background: #333;
+            color: #fff;
+            border: 1px solid #555;
+            margin-bottom: 8px;
+        }
+
+        .spectator-panel {
+            background: #1a1a3a;
+            border: 2px solid #0099ff;
+            padding: 15px;
+            border-radius: 5px;
+        }
+
+        .spectator-panel h3 {
+            color: #0099ff;
+            margin-bottom: 12px;
+        }
+
+        .live-match {
+            background: #333;
+            padding: 12px;
+            margin-bottom: 10px;
+            border-left: 3px solid #0099ff;
+        }
+
+        .match-result {
+            color: #00ff00;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+
         .money {
             font-size: 1.8em;
             color: #00ff00;
@@ -767,9 +939,33 @@
     </style>
 </head>
 <body>
+    <div id="loginModal" class="login-modal" style="display: none;">
+        <div class="login-box">
+            <h2>🔐 ADMIN LOGIN</h2>
+            <input type="text" class="login-input" id="loginUsername" placeholder="Username" value="Tack">
+            <input type="password" class="login-input" id="loginPassword" placeholder="Password" value="Tack123">
+            <button class="login-btn" onclick="adminLogin()">LOGIN</button>
+            <button class="login-btn" style="background: #666; margin-top: 10px;" onclick="closeLoginModal()">Cancel</button>
+        </div>
+    </div>
+
+    <div id="playerEditModal" class="player-edit-modal" style="display: none;">
+        <div class="player-edit-box">
+            <h3>📝 EDIT PLAYERS & CARDS</h3>
+            <button onclick="closePlayerEditModal()" style="width: 100%; margin-bottom: 15px; padding: 8px; background: #666;">Close</button>
+            <div id="playerEditContent"></div>
+            <button onclick="addNewPlayerModal()" style="width: 100%; margin-top: 15px; padding: 10px; background: #00ff00; color: #000; font-weight: bold; cursor: pointer;">+ Add New Player</button>
+        </div>
+    </div>
+
     <div class="container">
         <header>
-            <h1>SUNRISE CITY SLAMDOWN - DRAFT</h1>
+            <h1>SUNRISE CITY SLAMDOWN - DRAFT & TOURNAMENT</h1>
+            <div class="navigation-buttons" style="margin-top: 15px; display: flex; gap: 10px; justify-content: center;">
+                <button class="nav-btn" onclick="openAdminLogin()" style="background: #ffcc00; color: #000;">⚙️ ADMIN</button>
+                <button class="nav-btn" onclick="switchMainView('spectator')" style="background: #0099ff;">👁️ SPECTATOR</button>
+                <button class="nav-btn" onclick="switchMainView('betting')" style="background: #ff9900;">💰 BETTING</button>
+            </div>
         </header>
 
         <div class="turn-info" id="turnInfo">
@@ -819,9 +1015,10 @@
                     </div>
                 </div>
 
-                <div style="margin-bottom: 15px; border-top: 1px solid #555; padding-top: 10px;">
-                    <h4 style="color: #ffcc00; margin-bottom: 8px;">⚔️ Tournament Setup</h4>
-                    <button onclick="manualTournamentSetup()" style="width: 100%; padding: 8px; background: #00aa00; color: #fff; cursor: pointer; font-weight: bold; border: none;">Setup Custom Tournament</button>
+            <div style="margin-bottom: 15px; border-top: 1px solid #555; padding-top: 10px;">
+                    <h4 style="color: #ffcc00; margin-bottom: 8px;">📝 Player Management</h4>
+                    <button onclick="openPlayerEditModal()" style="width: 100%; padding: 8px; background: #00ff00; color: #000; cursor: pointer; font-weight: bold; border: none; margin-bottom: 8px;">✏️ Edit Players & Cards</button>
+                    <button onclick="manualTournamentSetup()" style="width: 100%; padding: 8px; background: #00aa00; color: #fff; cursor: pointer; font-weight: bold; border: none;">⚔️ Setup Tournament</button>
                 </div>
             </div>
 
@@ -910,14 +1107,15 @@
                 </div>
             </div>
 
-            <div style="border-top: 1px solid #555; padding-top: 10px; margin-top: 10px;">
-                <button onclick="toggleAdminPanel()" style="width: 100%; padding: 8px; background: #666; color: #fff; cursor: pointer;">Close</button>
+            <div style="border-top: 1px solid #555; padding-top: 10px; margin-top: 10px; display: flex; gap: 8px;">
+                <button onclick="toggleAdminPanel()" style="flex: 1; padding: 8px; background: #666; color: #fff; cursor: pointer;">✕ Close</button>
+                <button onclick="logoutAdmin()" style="flex: 1; padding: 8px; background: #aa0000; color: #fff; cursor: pointer; font-weight: bold;">🚪 Logout</button>
             </div>
 
             <div id="adminLog" style="font-size: 0.8em; color: #999; margin-top: 10px; max-height: 100px; overflow-y: auto;"></div>
         </div>
 
-        <button id="toggleAdminBtn" onclick="toggleAdminPanel()" style="position: fixed; top: 20px; right: 20px; padding: 8px 12px; background: #ffcc00; color: #000; border: none; font-weight: bold; cursor: pointer; z-index: 1000;">👤 ADMIN</button>
+      
 
         <div class="main-content">
             <div class="sidebar">
@@ -957,6 +1155,8 @@
                 <div id="teamsPanel"></div>
                 <div id="tournamentPanel"></div>
                 <div id="duelsPanel" style="display: none;"></div>
+                <div id="spectatorPanel" style="display: none;"></div>
+                <div id="bettingPanel" style="display: none;"></div>
             </div>
         </div>
 
@@ -967,14 +1167,14 @@
     </div>
 
     <script>
-        // Game Data
-        const wildcards = [
+        // Game Data - Using localStorage for persistence
+        let wildcards = [
             { name: 'WILD CARD (MYTHICAL)', price: 1000, count: 3 },
             { name: 'WILD CARD (LEGENDARY)', price: 500, count: 3 },
             { name: 'WILD CARD (RARE)', price: 250, count: 3 }
         ];
 
-        const tsugukos = [
+        let tsugukos = [
             { name: 'UBUME', tier: 'B', price: 400 },
             { name: 'AIDAN', tier: 'B', price: 300 },
             { name: 'BEN', tier: 'A-', price: 300 },
@@ -1001,7 +1201,7 @@
             { name: 'BEEFY', tier: 'S+', price: 1000 }
         ];
 
-        const kinoe = [
+        let kinoe = [
             { name: 'MOZART', price: 150 },
             { name: 'ALON MOR', price: 150 },
             { name: 'SPONGEBOB', price: 150 },
@@ -1046,11 +1246,169 @@
         let adminLog = [];
         let tournamentMatches = [];
         let cardStatus = {}; // Track card status per player
-        let currentView = 'draft'; // draft, admin, tournament
+        let currentView = 'draft'; // draft, admin, tournament, spectator, betting
         let tournamentName = 'Tournament';
         let duels = [];
         let duelHistory = [];
         let currentDuelIndex = 0;
+        let mainView = 'draft'; // draft, spectator, betting
+        let isAdminLoggedIn = false;
+
+        // Betting System
+
+        // Spectator Mode
+        let spectatorName = localStorage.getItem('spectatorName') || 'Guest';
+
+        // Initialize from localStorage
+        function loadData() {
+            const saved = localStorage.getItem('gameData');
+            if (saved) {
+                const data = JSON.parse(saved);
+                captainMoney = data.captainMoney || {};
+                captainTeams = data.captainTeams || {};
+                duelHistory = data.duelHistory || [];
+                wildcardsAvailable = data.wildcardsAvailable || {};
+                tsugukos = data.tsugukos || tsugukos;
+                kinoe = data.kinoe || kinoe;
+                wildcards = data.wildcards || wildcards;
+            }
+        }
+
+        function saveData() {
+            const data = {
+                captainMoney,
+                captainTeams,
+                duelHistory,
+                wildcardsAvailable,
+                tsugukos,
+                kinoe,
+                wildcards
+            };
+            localStorage.setItem('gameData', JSON.stringify(data));
+        }
+
+        // Admin Panel Functions
+        function openAdminLogin() {
+            if (isAdminLoggedIn) {
+                currentView = 'admin';
+                renderView();
+            } else {
+                document.getElementById('loginModal').style.display = 'flex';
+            }
+        }
+
+        function closeLoginModal() {
+            document.getElementById('loginModal').style.display = 'none';
+        }
+
+        function adminLogin() {
+            const username = document.getElementById('loginUsername').value;
+            const password = document.getElementById('loginPassword').value;
+            
+            if (username === 'Tack' && password === 'Tack123') {
+                isAdminLoggedIn = true;
+                closeLoginModal();
+                currentView = 'admin';
+                mainView = 'draft';
+                renderView();
+            } else {
+                alert('Invalid credentials!');
+            }
+        }
+
+        function logoutAdmin() {
+            isAdminLoggedIn = false;
+            currentView = 'draft';
+            document.getElementById('adminPanel').style.display = 'none';
+            renderView();
+        }
+
+        // Player Edit Modal
+        function openPlayerEditModal() {
+            document.getElementById('playerEditModal').style.display = 'flex';
+            renderPlayerEditContent();
+        }
+
+        function closePlayerEditModal() {
+            document.getElementById('playerEditModal').style.display = 'none';
+        }
+
+        function renderPlayerEditContent() {
+            const content = document.getElementById('playerEditContent');
+            let html = '<h4 style="color: #ffcc00; margin-bottom: 10px;">WILD CARDS</h4>';
+            
+            // Wildcards
+            wildcards.forEach((card, idx) => {
+                html += `
+                    <div class="edit-player-row">
+                        <input type="text" value="${card.name}" onchange="wildcards[${idx}].name = this.value; saveData();">
+                        <input type="number" value="${card.price}" onchange="wildcards[${idx}].price = parseInt(this.value); saveData();">
+                        <span style="text-align: center;">${card.count}x</span>
+                    </div>
+                `;
+            });
+
+            html += '<h4 style="color: #ffcc00; margin-bottom: 10px; margin-top: 15px;">TSUGUKOS</h4>';
+            tsugukos.forEach((player, idx) => {
+                html += `
+                    <div class="edit-player-row">
+                        <input type="text" value="${player.name}" onchange="tsugukos[${idx}].name = this.value; saveData();">
+                        <input type="number" value="${player.price}" onchange="tsugukos[${idx}].price = parseInt(this.value); saveData();">
+                        <button onclick="deleteTsuguko(${idx})">Delete</button>
+                    </div>
+                `;
+            });
+
+            html += '<h4 style="color: #ffcc00; margin-bottom: 10px; margin-top: 15px;">HINOES</h4>';
+            kinoe.forEach((player, idx) => {
+                html += `
+                    <div class="edit-player-row">
+                        <input type="text" value="${player.name}" onchange="kinoe[${idx}].name = this.value; saveData();">
+                        <input type="number" value="${player.price}" onchange="kinoe[${idx}].price = parseInt(this.value); saveData();">
+                        <button onclick="deleteHinoe(${idx})">Delete</button>
+                    </div>
+                `;
+            });
+
+            content.innerHTML = html;
+        }
+
+        function deleteTsuguko(idx) {
+            if (confirm('Delete this player?')) {
+                tsugukos.splice(idx, 1);
+                saveData();
+                renderPlayerEditContent();
+                renderPlayers();
+            }
+        }
+
+        function deleteHinoe(idx) {
+            if (confirm('Delete this player?')) {
+                kinoe.splice(idx, 1);
+                saveData();
+                renderPlayerEditContent();
+                renderPlayers();
+            }
+        }
+
+        function addNewPlayerModal() {
+            const name = prompt('Enter player name:');
+            if (!name) return;
+            const price = prompt('Enter player price:');
+            if (!price) return;
+            
+            kinoe.push({ name, price: parseInt(price) });
+            saveData();
+            renderPlayerEditContent();
+            renderPlayers();
+        }
+
+        // Main View Switching
+        function switchMainView(view) {
+            mainView = view;
+            currentView = view;
+            renderView();
+        }
 
         // Betting System
         let bets = [];
@@ -2177,6 +2535,8 @@
             const teamsPanel = document.getElementById('teamsPanel');
             const tournamentPanel = document.getElementById('tournamentPanel');
             const duelsPanel = document.getElementById('duelsPanel');
+            const spectatorPanel = document.getElementById('spectatorPanel');
+            const bettingPanel = document.getElementById('bettingPanel');
             const sidebar = document.querySelector('.sidebar');
 
             // Hide all
@@ -2188,6 +2548,8 @@
             tournamentPanel.innerHTML = '';
             duelsPanel.innerHTML = '';
             duelsPanel.style.display = 'none';
+            spectatorPanel.style.display = 'none';
+            bettingPanel.style.display = 'none';
 
             // Show based on view
             if (currentView === 'draft') {
@@ -2204,6 +2566,12 @@
             } else if (currentView === 'tournament') {
                 duelsPanel.style.display = 'block';
                 renderDuelsView();
+            } else if (currentView === 'spectator') {
+                spectatorPanel.style.display = 'block';
+                renderSpectatorPanel();
+            } else if (currentView === 'betting') {
+                bettingPanel.style.display = 'block';
+                renderBettingPanel();
             }
         }
 
@@ -2380,6 +2748,9 @@
                 sub2: duel.sub2
             };
             duelHistory.push(historyEntry);
+
+            // Persist data to localStorage
+            saveData();
 
             // Move to next duel
             currentDuelIndex++;
@@ -2641,97 +3012,6 @@
             }
         }
 
-        // Tournament Duels System
-        function renderView() {
-            const adminPanel = document.getElementById('adminPanel');
-            const playersArea = document.getElementById('playersArea');
-            const turnInfo = document.getElementById('turnInfo');
-            const finalTeams = document.getElementById('finalTeams');
-            const teamsPanel = document.getElementById('teamsPanel');
-            const tournamentPanel = document.getElementById('tournamentPanel');
-            const duelsPanel = document.getElementById('duelsPanel');
-            const sidebar = document.querySelector('.sidebar');
-
-            // Hide all
-            adminPanel.style.display = 'none';
-            playersArea.style.display = 'none';
-            turnInfo.style.display = 'none';
-            finalTeams.classList.remove('show');
-            teamsPanel.innerHTML = '';
-            tournamentPanel.innerHTML = '';
-            duelsPanel.innerHTML = '';
-            duelsPanel.style.display = 'none';
-
-            // Show based on view
-            if (currentView === 'draft') {
-                playersArea.style.display = 'block';
-                turnInfo.style.display = 'block';
-                sidebar.style.display = 'block';
-                renderRightPanel();
-            } else if (currentView === 'admin') {
-                adminPanel.style.display = 'block';
-                playersArea.style.display = 'block';
-                turnInfo.style.display = 'block';
-                sidebar.style.display = 'block';
-                renderRightPanel();
-            } else if (currentView === 'tournament') {
-                duelsPanel.style.display = 'block';
-                renderDuelsView();
-            }
-        }
-
-        function switchView(view) {
-            currentView = view;
-            renderView();
-        }
-
-        function renderDuelsView() {
-            const duelsPanel = document.getElementById('duelsPanel');
-            const sidebar = document.querySelector('.sidebar');
-            
-            duelsPanel.innerHTML = `
-                <div class="navigation-buttons">
-                    <button class="nav-btn" onclick="switchView('admin')">⚙️ ADMIN</button>
-                    <button class="nav-btn" onclick="finishTournament()">✓ FINISH</button>
-                </div>
-                
-                <div class="tournament-info">
-                    <h4>⚔️ TOURNAMENT: ${tournamentName}</h4>
-                    <input type="text" class="tournament-input" value="${tournamentName}" 
-                        onchange="tournamentName = this.value; renderDuelsView();" placeholder="Tournament Name">
-                    <div style="font-size: 0.9em; color: #00ff00;">Duel ${currentDuelIndex + 1} of ${duels.length}</div>
-                </div>
-
-                <div id="currentDuelContainer"></div>
-                <div id="duelHistoryContainer"></div>
-            `;
-
-            // Render current duel
-            if (currentDuelIndex < duels.length) {
-                renderCurrentDuel();
-            } else {
-                document.getElementById('currentDuelContainer').innerHTML = '<div style="background: #1a3a1a; padding: 12px; border: 2px solid #00ff00; text-align: center; color: #00ff00; font-weight: bold;">🏆 All Duels Complete!</div>';
-            }
-
-            // Render history
-            renderDuelHistory();
-
-            // Show sidebar with navigation
-            sidebar.style.display = 'block';
-            sidebar.innerHTML = `
-                <h3>Tournament Info</h3>
-                <div style="margin-top: 15px;">
-                    <div style="margin-bottom: 15px;">
-                        <strong>Completed Duels</strong>
-                        <div style="font-size: 1.3em; color: #00ff00; margin-top: 5px;">${duelHistory.length}/${duels.length}</div>
-                    </div>
-                </div>
-                <div class="teams-summary" id="tournamentTeamsSummary"></div>
-            `;
-
-            renderTournamentTeamsSummary();
-        }
-
         function renderCurrentDuel() {
             if (currentDuelIndex >= duels.length) return;
 
@@ -2806,73 +3086,8 @@
                 }
                 renderCurrentDuel();
             }
-        }
-
-        function changeDuelTeam(slot) {
-            if (currentDuelIndex >= duels.length) return;
-            
-            const duel = duels[currentDuelIndex];
-            const teams = draftOrder.filter(t => captainTeams[t].length > 0);
-            
-            let teamList = 'Select new team:\n\n';
-            teams.forEach((t, i) => {
-                teamList += `${i + 1}. ${t}\n`;
-            });
-
-            const selected = prompt(teamList + '\nEnter number (or cancel):', '');
-            if (selected === null) return;
-
-            const teamIndex = parseInt(selected) - 1;
-            if (teamIndex >= 0 && teamIndex < teams.length) {
-                if (slot === 1) {
-                    duel.team1 = teams[teamIndex];
-                    duel.sub1 = null;
-                } else {
-                    duel.team2 = teams[teamIndex];
-                    duel.sub2 = null;
-                }
-                renderCurrentDuel();
-            }
-        }
-
-        function completeDuel(winner) {
-            if (currentDuelIndex >= duels.length) return;
-
-            const duel = duels[currentDuelIndex];
-            duel.winner = winner;
-            duel.loser = winner === duel.team1 ? duel.team2 : duel.team1;
-            duel.completed = true;
-
-            // Add to history
-            const historyEntry = {
-                duelNum: duelHistory.length + 1,
-                team1: duel.team1,
-                team2: duel.team2,
-                winner: winner,
-                sub1: duel.sub1,
-                sub2: duel.sub2
-            };
-            duelHistory.push(historyEntry);
-
-            // Move to next duel
-            currentDuelIndex++;
-            renderDuelsView();
-        }
-
-        function renderDuelHistory() {
-            const container = document.getElementById('duelHistoryContainer');
-            
-            if (duelHistory.length === 0) {
-                container.innerHTML = '';
-                return;
-            }
-
-            let html = '<div style="margin-top: 15px;"><strong style="color: #00ff00;">Completed Duels:</strong>';
-            
-            duelHistory.forEach(entry => {
-                const subInfo = entry.sub1 || entry.sub2 ? ` (Subs: ${entry.sub1 || '-'} vs ${entry.sub2 || '-'})` : '';
                 html += `<div class="duel-history">#${entry.duelNum}: ${entry.team1} vs ${entry.team2} → <span style="color: #00ff00; font-weight: bold;">${entry.winner} WIN</span>${subInfo}</div>`;
-            });
+            
 
             html += '</div>';
             container.innerHTML = html;
@@ -2939,7 +3154,131 @@
             document.getElementById('finalTeamsList').innerHTML = finalHtml;
         }
 
+        // Spectator Panel
+        function renderSpectatorPanel() {
+            const panel = document.getElementById('spectatorPanel');
+            
+            let html = `
+                <div style="margin-bottom: 15px;">
+                    <input type="text" value="${spectatorName}" onchange="spectatorName = this.value; localStorage.setItem('spectatorName', this.value);" 
+                        style="width: 100%; padding: 8px; background: #333; color: #fff; border: 1px solid #555; margin-bottom: 8px;" placeholder="Enter your name">
+                </div>
+
+                <div class="spectator-panel">
+                    <h3>⚔️ LIVE MATCHES</h3>
+            `;
+
+            if (duelHistory.length === 0 && duels.length === 0) {
+                html += '<div style="color: #aaa; font-size: 0.9em;">Waiting for tournament to start...</div>';
+            } else {
+                duelHistory.forEach(duel => {
+                    html += `
+                        <div class="live-match">
+                            <div><strong>${duel.team1}</strong> vs <strong>${duel.team2}</strong></div>
+                            <div class="match-result">✓ ${duel.winner} WINS</div>
+                            ${duel.sub1 || duel.sub2 ? `<div style="font-size: 0.8em; color: #ffcc00;">Subs: ${duel.sub1 || '-'} vs ${duel.sub2 || '-'}</div>` : ''}
+                        </div>
+                    `;
+                });
+            }
+
+            html += `</div>
+
+            <div class="spectator-panel" style="margin-top: 15px;">
+                <h3>📊 STANDINGS</h3>
+            `;
+
+            draftOrder.forEach(team => {
+                const wins = duelHistory.filter(d => d.winner === team).length;
+                const losses = duelHistory.filter(d => d.loser === team).length;
+                html += `
+                    <div style="background: #333; padding: 8px; margin-bottom: 5px;">
+                        <strong>${team}</strong> - W: ${wins} | L: ${losses}
+                    </div>
+                `;
+            });
+
+            html += '</div>';
+            panel.innerHTML = html;
+        }
+
+        // Betting Panel
+        function renderBettingPanel() {
+            const panel = document.getElementById('bettingPanel');
+            
+            let html = `
+                <div style="margin-bottom: 15px;">
+                    <input type="text" value="${spectatorName}" onchange="spectatorName = this.value; localStorage.setItem('spectatorName', this.value);" 
+                        style="width: 100%; padding: 8px; background: #333; color: #fff; border: 1px solid #555; margin-bottom: 8px;" placeholder="Your name">
+                </div>
+
+                <div class="bets-panel">
+                    <h3>💰 PLACE BETS</h3>
+            `;
+
+            if (currentDuelIndex < duels.length && duels[currentDuelIndex]) {
+                const duel = duels[currentDuelIndex];
+                html += `<div style="margin-bottom: 10px; font-size: 0.9em; color: #ffcc00;"><strong>Current Duel:</strong> ${duel.team1} vs ${duel.team2}</div>`;
+                
+                html += `
+                    <div class="bet-option" onclick="placeBet('${duel.team1}', '${duel.team2}')">
+                        <strong>✓ ${duel.team1} WINS</strong>
+                        <div style="font-size: 0.8em; margin-top: 5px;">Bet on ${duel.team1}</div>
+                    </div>
+                    <div class="bet-option" onclick="placeBet('${duel.team2}', '${duel.team1}')">
+                        <strong>✓ ${duel.team2} WINS</strong>
+                        <div style="font-size: 0.8em; margin-top: 5px;">Bet on ${duel.team2}</div>
+                    </div>
+                `;
+            } else {
+                html += '<div style="color: #aaa; font-size: 0.9em;">No active duel</div>';
+            }
+
+            html += '</div>';
+
+            // Show betting history
+            html += '<div class="bets-panel"><h3>📋 YOUR BETS</h3>';
+            if (currentBets.length === 0) {
+                html += '<div style="color: #aaa; font-size: 0.9em;">No bets placed yet</div>';
+            } else {
+                currentBets.forEach((bet, idx) => {
+                    const won = duelHistory.some(d => d.duelNum === bet.duelNum && d.winner === bet.team);
+                    const status = won ? '<span style="color: #00ff00;">✓ WON</span>' : '<span style="color: #ff0000;">✗ LOST</span>';
+                    if (won !== undefined) {
+                        html += `<div style="background: #333; padding: 8px; margin-bottom: 5px;">
+                            <strong>${bet.bettor}</strong> bet on <strong>${bet.team}</strong> - ${status}
+                        </div>`;
+                    }
+                });
+            }
+            html += '</div>';
+
+            panel.innerHTML = html;
+        }
+
+        function placeBet(team, opponent) {
+            if (!spectatorName || spectatorName.trim() === '') {
+                alert('Please enter your name first!');
+                return;
+            }
+
+            const bet = {
+                id: betIdCounter++,
+                duelNum: currentDuelIndex + 1,
+                bettor: spectatorName,
+                team: team,
+                opponent: opponent,
+                timestamp: new Date().toLocaleTimeString()
+            };
+
+            currentBets.push(bet);
+            localStorage.setItem('bets', JSON.stringify(currentBets));
+            renderBettingPanel();
+            alert(`✓ Bet placed on ${team}!`);
+        }
+
         // Initialize
+        loadData();
         updateTurnDisplay();
         renderPlayers();
         renderTeamsSummary();
