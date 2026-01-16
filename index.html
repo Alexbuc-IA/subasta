@@ -1229,6 +1229,7 @@
 
         function renderCaptainSelector() {
             const container = document.getElementById('captainSelector');
+            if (!container) return;
             container.innerHTML = '';
 
             gameData.captains.forEach(captain => {
@@ -1262,6 +1263,7 @@
 
         function renderPlayersContainer() {
             const container = document.getElementById('playersContainer');
+            if (!container) return;
             container.innerHTML = '';
 
             // Wild Cards
@@ -1399,6 +1401,7 @@
 
         function renderTeamsPanel() {
             const container = document.getElementById('teamsPanel');
+            if (!container) return;
             container.innerHTML = '';
 
             gameData.captains.forEach(captain => {
@@ -1482,6 +1485,7 @@
 
         function renderUsageStats() {
             const container = document.getElementById('usageStats');
+            if (!container) return;
             const entries = Object.entries(gameData.cardUsageCount);
 
             if (entries.length === 0) {
@@ -1500,6 +1504,7 @@
         function renderUnavailablePlayers() {
             const container = document.getElementById('unavailablePlayers');
             const section = document.getElementById('unavailableSection');
+            if (!container || !section) return;
 
             // Find all unavailable players from teams
             let unavailable = [];
@@ -1594,6 +1599,7 @@
 
         function updateAdminCaptainSelect() {
             const select = document.getElementById('adminCaptainSelect');
+            if (!select) return;
             select.innerHTML = '<option value="">Select Captain</option>';
             gameData.captains.forEach(captain => {
                 select.innerHTML += `<option value="${captain}">${captain} (${gameData.captainMoney[captain]} YEN)</option>`;
@@ -1647,8 +1653,10 @@
         }
 
         function updateSelectedCaptainBalance() {
-            const inputValue = document.getElementById('quickDepositCaptain').value;
+            const input = document.getElementById('quickDepositCaptain');
             const balanceDiv = document.getElementById('selectedCaptainBalance');
+            if (!input || !balanceDiv) return;
+            const inputValue = input.value;
             const captain = findCaptainByName(inputValue);
 
             if (captain && gameData.captainMoney[captain] !== undefined) {
@@ -1941,6 +1949,7 @@
 
         function renderMatchesContainer() {
             const container = document.getElementById('matchesContainer');
+            if (!container) return;
 
             if (gameData.matches.length === 0) {
                 container.innerHTML = '<p style="color: #888;">No matches set up. Click "Setup Matches" to create matches.</p>';
@@ -2009,6 +2018,7 @@
 
         function renderCurrentMatchBet() {
             const container = document.getElementById('currentMatchBet');
+            if (!container) return;
             const currentMatch = gameData.matches[currentMatchIndex];
 
             if (!currentMatch || currentMatch.completed) {
@@ -2028,6 +2038,7 @@
 
         function renderBetOptions() {
             const container = document.getElementById('betOptions');
+            if (!container) return;
             const currentMatch = gameData.matches[currentMatchIndex];
 
             if (!currentMatch || currentMatch.completed) {
@@ -2105,6 +2116,7 @@
 
         function renderActiveBets() {
             const container = document.getElementById('activeBetsList');
+            if (!container) return;
 
             if (gameData.bets.length === 0) {
                 container.innerHTML = '<p style="color: #888;">No active bets</p>';
@@ -2121,6 +2133,7 @@
 
         function renderBetHistory() {
             const container = document.getElementById('betHistory');
+            if (!container) return;
 
             if (gameData.betHistory.length === 0) {
                 container.innerHTML = '<p style="color: #888;">No bet history</p>';
@@ -2139,6 +2152,7 @@
 
         function renderTeamStandingsBetting() {
             const container = document.getElementById('teamStandingsBetting');
+            if (!container) return;
             renderStandings(container);
         }
 
@@ -2154,6 +2168,7 @@
 
         function renderLiveMatches() {
             const container = document.getElementById('liveMatches');
+            if (!container) return;
             const currentMatch = gameData.matches[currentMatchIndex];
 
             if (!currentMatch || currentMatch.completed) {
@@ -2175,6 +2190,7 @@
 
         function renderSpectatorMatchHistory() {
             const container = document.getElementById('matchHistory');
+            if (!container) return;
 
             if (gameData.matchHistory.length === 0) {
                 container.innerHTML = '<p style="color: #888;">No completed matches</p>';
@@ -2195,10 +2211,12 @@
 
         function renderTeamStandings() {
             const container = document.getElementById('teamStandings');
+            if (!container) return;
             renderStandings(container);
         }
 
         function renderStandings(container) {
+            if (!container) return;
             const standings = gameData.captains.map(captain => {
                 const wins = gameData.matchHistory.filter(m => m.winner === captain).length;
                 const losses = gameData.matchHistory.filter(m =>
@@ -2220,6 +2238,7 @@
 
         function renderCardUsageSpectator() {
             const container = document.getElementById('cardUsageSpectator');
+            if (!container) return;
             const entries = Object.entries(gameData.cardUsageCount);
 
             if (entries.length === 0) {
