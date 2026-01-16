@@ -978,15 +978,142 @@
         <div class="admin-panel" id="adminPanel" style="display: none;">
             <h3>⚙️ ADMIN PANEL</h3>
 
-            <div style="text-align: center; padding: 50px 20px; color: #666;">
-                <p style="font-size: 1.2em;">✓ Admin access granted</p>
-                <p style="margin-top: 10px; font-size: 0.9em;">Panel currently empty</p>
+            <!-- Admin Tabs -->
+            <div class="admin-tabs">
+                <button class="admin-tab active" onclick="switchAdminTab('general')">General</button>
+                <button class="admin-tab" onclick="switchAdminTab('captains')">Capitanes</button>
+                <button class="admin-tab" onclick="switchAdminTab('roster')">Roster</button>
+                <button class="admin-tab" onclick="switchAdminTab('bets')">Apuestas</button>
+            </div>
+
+            <!-- General Section -->
+            <div id="adminGeneral" class="admin-section active">
+                <div style="margin-bottom: 15px;">
+                    <h4 style="color: #ffcc00; margin-bottom: 8px;">💰 Add Money</h4>
+                    <div class="admin-controls">
+                        <select id="adminSelectCaptain">
+                            <option value="">Select Captain</option>
+                        </select>
+                        <input type="number" id="adminMoneyAmount" placeholder="Amount" min="1">
+                        <button onclick="addMoneyAdmin()" style="grid-column: 1 / -1;">Add Money</button>
+                    </div>
+                </div>
+
+                <div style="margin-bottom: 15px; border-top: 1px solid #555; padding-top: 10px;">
+                    <h4 style="color: #ffcc00; margin-bottom: 8px;">🔄 Manage Players</h4>
+                    <div class="admin-controls">
+                        <select id="adminSelectSourceTeam">
+                            <option value="">Select Team</option>
+                        </select>
+                        <select id="adminSelectPlayer">
+                            <option value="">Select Player</option>
+                        </select>
+                        <select id="adminSelectTargetTeam">
+                            <option value="">Target Team</option>
+                        </select>
+                        <button onclick="movePlayerAdmin()" style="grid-column: 1 / -1;">Move Player to Team</button>
+                        <button onclick="deletePlayerAdmin()" style="grid-column: 1 / -1; background: #aa0000;">Delete Player</button>
+                    </div>
+                </div>
+
+            <div style="margin-bottom: 15px; border-top: 1px solid #555; padding-top: 10px;">
+                    <h4 style="color: #ffcc00; margin-bottom: 8px;">📝 Player Management</h4>
+                    <button onclick="openPlayerEditModal()" style="width: 100%; padding: 8px; background: #00ff00; color: #000; cursor: pointer; font-weight: bold; border: none; margin-bottom: 8px;">✏️ Edit Players & Cards</button>
+                    <button onclick="manualTournamentSetup()" style="width: 100%; padding: 8px; background: #00aa00; color: #fff; cursor: pointer; font-weight: bold; border: none;">⚔️ Setup Tournament</button>
+                </div>
+            </div>
+
+            <!-- Captains Management Section -->
+            <div id="adminCaptains" class="admin-section">
+                <div class="captain-manager">
+                    <h4>👑 Gestion de Capitanes</h4>
+                    <p style="font-size: 0.85em; color: #aaa; margin-bottom: 10px;">Reordena, activa/desactiva o salta capitanes sin dinero</p>
+
+                    <div style="margin-bottom: 10px;">
+                        <input type="text" id="newCaptainName" placeholder="Nombre del nuevo capitan" style="padding: 8px; background: #333; color: #fff; border: 1px solid #555; width: calc(100% - 90px);">
+                        <button onclick="addNewCaptain()" style="padding: 8px 15px; background: #00aa00; color: #fff; border: none; cursor: pointer;">Agregar</button>
+                    </div>
+
+                    <div class="captain-list" id="captainList"></div>
+
+                    <div style="margin-top: 10px; padding-top: 10px; border-top: 1px solid #555;">
+                        <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                            <input type="checkbox" id="autoSkipNoMoney" onchange="toggleAutoSkip()">
+                            <span style="font-size: 0.9em;">Auto-saltar capitanes sin dinero</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Roster Management Section -->
+            <div id="adminRoster" class="admin-section">
+                <div class="roster-manager">
+                    <h4>📋 Gestion de Roster</h4>
+                    <p style="font-size: 0.85em; color: #aaa; margin-bottom: 10px;">Mueve jugadores entre equipos facilmente</p>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px;">
+                        <select id="rosterSourceTeam" onchange="renderRosterSource()">
+                            <option value="">Equipo Origen</option>
+                        </select>
+                        <select id="rosterTargetTeam" onchange="renderRosterTarget()">
+                            <option value="">Equipo Destino</option>
+                        </select>
+                    </div>
+
+                    <div class="roster-teams-container">
+                        <div class="roster-team-box">
+                            <h5 id="rosterSourceTitle">Origen</h5>
+                            <div id="rosterSourcePlayers"></div>
+                        </div>
+                        <div class="roster-arrows">
+                            <button onclick="moveSelectedToTarget()" title="Mover a destino">→</button>
+                            <button onclick="moveSelectedToSource()" title="Mover a origen">←</button>
+                            <button onclick="moveAllToTarget()" title="Mover todos a destino">⇒</button>
+                        </div>
+                        <div class="roster-team-box">
+                            <h5 id="rosterTargetTitle">Destino</h5>
+                            <div id="rosterTargetPlayers"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Betting Section -->
+            <div id="adminBets" class="admin-section">
+                <div class="betting-panel">
+                    <h4>🎲 Sistema de Apuestas</h4>
+                    <p style="font-size: 0.85em; color: #aaa; margin-bottom: 10px;">Crea apuestas entre equipos/personas. El ganador recibe el dinero.</p>
+
+                    <div class="new-bet-form">
+                        <select id="betTeam1">
+                            <option value="">Equipo/Persona 1</option>
+                        </select>
+                        <select id="betTeam2">
+                            <option value="">Equipo/Persona 2</option>
+                        </select>
+                        <input type="number" id="betAmount" placeholder="Cantidad apostada (YEN)" min="1" style="grid-column: 1 / -1;">
+                        <input type="text" id="betDescription" placeholder="Descripcion (opcional)" style="grid-column: 1 / -1;">
+                        <button onclick="createBet()">Crear Apuesta</button>
+                    </div>
+
+                    <div id="activeBets">
+                        <h5 style="color: #ff00ff; margin: 15px 0 10px 0;">Apuestas Activas:</h5>
+                        <div id="betsList"></div>
+                    </div>
+
+                    <div id="resolvedBets" style="margin-top: 15px;">
+                        <h5 style="color: #666; margin-bottom: 10px;">Historial de Apuestas:</h5>
+                        <div id="betsHistory"></div>
+                    </div>
+                </div>
             </div>
 
             <div style="border-top: 1px solid #555; padding-top: 10px; margin-top: 10px; display: flex; gap: 8px;">
                 <button onclick="toggleAdminPanel()" style="flex: 1; padding: 8px; background: #666; color: #fff; cursor: pointer;">✕ Close</button>
                 <button onclick="logoutAdmin()" style="flex: 1; padding: 8px; background: #aa0000; color: #fff; cursor: pointer; font-weight: bold;">🚪 Logout</button>
             </div>
+
+            <div id="adminLog" style="font-size: 0.8em; color: #999; margin-top: 10px; max-height: 100px; overflow-y: auto;"></div>
         </div>
 
       
