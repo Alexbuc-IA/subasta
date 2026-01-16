@@ -484,6 +484,286 @@
             margin-bottom: 5px;
             border-left: 2px solid #666;
         }
+
+        /* Captain Management Styles */
+        .captain-manager {
+            background: #1a1a1a;
+            border: 2px solid #ff6600;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+        }
+
+        .captain-manager h4 {
+            color: #ff6600;
+            margin-bottom: 10px;
+        }
+
+        .captain-list {
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .captain-list-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px;
+            background: #333;
+            margin-bottom: 5px;
+            border-left: 3px solid #ff6600;
+        }
+
+        .captain-list-item.inactive {
+            opacity: 0.5;
+            border-left-color: #666;
+        }
+
+        .captain-list-item.no-money {
+            border-left-color: #aa0000;
+            background: #2a1a1a;
+        }
+
+        .captain-list-item .captain-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .captain-list-item .captain-actions {
+            display: flex;
+            gap: 5px;
+        }
+
+        .captain-list-item button {
+            padding: 4px 8px;
+            font-size: 0.8em;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-up { background: #555; color: #fff; }
+        .btn-down { background: #555; color: #fff; }
+        .btn-skip { background: #ffcc00; color: #000; }
+        .btn-remove { background: #aa0000; color: #fff; }
+        .btn-activate { background: #00aa00; color: #fff; }
+
+        /* Roster Manager Styles */
+        .roster-manager {
+            background: #1a1a1a;
+            border: 2px solid #0099ff;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+        }
+
+        .roster-manager h4 {
+            color: #0099ff;
+            margin-bottom: 10px;
+        }
+
+        .roster-teams-container {
+            display: grid;
+            grid-template-columns: 1fr 60px 1fr;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .roster-team-box {
+            background: #333;
+            padding: 10px;
+            border: 2px solid #555;
+            min-height: 150px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .roster-team-box h5 {
+            color: #ffcc00;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .roster-player-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 6px 8px;
+            background: #444;
+            margin-bottom: 4px;
+            cursor: pointer;
+            border: 1px solid transparent;
+        }
+
+        .roster-player-item:hover {
+            background: #555;
+            border-color: #ffcc00;
+        }
+
+        .roster-player-item.selected {
+            background: #0066aa;
+            border-color: #0099ff;
+        }
+
+        .roster-arrows {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .roster-arrows button {
+            padding: 10px;
+            font-size: 1.2em;
+            cursor: pointer;
+            background: #555;
+            color: #fff;
+            border: none;
+        }
+
+        .roster-arrows button:hover {
+            background: #0099ff;
+        }
+
+        /* Betting System Styles */
+        .betting-panel {
+            background: #1a1a1a;
+            border: 2px solid #ff00ff;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 5px;
+        }
+
+        .betting-panel h4 {
+            color: #ff00ff;
+            margin-bottom: 10px;
+        }
+
+        .bet-card {
+            background: #333;
+            padding: 12px;
+            margin-bottom: 10px;
+            border-left: 3px solid #ff00ff;
+        }
+
+        .bet-card.resolved {
+            opacity: 0.7;
+            border-left-color: #666;
+        }
+
+        .bet-card.winner-1 {
+            border-left-color: #00ff00;
+        }
+
+        .bet-card.winner-2 {
+            border-left-color: #00ff00;
+        }
+
+        .bet-teams {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .bet-team {
+            flex: 1;
+            text-align: center;
+            padding: 8px;
+            background: #444;
+        }
+
+        .bet-vs {
+            padding: 0 15px;
+            font-weight: bold;
+            color: #ff00ff;
+        }
+
+        .bet-amount {
+            text-align: center;
+            color: #00ff00;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .bet-controls {
+            display: flex;
+            gap: 5px;
+        }
+
+        .bet-controls button {
+            flex: 1;
+            padding: 8px;
+            cursor: pointer;
+            border: none;
+            font-weight: bold;
+        }
+
+        .bet-win-1 { background: #00aa00; color: #fff; }
+        .bet-win-2 { background: #00aa00; color: #fff; }
+        .bet-cancel { background: #aa0000; color: #fff; }
+
+        .new-bet-form {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .new-bet-form select,
+        .new-bet-form input {
+            padding: 8px;
+            background: #333;
+            color: #fff;
+            border: 1px solid #555;
+        }
+
+        .new-bet-form button {
+            grid-column: 1 / -1;
+            padding: 10px;
+            background: #ff00ff;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        /* Tab Navigation for Admin */
+        .admin-tabs {
+            display: flex;
+            gap: 5px;
+            margin-bottom: 15px;
+        }
+
+        .admin-tab {
+            flex: 1;
+            padding: 10px;
+            background: #333;
+            color: #fff;
+            border: 2px solid #555;
+            cursor: pointer;
+            text-align: center;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+
+        .admin-tab:hover {
+            background: #444;
+        }
+
+        .admin-tab.active {
+            background: #ffcc00;
+            color: #000;
+            border-color: #ffcc00;
+        }
+
+        .admin-section {
+            display: none;
+        }
+
+        .admin-section.active {
+            display: block;
+        }
     </style>
 </head>
 <body>
@@ -500,44 +780,140 @@
 
         <div class="admin-panel" id="adminPanel" style="display: none;">
             <h3>⚙️ ADMIN PANEL</h3>
-            
-            <div style="margin-bottom: 15px;">
-                <h4 style="color: #ffcc00; margin-bottom: 8px;">💰 Add Money</h4>
-                <div class="admin-controls">
-                    <select id="adminSelectCaptain">
-                        <option value="">Select Captain</option>
-                    </select>
-                    <input type="number" id="adminMoneyAmount" placeholder="Amount" min="1">
-                    <button onclick="addMoneyAdmin()" style="grid-column: 1 / -1;">Add Money</button>
+
+            <!-- Admin Tabs -->
+            <div class="admin-tabs">
+                <button class="admin-tab active" onclick="switchAdminTab('general')">General</button>
+                <button class="admin-tab" onclick="switchAdminTab('captains')">Capitanes</button>
+                <button class="admin-tab" onclick="switchAdminTab('roster')">Roster</button>
+                <button class="admin-tab" onclick="switchAdminTab('bets')">Apuestas</button>
+            </div>
+
+            <!-- General Section -->
+            <div id="adminGeneral" class="admin-section active">
+                <div style="margin-bottom: 15px;">
+                    <h4 style="color: #ffcc00; margin-bottom: 8px;">💰 Add Money</h4>
+                    <div class="admin-controls">
+                        <select id="adminSelectCaptain">
+                            <option value="">Select Captain</option>
+                        </select>
+                        <input type="number" id="adminMoneyAmount" placeholder="Amount" min="1">
+                        <button onclick="addMoneyAdmin()" style="grid-column: 1 / -1;">Add Money</button>
+                    </div>
+                </div>
+
+                <div style="margin-bottom: 15px; border-top: 1px solid #555; padding-top: 10px;">
+                    <h4 style="color: #ffcc00; margin-bottom: 8px;">🔄 Manage Players</h4>
+                    <div class="admin-controls">
+                        <select id="adminSelectSourceTeam">
+                            <option value="">Select Team</option>
+                        </select>
+                        <select id="adminSelectPlayer">
+                            <option value="">Select Player</option>
+                        </select>
+                        <select id="adminSelectTargetTeam">
+                            <option value="">Target Team</option>
+                        </select>
+                        <button onclick="movePlayerAdmin()" style="grid-column: 1 / -1;">Move Player to Team</button>
+                        <button onclick="deletePlayerAdmin()" style="grid-column: 1 / -1; background: #aa0000;">Delete Player</button>
+                    </div>
+                </div>
+
+                <div style="margin-bottom: 15px; border-top: 1px solid #555; padding-top: 10px;">
+                    <h4 style="color: #ffcc00; margin-bottom: 8px;">⚔️ Tournament Setup</h4>
+                    <button onclick="manualTournamentSetup()" style="width: 100%; padding: 8px; background: #00aa00; color: #fff; cursor: pointer; font-weight: bold; border: none;">Setup Custom Tournament</button>
                 </div>
             </div>
 
-            <div style="margin-bottom: 15px; border-top: 1px solid #555; padding-top: 10px;">
-                <h4 style="color: #ffcc00; margin-bottom: 8px;">🔄 Manage Players</h4>
-                <div class="admin-controls">
-                    <select id="adminSelectSourceTeam">
-                        <option value="">Select Team</option>
-                    </select>
-                    <select id="adminSelectPlayer">
-                        <option value="">Select Player</option>
-                    </select>
-                    <select id="adminSelectTargetTeam">
-                        <option value="">Target Team</option>
-                    </select>
-                    <button onclick="movePlayerAdmin()" style="grid-column: 1 / -1;">Move Player to Team</button>
-                    <button onclick="deletePlayerAdmin()" style="grid-column: 1 / -1; background: #aa0000;">Delete Player</button>
+            <!-- Captains Management Section -->
+            <div id="adminCaptains" class="admin-section">
+                <div class="captain-manager">
+                    <h4>👑 Gestion de Capitanes</h4>
+                    <p style="font-size: 0.85em; color: #aaa; margin-bottom: 10px;">Reordena, activa/desactiva o salta capitanes sin dinero</p>
+
+                    <div style="margin-bottom: 10px;">
+                        <input type="text" id="newCaptainName" placeholder="Nombre del nuevo capitan" style="padding: 8px; background: #333; color: #fff; border: 1px solid #555; width: calc(100% - 90px);">
+                        <button onclick="addNewCaptain()" style="padding: 8px 15px; background: #00aa00; color: #fff; border: none; cursor: pointer;">Agregar</button>
+                    </div>
+
+                    <div class="captain-list" id="captainList"></div>
+
+                    <div style="margin-top: 10px; padding-top: 10px; border-top: 1px solid #555;">
+                        <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+                            <input type="checkbox" id="autoSkipNoMoney" onchange="toggleAutoSkip()">
+                            <span style="font-size: 0.9em;">Auto-saltar capitanes sin dinero</span>
+                        </label>
+                    </div>
                 </div>
             </div>
 
-            <div style="margin-bottom: 15px; border-top: 1px solid #555; padding-top: 10px;">
-                <h4 style="color: #ffcc00; margin-bottom: 8px;">⚔️ Tournament Setup</h4>
-                <button onclick="manualTournamentSetup()" style="width: 100%; padding: 8px; background: #00aa00; color: #fff; cursor: pointer; font-weight: bold; border: none;">Setup Custom Tournament</button>
+            <!-- Roster Management Section -->
+            <div id="adminRoster" class="admin-section">
+                <div class="roster-manager">
+                    <h4>📋 Gestion de Roster</h4>
+                    <p style="font-size: 0.85em; color: #aaa; margin-bottom: 10px;">Mueve jugadores entre equipos facilmente</p>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px;">
+                        <select id="rosterSourceTeam" onchange="renderRosterSource()">
+                            <option value="">Equipo Origen</option>
+                        </select>
+                        <select id="rosterTargetTeam" onchange="renderRosterTarget()">
+                            <option value="">Equipo Destino</option>
+                        </select>
+                    </div>
+
+                    <div class="roster-teams-container">
+                        <div class="roster-team-box">
+                            <h5 id="rosterSourceTitle">Origen</h5>
+                            <div id="rosterSourcePlayers"></div>
+                        </div>
+                        <div class="roster-arrows">
+                            <button onclick="moveSelectedToTarget()" title="Mover a destino">→</button>
+                            <button onclick="moveSelectedToSource()" title="Mover a origen">←</button>
+                            <button onclick="moveAllToTarget()" title="Mover todos a destino">⇒</button>
+                        </div>
+                        <div class="roster-team-box">
+                            <h5 id="rosterTargetTitle">Destino</h5>
+                            <div id="rosterTargetPlayers"></div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
-            <div style="border-top: 1px solid #555; padding-top: 10px;">
+            <!-- Betting Section -->
+            <div id="adminBets" class="admin-section">
+                <div class="betting-panel">
+                    <h4>🎲 Sistema de Apuestas</h4>
+                    <p style="font-size: 0.85em; color: #aaa; margin-bottom: 10px;">Crea apuestas entre equipos/personas. El ganador recibe el dinero.</p>
+
+                    <div class="new-bet-form">
+                        <select id="betTeam1">
+                            <option value="">Equipo/Persona 1</option>
+                        </select>
+                        <select id="betTeam2">
+                            <option value="">Equipo/Persona 2</option>
+                        </select>
+                        <input type="number" id="betAmount" placeholder="Cantidad apostada (YEN)" min="1" style="grid-column: 1 / -1;">
+                        <input type="text" id="betDescription" placeholder="Descripcion (opcional)" style="grid-column: 1 / -1;">
+                        <button onclick="createBet()">Crear Apuesta</button>
+                    </div>
+
+                    <div id="activeBets">
+                        <h5 style="color: #ff00ff; margin: 15px 0 10px 0;">Apuestas Activas:</h5>
+                        <div id="betsList"></div>
+                    </div>
+
+                    <div id="resolvedBets" style="margin-top: 15px;">
+                        <h5 style="color: #666; margin-bottom: 10px;">Historial de Apuestas:</h5>
+                        <div id="betsHistory"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="border-top: 1px solid #555; padding-top: 10px; margin-top: 10px;">
                 <button onclick="toggleAdminPanel()" style="width: 100%; padding: 8px; background: #666; color: #fff; cursor: pointer;">Close</button>
             </div>
-            
+
             <div id="adminLog" style="font-size: 0.8em; color: #999; margin-top: 10px; max-height: 100px; overflow-y: auto;"></div>
         </div>
 
@@ -655,8 +1031,10 @@
             { name: 'GROOVY', price: 300 }
         ];
 
-        // Draft order
-        const draftOrder = ['JUAN', 'RIOT', 'TACK', 'GLORY', 'SIMON', 'JUSTIN'];
+        // Draft order - now mutable
+        let draftOrder = ['JUAN', 'RIOT', 'TACK', 'GLORY', 'SIMON', 'JUSTIN'];
+        let captainStatus = {}; // Track if captain is active/inactive
+        let autoSkipNoMoney = false;
         let currentTurnIndex = 0;
         let roundNumber = 1;
 
@@ -674,10 +1052,20 @@
         let duelHistory = [];
         let currentDuelIndex = 0;
 
+        // Betting System
+        let bets = [];
+        let betsHistory = [];
+        let betIdCounter = 1;
+
+        // Roster Management
+        let selectedSourcePlayers = [];
+        let selectedTargetPlayers = [];
+
         // Initialize
         draftOrder.forEach(captain => {
             captainMoney[captain] = 1000;
             captainTeams[captain] = [];
+            captainStatus[captain] = 'active'; // active, inactive, skipped
         });
 
         wildcards.forEach((card, i) => {
@@ -1034,28 +1422,629 @@
         function deletePlayerAdmin() {
             const sourceTeam = document.getElementById('adminSelectSourceTeam').value;
             const playerIndex = parseInt(document.getElementById('adminSelectPlayer').value);
-            
+
             if (!sourceTeam || playerIndex === undefined || playerIndex === -1) {
                 alert('Please select team and player!');
                 return;
             }
-            
+
             const player = captainTeams[sourceTeam][playerIndex];
-            
+
             if (!confirm(`Delete ${player.name} from ${sourceTeam}?`)) {
                 return;
             }
-            
+
             captainTeams[sourceTeam].splice(playerIndex, 1);
-            
+
             const logEntry = `${new Date().toLocaleTimeString()}: Deleted ${player.name} from ${sourceTeam}`;
             adminLog.push(logEntry);
             document.getElementById('adminLog').textContent = adminLog.slice(-3).join('\n');
-            
+
             alert(`✓ ${player.name} deleted!`);
             renderPlayers();
             renderRightPanel();
             updatePlayerDropdown();
+        }
+
+        // ==========================================
+        // ADMIN TABS NAVIGATION
+        // ==========================================
+        function switchAdminTab(tabName) {
+            // Update tab buttons
+            document.querySelectorAll('.admin-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            event.target.classList.add('active');
+
+            // Update sections
+            document.querySelectorAll('.admin-section').forEach(section => {
+                section.classList.remove('active');
+            });
+
+            const sectionId = 'admin' + tabName.charAt(0).toUpperCase() + tabName.slice(1);
+            document.getElementById(sectionId).classList.add('active');
+
+            // Render content for the active tab
+            if (tabName === 'captains') {
+                renderCaptainList();
+            } else if (tabName === 'roster') {
+                populateRosterSelectors();
+            } else if (tabName === 'bets') {
+                populateBetSelectors();
+                renderBetsList();
+            }
+        }
+
+        // ==========================================
+        // CAPTAIN MANAGEMENT FUNCTIONS
+        // ==========================================
+        function renderCaptainList() {
+            const container = document.getElementById('captainList');
+            container.innerHTML = '';
+
+            draftOrder.forEach((captain, index) => {
+                const money = captainMoney[captain] || 0;
+                const status = captainStatus[captain] || 'active';
+                const isCurrentTurn = index === currentTurnIndex;
+                const hasNoMoney = money <= 0;
+
+                let itemClass = 'captain-list-item';
+                if (status === 'inactive') itemClass += ' inactive';
+                if (hasNoMoney && status === 'active') itemClass += ' no-money';
+
+                const statusIcon = status === 'active' ? '✓' : '✗';
+                const turnIndicator = isCurrentTurn ? '→ ' : '';
+
+                container.innerHTML += `
+                    <div class="${itemClass}" data-captain="${captain}">
+                        <div class="captain-info">
+                            <span>${turnIndicator}${index + 1}. ${captain}</span>
+                            <span style="color: ${money > 0 ? '#00ff00' : '#ff0000'}; font-size: 0.85em;">${money} YEN</span>
+                            <span style="font-size: 0.8em; color: ${status === 'active' ? '#00ff00' : '#aa0000'};">${statusIcon}</span>
+                        </div>
+                        <div class="captain-actions">
+                            <button class="btn-up" onclick="moveCaptain('${captain}', -1)" ${index === 0 ? 'disabled' : ''}>↑</button>
+                            <button class="btn-down" onclick="moveCaptain('${captain}', 1)" ${index === draftOrder.length - 1 ? 'disabled' : ''}>↓</button>
+                            <button class="btn-skip" onclick="skipCaptainTurn('${captain}')" title="Saltar turno">⏭</button>
+                            ${status === 'active'
+                                ? `<button class="btn-remove" onclick="toggleCaptainStatus('${captain}')" title="Desactivar">✗</button>`
+                                : `<button class="btn-activate" onclick="toggleCaptainStatus('${captain}')" title="Activar">✓</button>`
+                            }
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function addNewCaptain() {
+            const input = document.getElementById('newCaptainName');
+            const name = input.value.trim().toUpperCase();
+
+            if (!name) {
+                alert('Ingresa un nombre para el capitan');
+                return;
+            }
+
+            if (draftOrder.includes(name)) {
+                alert('Este capitan ya existe');
+                return;
+            }
+
+            draftOrder.push(name);
+            captainMoney[name] = 1000;
+            captainTeams[name] = [];
+            captainStatus[name] = 'active';
+
+            input.value = '';
+
+            const logEntry = `${new Date().toLocaleTimeString()}: Nuevo capitan agregado: ${name}`;
+            adminLog.push(logEntry);
+            document.getElementById('adminLog').textContent = adminLog.slice(-3).join('\n');
+
+            renderCaptainList();
+            updateTurnDisplay();
+            renderTeamsSummary();
+            renderRightPanel();
+            populateTeamSelectors();
+
+            alert(`✓ Capitan ${name} agregado con 1000 YEN!`);
+        }
+
+        function moveCaptain(captain, direction) {
+            const currentIndex = draftOrder.indexOf(captain);
+            const newIndex = currentIndex + direction;
+
+            if (newIndex < 0 || newIndex >= draftOrder.length) return;
+
+            // Swap positions
+            [draftOrder[currentIndex], draftOrder[newIndex]] = [draftOrder[newIndex], draftOrder[currentIndex]];
+
+            // Adjust current turn index if needed
+            if (currentIndex === currentTurnIndex) {
+                currentTurnIndex = newIndex;
+            } else if (newIndex === currentTurnIndex) {
+                currentTurnIndex = currentIndex;
+            }
+
+            renderCaptainList();
+            updateTurnDisplay();
+            renderTeamsSummary();
+        }
+
+        function toggleCaptainStatus(captain) {
+            if (captainStatus[captain] === 'active') {
+                captainStatus[captain] = 'inactive';
+
+                // If this was the current captain, skip to next
+                if (draftOrder[currentTurnIndex] === captain) {
+                    findNextActiveCaptain();
+                }
+            } else {
+                captainStatus[captain] = 'active';
+            }
+
+            renderCaptainList();
+            updateTurnDisplay();
+            renderTeamsSummary();
+        }
+
+        function skipCaptainTurn(captain) {
+            const captainIndex = draftOrder.indexOf(captain);
+
+            if (captainIndex === currentTurnIndex) {
+                findNextActiveCaptain();
+                renderCaptainList();
+                updateTurnDisplay();
+                renderTeamsSummary();
+            } else {
+                alert('Solo puedes saltar el turno del capitan actual');
+            }
+        }
+
+        function findNextActiveCaptain() {
+            let attempts = 0;
+            const maxAttempts = draftOrder.length;
+
+            do {
+                currentTurnIndex++;
+                if (currentTurnIndex >= draftOrder.length) {
+                    currentTurnIndex = 0;
+                    roundNumber++;
+                }
+                attempts++;
+
+                const currentCaptain = draftOrder[currentTurnIndex];
+                const isActive = captainStatus[currentCaptain] === 'active';
+                const hasMoney = captainMoney[currentCaptain] > 0;
+
+                // Skip if inactive or (auto-skip enabled and no money)
+                if (isActive && (!autoSkipNoMoney || hasMoney)) {
+                    break;
+                }
+            } while (attempts < maxAttempts);
+
+            if (attempts >= maxAttempts) {
+                alert('No hay capitanes activos con dinero disponible!');
+            }
+        }
+
+        function toggleAutoSkip() {
+            autoSkipNoMoney = document.getElementById('autoSkipNoMoney').checked;
+
+            // Check if current captain needs to be skipped
+            const currentCaptain = getCurrentCaptain();
+            if (autoSkipNoMoney && captainMoney[currentCaptain] <= 0) {
+                findNextActiveCaptain();
+                updateTurnDisplay();
+                renderTeamsSummary();
+            }
+        }
+
+        // ==========================================
+        // ROSTER MANAGEMENT FUNCTIONS
+        // ==========================================
+        function populateRosterSelectors() {
+            const sourceSelect = document.getElementById('rosterSourceTeam');
+            const targetSelect = document.getElementById('rosterTargetTeam');
+
+            sourceSelect.innerHTML = '<option value="">Equipo Origen</option>';
+            targetSelect.innerHTML = '<option value="">Equipo Destino</option>';
+
+            draftOrder.forEach(captain => {
+                const playerCount = captainTeams[captain]?.length || 0;
+                sourceSelect.innerHTML += `<option value="${captain}">${captain} (${playerCount} jugadores)</option>`;
+                targetSelect.innerHTML += `<option value="${captain}">${captain} (${playerCount} jugadores)</option>`;
+            });
+
+            selectedSourcePlayers = [];
+            selectedTargetPlayers = [];
+            renderRosterSource();
+            renderRosterTarget();
+        }
+
+        function renderRosterSource() {
+            const team = document.getElementById('rosterSourceTeam').value;
+            const container = document.getElementById('rosterSourcePlayers');
+            const title = document.getElementById('rosterSourceTitle');
+
+            selectedSourcePlayers = [];
+
+            if (!team) {
+                title.textContent = 'Origen';
+                container.innerHTML = '<p style="color: #666; font-size: 0.9em;">Selecciona un equipo</p>';
+                return;
+            }
+
+            title.textContent = team;
+            const players = captainTeams[team] || [];
+
+            if (players.length === 0) {
+                container.innerHTML = '<p style="color: #666; font-size: 0.9em;">Sin jugadores</p>';
+                return;
+            }
+
+            container.innerHTML = players.map((player, index) => `
+                <div class="roster-player-item" data-index="${index}" onclick="toggleSourcePlayer(${index})">
+                    <span>${player.name}</span>
+                    <span style="font-size: 0.8em; color: #888;">${player.tier || 'Regular'}</span>
+                </div>
+            `).join('');
+        }
+
+        function renderRosterTarget() {
+            const team = document.getElementById('rosterTargetTeam').value;
+            const container = document.getElementById('rosterTargetPlayers');
+            const title = document.getElementById('rosterTargetTitle');
+
+            selectedTargetPlayers = [];
+
+            if (!team) {
+                title.textContent = 'Destino';
+                container.innerHTML = '<p style="color: #666; font-size: 0.9em;">Selecciona un equipo</p>';
+                return;
+            }
+
+            title.textContent = team;
+            const players = captainTeams[team] || [];
+
+            if (players.length === 0) {
+                container.innerHTML = '<p style="color: #666; font-size: 0.9em;">Sin jugadores</p>';
+                return;
+            }
+
+            container.innerHTML = players.map((player, index) => `
+                <div class="roster-player-item" data-index="${index}" onclick="toggleTargetPlayer(${index})">
+                    <span>${player.name}</span>
+                    <span style="font-size: 0.8em; color: #888;">${player.tier || 'Regular'}</span>
+                </div>
+            `).join('');
+        }
+
+        function toggleSourcePlayer(index) {
+            const items = document.querySelectorAll('#rosterSourcePlayers .roster-player-item');
+            const item = items[index];
+
+            if (selectedSourcePlayers.includes(index)) {
+                selectedSourcePlayers = selectedSourcePlayers.filter(i => i !== index);
+                item.classList.remove('selected');
+            } else {
+                selectedSourcePlayers.push(index);
+                item.classList.add('selected');
+            }
+        }
+
+        function toggleTargetPlayer(index) {
+            const items = document.querySelectorAll('#rosterTargetPlayers .roster-player-item');
+            const item = items[index];
+
+            if (selectedTargetPlayers.includes(index)) {
+                selectedTargetPlayers = selectedTargetPlayers.filter(i => i !== index);
+                item.classList.remove('selected');
+            } else {
+                selectedTargetPlayers.push(index);
+                item.classList.add('selected');
+            }
+        }
+
+        function moveSelectedToTarget() {
+            const sourceTeam = document.getElementById('rosterSourceTeam').value;
+            const targetTeam = document.getElementById('rosterTargetTeam').value;
+
+            if (!sourceTeam || !targetTeam) {
+                alert('Selecciona ambos equipos');
+                return;
+            }
+
+            if (sourceTeam === targetTeam) {
+                alert('Los equipos deben ser diferentes');
+                return;
+            }
+
+            if (selectedSourcePlayers.length === 0) {
+                alert('Selecciona jugadores para mover');
+                return;
+            }
+
+            // Sort in descending order to remove from end first
+            const sortedIndices = [...selectedSourcePlayers].sort((a, b) => b - a);
+            const movedPlayers = [];
+
+            sortedIndices.forEach(index => {
+                const player = captainTeams[sourceTeam][index];
+                movedPlayers.push(player.name);
+
+                // Update player ID for new team
+                player.id = `${targetTeam}-${player.purchaseId}`;
+
+                // Add to target team
+                captainTeams[targetTeam].push(player);
+
+                // Remove from source
+                captainTeams[sourceTeam].splice(index, 1);
+            });
+
+            const logEntry = `${new Date().toLocaleTimeString()}: Movidos ${movedPlayers.join(', ')} de ${sourceTeam} a ${targetTeam}`;
+            adminLog.push(logEntry);
+            document.getElementById('adminLog').textContent = adminLog.slice(-3).join('\n');
+
+            selectedSourcePlayers = [];
+            populateRosterSelectors();
+            renderRightPanel();
+
+            alert(`✓ ${movedPlayers.length} jugador(es) movidos a ${targetTeam}!`);
+        }
+
+        function moveSelectedToSource() {
+            const sourceTeam = document.getElementById('rosterSourceTeam').value;
+            const targetTeam = document.getElementById('rosterTargetTeam').value;
+
+            if (!sourceTeam || !targetTeam) {
+                alert('Selecciona ambos equipos');
+                return;
+            }
+
+            if (sourceTeam === targetTeam) {
+                alert('Los equipos deben ser diferentes');
+                return;
+            }
+
+            if (selectedTargetPlayers.length === 0) {
+                alert('Selecciona jugadores para mover');
+                return;
+            }
+
+            // Sort in descending order to remove from end first
+            const sortedIndices = [...selectedTargetPlayers].sort((a, b) => b - a);
+            const movedPlayers = [];
+
+            sortedIndices.forEach(index => {
+                const player = captainTeams[targetTeam][index];
+                movedPlayers.push(player.name);
+
+                // Update player ID for new team
+                player.id = `${sourceTeam}-${player.purchaseId}`;
+
+                // Add to source team
+                captainTeams[sourceTeam].push(player);
+
+                // Remove from target
+                captainTeams[targetTeam].splice(index, 1);
+            });
+
+            const logEntry = `${new Date().toLocaleTimeString()}: Movidos ${movedPlayers.join(', ')} de ${targetTeam} a ${sourceTeam}`;
+            adminLog.push(logEntry);
+            document.getElementById('adminLog').textContent = adminLog.slice(-3).join('\n');
+
+            selectedTargetPlayers = [];
+            populateRosterSelectors();
+            renderRightPanel();
+
+            alert(`✓ ${movedPlayers.length} jugador(es) movidos a ${sourceTeam}!`);
+        }
+
+        function moveAllToTarget() {
+            const sourceTeam = document.getElementById('rosterSourceTeam').value;
+            const targetTeam = document.getElementById('rosterTargetTeam').value;
+
+            if (!sourceTeam || !targetTeam) {
+                alert('Selecciona ambos equipos');
+                return;
+            }
+
+            if (sourceTeam === targetTeam) {
+                alert('Los equipos deben ser diferentes');
+                return;
+            }
+
+            const players = captainTeams[sourceTeam];
+            if (players.length === 0) {
+                alert('No hay jugadores para mover');
+                return;
+            }
+
+            if (!confirm(`¿Mover TODOS los jugadores de ${sourceTeam} a ${targetTeam}?`)) {
+                return;
+            }
+
+            const movedPlayers = players.map(p => p.name);
+
+            // Move all players
+            players.forEach(player => {
+                player.id = `${targetTeam}-${player.purchaseId}`;
+                captainTeams[targetTeam].push(player);
+            });
+
+            // Clear source team
+            captainTeams[sourceTeam] = [];
+
+            const logEntry = `${new Date().toLocaleTimeString()}: Movidos TODOS (${movedPlayers.join(', ')}) de ${sourceTeam} a ${targetTeam}`;
+            adminLog.push(logEntry);
+            document.getElementById('adminLog').textContent = adminLog.slice(-3).join('\n');
+
+            populateRosterSelectors();
+            renderRightPanel();
+
+            alert(`✓ ${movedPlayers.length} jugadores movidos a ${targetTeam}!`);
+        }
+
+        // ==========================================
+        // BETTING SYSTEM FUNCTIONS
+        // ==========================================
+        function populateBetSelectors() {
+            const bet1 = document.getElementById('betTeam1');
+            const bet2 = document.getElementById('betTeam2');
+
+            bet1.innerHTML = '<option value="">Equipo/Persona 1</option>';
+            bet2.innerHTML = '<option value="">Equipo/Persona 2</option>';
+
+            draftOrder.forEach(captain => {
+                const money = captainMoney[captain] || 0;
+                bet1.innerHTML += `<option value="${captain}">${captain} (${money} YEN)</option>`;
+                bet2.innerHTML += `<option value="${captain}">${captain} (${money} YEN)</option>`;
+            });
+        }
+
+        function createBet() {
+            const team1 = document.getElementById('betTeam1').value;
+            const team2 = document.getElementById('betTeam2').value;
+            const amount = parseInt(document.getElementById('betAmount').value);
+            const description = document.getElementById('betDescription').value.trim();
+
+            if (!team1 || !team2) {
+                alert('Selecciona ambos equipos/personas');
+                return;
+            }
+
+            if (team1 === team2) {
+                alert('Los equipos deben ser diferentes');
+                return;
+            }
+
+            if (!amount || amount <= 0) {
+                alert('Ingresa una cantidad valida');
+                return;
+            }
+
+            const bet = {
+                id: betIdCounter++,
+                team1: team1,
+                team2: team2,
+                amount: amount,
+                description: description || `${team1} vs ${team2}`,
+                winner: null,
+                resolved: false,
+                createdAt: new Date().toLocaleTimeString()
+            };
+
+            bets.push(bet);
+
+            // Clear form
+            document.getElementById('betAmount').value = '';
+            document.getElementById('betDescription').value = '';
+
+            const logEntry = `${new Date().toLocaleTimeString()}: Nueva apuesta creada: ${team1} vs ${team2} por ${amount} YEN`;
+            adminLog.push(logEntry);
+            document.getElementById('adminLog').textContent = adminLog.slice(-3).join('\n');
+
+            renderBetsList();
+            alert(`✓ Apuesta creada: ${team1} vs ${team2} por ${amount} YEN`);
+        }
+
+        function renderBetsList() {
+            const activeBetsContainer = document.getElementById('betsList');
+            const historyContainer = document.getElementById('betsHistory');
+
+            // Active bets
+            const activeBets = bets.filter(b => !b.resolved);
+            if (activeBets.length === 0) {
+                activeBetsContainer.innerHTML = '<p style="color: #666; font-size: 0.9em;">No hay apuestas activas</p>';
+            } else {
+                activeBetsContainer.innerHTML = activeBets.map(bet => `
+                    <div class="bet-card">
+                        <div class="bet-teams">
+                            <div class="bet-team">${bet.team1}</div>
+                            <div class="bet-vs">VS</div>
+                            <div class="bet-team">${bet.team2}</div>
+                        </div>
+                        <div class="bet-amount">${bet.amount} YEN</div>
+                        ${bet.description ? `<p style="font-size: 0.85em; color: #aaa; text-align: center; margin-bottom: 10px;">${bet.description}</p>` : ''}
+                        <div class="bet-controls">
+                            <button class="bet-win-1" onclick="resolveBet(${bet.id}, '${bet.team1}')">✓ ${bet.team1} Gana</button>
+                            <button class="bet-win-2" onclick="resolveBet(${bet.id}, '${bet.team2}')">✓ ${bet.team2} Gana</button>
+                            <button class="bet-cancel" onclick="cancelBet(${bet.id})">✗</button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            // History
+            if (betsHistory.length === 0) {
+                historyContainer.innerHTML = '<p style="color: #666; font-size: 0.9em;">Sin historial</p>';
+            } else {
+                historyContainer.innerHTML = betsHistory.slice(-5).reverse().map(bet => `
+                    <div class="bet-card resolved ${bet.winner === bet.team1 ? 'winner-1' : 'winner-2'}">
+                        <div style="font-size: 0.85em;">
+                            <strong>${bet.team1}</strong> vs <strong>${bet.team2}</strong>
+                            <span style="color: #00ff00; margin-left: 10px;">→ ${bet.winner} gano ${bet.amount} YEN</span>
+                        </div>
+                    </div>
+                `).join('');
+            }
+        }
+
+        function resolveBet(betId, winner) {
+            const betIndex = bets.findIndex(b => b.id === betId);
+            if (betIndex === -1) return;
+
+            const bet = bets[betIndex];
+
+            if (!confirm(`¿Confirmar que ${winner} gano la apuesta de ${bet.amount} YEN?`)) {
+                return;
+            }
+
+            // Add money to winner
+            captainMoney[winner] += bet.amount;
+
+            // Mark as resolved
+            bet.winner = winner;
+            bet.resolved = true;
+            bet.resolvedAt = new Date().toLocaleTimeString();
+
+            // Move to history
+            betsHistory.push(bet);
+            bets.splice(betIndex, 1);
+
+            const logEntry = `${new Date().toLocaleTimeString()}: ${winner} gano apuesta vs ${winner === bet.team1 ? bet.team2 : bet.team1}: +${bet.amount} YEN`;
+            adminLog.push(logEntry);
+            document.getElementById('adminLog').textContent = adminLog.slice(-3).join('\n');
+
+            renderBetsList();
+            populateBetSelectors();
+            updateTurnDisplay();
+            renderTeamsSummary();
+            renderRightPanel();
+
+            alert(`✓ ${winner} recibio ${bet.amount} YEN!`);
+        }
+
+        function cancelBet(betId) {
+            const betIndex = bets.findIndex(b => b.id === betId);
+            if (betIndex === -1) return;
+
+            const bet = bets[betIndex];
+
+            if (!confirm(`¿Cancelar apuesta entre ${bet.team1} y ${bet.team2}?`)) {
+                return;
+            }
+
+            bets.splice(betIndex, 1);
+
+            const logEntry = `${new Date().toLocaleTimeString()}: Apuesta cancelada: ${bet.team1} vs ${bet.team2}`;
+            adminLog.push(logEntry);
+            document.getElementById('adminLog').textContent = adminLog.slice(-3).join('\n');
+
+            renderBetsList();
+            alert('Apuesta cancelada');
         }
 
         function manualTournamentSetup() {
