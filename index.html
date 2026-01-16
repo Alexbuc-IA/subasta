@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SUNRISE CITY SLAMDOWN - DRAFT & TOURNAMENT</title>
+    <title>SUNRISE CITY SLAMDOWN - Tournament Manager</title>
     <style>
         * {
             margin: 0;
@@ -15,314 +15,35 @@
             font-family: Arial, sans-serif;
             background: #1a1a1a;
             color: #fff;
-            padding: 20px;
+            min-height: 100vh;
         }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        header {
-            text-align: center;
-            margin-bottom: 20px;
-            padding: 20px;
+        /* Navigation */
+        .top-nav {
             background: #2a2a2a;
-            border: 2px solid #444;
-        }
-
-        h1 {
-            font-size: 2em;
-            margin-bottom: 10px;
-        }
-
-        .turn-info {
-            background: #333;
-            padding: 15px;
-            margin-bottom: 20px;
-            border: 2px solid #555;
-            text-align: center;
-        }
-
-        .current-turn {
-            font-size: 1.5em;
-            color: #ffcc00;
-            margin-bottom: 10px;
-        }
-
-        .draft-order {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            flex-wrap: wrap;
-            margin-top: 10px;
-        }
-
-        .captain-turn {
-            padding: 8px 15px;
-            background: #444;
-            border: 2px solid #666;
-        }
-
-        .captain-turn.active {
-            background: #ffcc00;
-            color: #000;
-            font-weight: bold;
-        }
-
-        .captain-turn.done {
-            opacity: 0.5;
-            text-decoration: line-through;
-        }
-
-        .main-content {
-            display: grid;
-            grid-template-columns: 250px 1fr 320px;
-            gap: 20px;
-        }
-
-        .sidebar {
-            background: #2a2a2a;
-            padding: 15px;
-            border: 2px solid #444;
-            height: fit-content;
-        }
-
-        .right-panel {
-            background: #2a2a2a;
-            padding: 15px;
-            border: 2px solid #444;
-            max-height: 80vh;
-            overflow-y: auto;
-        }
-
-        .admin-panel {
-            background: #1a1a1a;
-            border: 2px solid #ffcc00;
-            padding: 15px;
-            margin-bottom: 20px;
-        }
-
-        .admin-panel h3 {
-            color: #ffcc00;
-            margin-bottom: 10px;
-        }
-
-        .admin-controls {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin-bottom: 10px;
-        }
-
-        .admin-controls input,
-        .admin-controls select,
-        .admin-controls button {
-            padding: 8px;
-            background: #333;
-            color: #fff;
-            border: 1px solid #555;
-            font-size: 0.9em;
-        }
-
-        .admin-controls button {
-            background: #ffcc00;
-            color: #000;
-            cursor: pointer;
-            font-weight: bold;
-        }
-
-        .admin-controls button:hover {
-            background: #ffdd33;
-        }
-
-        .team-card {
-            background: #333;
-            padding: 12px;
-            margin-bottom: 12px;
-            border: 2px solid #555;
-            border-left: 4px solid #ffcc00;
-        }
-
-        .team-card.tournament-winner {
-            border-left-color: #00ff00;
-            background: #1a3a1a;
-        }
-
-        .team-card h4 {
-            color: #ffcc00;
-            margin-bottom: 8px;
-            font-size: 1em;
-        }
-
-        .team-card-money {
-            color: #00ff00;
-            font-weight: bold;
-            margin-bottom: 8px;
-            font-size: 0.95em;
-        }
-
-        .team-players {
-            font-size: 0.85em;
-            line-height: 1.6;
-            margin-bottom: 8px;
-        }
-
-        .player-entry {
-            background: #444;
-            padding: 4px 6px;
-            margin-bottom: 4px;
-            border-left: 2px solid #888;
+            padding: 15px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            border-bottom: 2px solid #444;
         }
 
-        .card-status {
-            display: inline-block;
-            padding: 2px 6px;
-            background: #555;
-            font-size: 0.8em;
-            margin-top: 2px;
-        }
-
-        .card-status.active {
-            background: #00aa00;
-            color: #fff;
-        }
-
-        .card-status.used {
-            background: #aa5500;
-            color: #fff;
-        }
-
-        .card-status.abandoned {
-            background: #aa0000;
-            color: #fff;
-            text-decoration: line-through;
-        }
-
-        .tournament-section {
-            background: #1a1a1a;
-            border: 2px solid #00ff00;
-            padding: 15px;
-            margin-bottom: 20px;
-        }
-
-        .tournament-section h3 {
-            color: #00ff00;
-            margin-bottom: 10px;
-        }
-
-        .tournament-bracket {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        .match {
-            background: #333;
-            padding: 8px;
-            border: 1px solid #555;
-            font-size: 0.85em;
-            cursor: pointer;
-        }
-
-        .match:hover {
-            background: #444;
-            border-color: #00ff00;
-        }
-
-        .match-team {
-            padding: 4px;
-            margin: 2px 0;
-        }
-
-        .match-winner {
-            background: #00aa00;
-            color: #fff;
-            font-weight: bold;
-        }
-
-        .duel-card {
-            background: #1a3a1a;
-            border: 2px solid #00ff00;
-            padding: 12px;
-            margin-bottom: 12px;
-            border-radius: 5px;
-        }
-
-        .duel-vs {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 8px;
-            gap: 10px;
-        }
-
-        .duel-team {
-            flex: 1;
-            background: #333;
-            padding: 8px;
-            border: 1px solid #555;
-            cursor: pointer;
-            text-align: center;
-            font-weight: bold;
-        }
-
-        .duel-team:hover {
-            background: #444;
-            border-color: #00ff00;
-        }
-
-        .duel-vs-text {
+        .nav-title {
+            font-size: 1.3em;
             font-weight: bold;
             color: #ffcc00;
-            min-width: 40px;
-            text-align: center;
         }
 
-        .duel-controls {
-            display: flex;
-            gap: 5px;
-            margin-top: 8px;
-        }
-
-        .duel-controls button {
-            flex: 1;
-            padding: 6px;
-            font-size: 0.8em;
-            cursor: pointer;
-            border: 1px solid #555;
-        }
-
-        .winner-btn {
-            background: #00aa00;
-            color: #fff;
-        }
-
-        .loser-btn {
-            background: #aa0000;
-            color: #fff;
-        }
-
-        .sub-btn {
-            background: #0099ff;
-            color: #fff;
-        }
-
-        .navigation-buttons {
+        .nav-buttons {
             display: flex;
             gap: 10px;
-            margin-bottom: 15px;
         }
 
         .nav-btn {
-            flex: 1;
-            padding: 10px;
+            padding: 10px 20px;
+            border: 2px solid #555;
             background: #333;
             color: #fff;
-            border: 2px solid #555;
             cursor: pointer;
             font-weight: bold;
             transition: all 0.3s;
@@ -339,38 +60,8 @@
             border-color: #ffcc00;
         }
 
-        .tournament-info {
-            background: #1a1a1a;
-            border: 2px solid #00ff00;
-            padding: 12px;
-            margin-bottom: 15px;
-            border-radius: 5px;
-        }
-
-        .tournament-info h4 {
-            color: #00ff00;
-            margin-bottom: 8px;
-        }
-
-        .tournament-input {
-            width: 100%;
-            padding: 8px;
-            background: #333;
-            color: #fff;
-            border: 1px solid #555;
-            margin-bottom: 8px;
-            font-size: 0.9em;
-        }
-
-        .duel-history {
-            background: #333;
-            padding: 8px;
-            margin-top: 10px;
-            border-left: 3px solid #00ff00;
-            font-size: 0.85em;
-        }
-
-        .login-modal {
+        /* Login Modal */
+        .modal-overlay {
             position: fixed;
             top: 0;
             left: 0;
@@ -383,23 +74,26 @@
             z-index: 2000;
         }
 
-        .login-box {
+        .modal-box {
             background: #2a2a2a;
             padding: 30px;
             border: 3px solid #ffcc00;
             border-radius: 10px;
-            min-width: 300px;
+            min-width: 350px;
+            max-width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
         }
 
-        .login-box h2 {
+        .modal-box h2 {
             color: #ffcc00;
             margin-bottom: 20px;
             text-align: center;
         }
 
-        .login-input {
+        .modal-input {
             width: 100%;
-            padding: 10px;
+            padding: 12px;
             margin-bottom: 15px;
             background: #333;
             color: #fff;
@@ -407,206 +101,149 @@
             font-size: 1em;
         }
 
-        .login-btn {
+        .modal-btn {
             width: 100%;
-            padding: 10px;
+            padding: 12px;
             background: #00ff00;
             color: #000;
             border: none;
             font-weight: bold;
             cursor: pointer;
             font-size: 1em;
+            margin-bottom: 10px;
         }
 
-        .login-btn:hover {
+        .modal-btn:hover {
             background: #00dd00;
         }
 
-        .player-edit-modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.8);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 1500;
-        }
-
-        .player-edit-box {
-            background: #2a2a2a;
-            padding: 20px;
-            border: 2px solid #00ff00;
-            border-radius: 8px;
-            max-height: 80vh;
-            overflow-y: auto;
-            min-width: 400px;
-        }
-
-        .player-edit-box h3 {
-            color: #00ff00;
-            margin-bottom: 15px;
-        }
-
-        .edit-player-row {
-            background: #333;
-            padding: 10px;
-            margin-bottom: 10px;
-            border-left: 3px solid #ffcc00;
-            display: grid;
-            grid-template-columns: 2fr 1fr 1fr;
-            gap: 8px;
-            align-items: center;
-        }
-
-        .edit-player-row input {
-            background: #444;
+        .modal-btn.cancel {
+            background: #666;
             color: #fff;
-            border: 1px solid #555;
-            padding: 5px;
         }
 
-        .edit-player-row button {
-            padding: 5px;
+        .modal-btn.danger {
             background: #aa0000;
             color: #fff;
-            cursor: pointer;
-            border: none;
         }
 
-        .bets-panel {
-            background: #1a3a1a;
-            border: 2px solid #00ff00;
-            padding: 15px;
-            margin-bottom: 15px;
-            border-radius: 5px;
-        }
-
-        .bets-panel h3 {
-            color: #00ff00;
-            margin-bottom: 12px;
-        }
-
-        .bet-option {
-            background: #333;
-            padding: 10px;
-            margin-bottom: 8px;
-            cursor: pointer;
-            border: 2px solid #555;
-            transition: all 0.3s;
-        }
-
-        .bet-option:hover {
-            border-color: #00ff00;
-            background: #444;
-        }
-
-        .bet-option.selected {
-            border-color: #ffcc00;
-            background: #444400;
-        }
-
-        .betting-input {
-            width: 100%;
-            padding: 8px;
-            background: #333;
-            color: #fff;
-            border: 1px solid #555;
-            margin-bottom: 8px;
-        }
-
-        .spectator-panel {
-            background: #1a1a3a;
-            border: 2px solid #0099ff;
-            padding: 15px;
-            border-radius: 5px;
-        }
-
-        .spectator-panel h3 {
-            color: #0099ff;
-            margin-bottom: 12px;
-        }
-
-        .live-match {
-            background: #333;
-            padding: 12px;
-            margin-bottom: 10px;
-            border-left: 3px solid #0099ff;
-        }
-
-        .match-result {
-            color: #00ff00;
-            font-weight: bold;
-            font-size: 0.9em;
-        }
-
-        .money {
-            font-size: 1.8em;
-            color: #00ff00;
-            margin: 10px 0;
-        }
-
-        .teams-summary {
-            margin-top: 20px;
-        }
-
-        .team-item {
-            background: #333;
-            padding: 10px;
-            margin-bottom: 10px;
-            border-left: 3px solid #666;
-        }
-
-        .team-item.active {
-            border-left-color: #ffcc00;
-        }
-
-        .players-area {
-            background: #2a2a2a;
+        /* Main Container */
+        .main-container {
+            display: none;
             padding: 20px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .main-container.active {
+            display: block;
+        }
+
+        /* Admin Panel */
+        .admin-grid {
+            display: grid;
+            grid-template-columns: 300px 1fr 350px;
+            gap: 20px;
+        }
+
+        .admin-section {
+            background: #2a2a2a;
             border: 2px solid #444;
+            padding: 15px;
         }
 
-        .category-section {
-            margin-bottom: 30px;
-        }
-
-        .category-title {
-            font-size: 1.3em;
+        .admin-section h3 {
+            color: #ffcc00;
             margin-bottom: 15px;
             padding-bottom: 10px;
-            border-bottom: 2px solid #555;
+            border-bottom: 1px solid #444;
         }
 
-        .players-list {
+        /* Captain Selector */
+        .captain-selector {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .captain-item {
+            padding: 12px;
+            background: #333;
+            border: 2px solid #555;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .captain-item:hover {
+            border-color: #ffcc00;
+        }
+
+        .captain-item.selected {
+            background: #444400;
+            border-color: #ffcc00;
+        }
+
+        .captain-money {
+            color: #00ff00;
+            font-weight: bold;
+        }
+
+        .captain-players-count {
+            color: #888;
+            font-size: 0.85em;
+        }
+
+        /* Players Grid */
+        .players-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .player-category {
+            background: #333;
+            padding: 15px;
+            border-left: 4px solid #ffcc00;
+        }
+
+        .player-category h4 {
+            color: #ffcc00;
+            margin-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .players-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
             gap: 10px;
         }
 
         .player-card {
-            background: #333;
-            padding: 12px;
+            background: #444;
+            padding: 10px;
             border: 2px solid #555;
             cursor: pointer;
+            transition: all 0.3s;
         }
 
         .player-card:hover {
-            background: #444;
-            border-color: #ffcc00;
+            border-color: #00ff00;
+            background: #4a4a4a;
         }
 
-        .player-card.sold {
-            opacity: 0.3;
+        .player-card.assigned {
+            opacity: 0.4;
             cursor: not-allowed;
-            text-decoration: line-through;
         }
 
-        .player-card.sold:hover {
-            background: #333;
-            border-color: #555;
+        .player-card.unavailable {
+            background: #3a2020;
+            border-color: #aa0000;
         }
 
         .player-name {
@@ -616,9 +253,9 @@
 
         .player-tier {
             display: inline-block;
-            padding: 2px 8px;
+            padding: 2px 6px;
             background: #555;
-            font-size: 0.9em;
+            font-size: 0.8em;
             margin-bottom: 5px;
         }
 
@@ -627,672 +264,654 @@
             font-weight: bold;
         }
 
-        .final-teams {
-            display: none;
-            background: #2a2a2a;
-            padding: 20px;
-            border: 2px solid #444;
-        }
-
-        .final-teams.show {
-            display: block;
-        }
-
-        .team-final {
-            background: #333;
-            padding: 15px;
-            margin-bottom: 15px;
-            border-left: 4px solid #ffcc00;
-        }
-
-        .team-final h3 {
-            margin-bottom: 10px;
+        .player-count {
             color: #ffcc00;
+            font-size: 0.85em;
         }
 
-        .picked-player {
-            padding: 5px 10px;
-            background: #444;
-            margin-bottom: 5px;
-            border-left: 2px solid #666;
-        }
-
-        /* Captain Management Styles */
-        .captain-manager {
-            background: #1a1a1a;
-            border: 2px solid #ff6600;
-            padding: 15px;
-            margin-bottom: 15px;
-            border-radius: 5px;
-        }
-
-        .captain-manager h4 {
-            color: #ff6600;
-            margin-bottom: 10px;
-        }
-
-        .captain-list {
-            max-height: 200px;
+        /* Teams Panel */
+        .teams-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            max-height: 80vh;
             overflow-y: auto;
         }
 
-        .captain-list-item {
+        .team-card {
+            background: #333;
+            border: 2px solid #555;
+            padding: 12px;
+        }
+
+        .team-card h4 {
+            color: #ffcc00;
+            margin-bottom: 8px;
             display: flex;
             justify-content: space-between;
-            align-items: center;
-            padding: 8px;
-            background: #333;
-            margin-bottom: 5px;
-            border-left: 3px solid #ff6600;
         }
 
-        .captain-list-item.inactive {
-            opacity: 0.5;
-            border-left-color: #666;
+        .team-money {
+            color: #00ff00;
         }
 
-        .captain-list-item.no-money {
-            border-left-color: #aa0000;
-            background: #2a1a1a;
-        }
-
-        .captain-list-item .captain-info {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .captain-list-item .captain-actions {
-            display: flex;
-            gap: 5px;
-        }
-
-        .captain-list-item button {
-            padding: 4px 8px;
-            font-size: 0.8em;
-            cursor: pointer;
-            border: none;
-        }
-
-        .btn-up { background: #555; color: #fff; }
-        .btn-down { background: #555; color: #fff; }
-        .btn-skip { background: #ffcc00; color: #000; }
-        .btn-remove { background: #aa0000; color: #fff; }
-        .btn-activate { background: #00aa00; color: #fff; }
-
-        /* Roster Manager Styles */
-        .roster-manager {
-            background: #1a1a1a;
-            border: 2px solid #0099ff;
-            padding: 15px;
-            margin-bottom: 15px;
-            border-radius: 5px;
-        }
-
-        .roster-manager h4 {
-            color: #0099ff;
-            margin-bottom: 10px;
-        }
-
-        .roster-teams-container {
-            display: grid;
-            grid-template-columns: 1fr 60px 1fr;
-            gap: 10px;
-            margin-bottom: 15px;
-        }
-
-        .roster-team-box {
-            background: #333;
-            padding: 10px;
-            border: 2px solid #555;
-            min-height: 150px;
-            max-height: 300px;
-            overflow-y: auto;
-        }
-
-        .roster-team-box h5 {
-            color: #ffcc00;
-            margin-bottom: 10px;
-            text-align: center;
-        }
-
-        .roster-player-item {
+        .team-player {
             display: flex;
             justify-content: space-between;
             align-items: center;
             padding: 6px 8px;
             background: #444;
             margin-bottom: 4px;
+            border-left: 3px solid #666;
+        }
+
+        .team-player.active {
+            border-left-color: #00ff00;
+        }
+
+        .team-player.used {
+            border-left-color: #ff9900;
+        }
+
+        .team-player.unavailable {
+            border-left-color: #aa0000;
+            background: #3a2020;
+        }
+
+        .remove-player-btn {
+            background: #aa0000;
+            color: #fff;
+            border: none;
+            padding: 4px 8px;
             cursor: pointer;
-            border: 1px solid transparent;
+            font-size: 0.8em;
         }
 
-        .roster-player-item:hover {
-            background: #555;
-            border-color: #ffcc00;
-        }
-
-        .roster-player-item.selected {
-            background: #0066aa;
-            border-color: #0099ff;
-        }
-
-        .roster-arrows {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            gap: 10px;
-        }
-
-        .roster-arrows button {
-            padding: 10px;
-            font-size: 1.2em;
-            cursor: pointer;
+        .card-status-btn {
             background: #555;
             color: #fff;
             border: none;
+            padding: 4px 8px;
+            cursor: pointer;
+            font-size: 0.75em;
+            margin-left: 4px;
         }
 
-        .roster-arrows button:hover {
-            background: #0099ff;
-        }
-
-        /* Betting System Styles */
-        .betting-panel {
+        /* Admin Controls */
+        .admin-controls-section {
             background: #1a1a1a;
-            border: 2px solid #ff00ff;
+            border: 2px solid #ffcc00;
             padding: 15px;
             margin-bottom: 15px;
-            border-radius: 5px;
         }
 
-        .betting-panel h4 {
-            color: #ff00ff;
-            margin-bottom: 10px;
+        .admin-controls-section h4 {
+            color: #ffcc00;
+            margin-bottom: 12px;
         }
 
-        .bet-card {
-            background: #333;
-            padding: 12px;
-            margin-bottom: 10px;
-            border-left: 3px solid #ff00ff;
-        }
-
-        .bet-card.resolved {
-            opacity: 0.7;
-            border-left-color: #666;
-        }
-
-        .bet-card.winner-1 {
-            border-left-color: #00ff00;
-        }
-
-        .bet-card.winner-2 {
-            border-left-color: #00ff00;
-        }
-
-        .bet-teams {
+        .control-row {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-
-        .bet-team {
-            flex: 1;
-            text-align: center;
-            padding: 8px;
-            background: #444;
-        }
-
-        .bet-vs {
-            padding: 0 15px;
-            font-weight: bold;
-            color: #ff00ff;
-        }
-
-        .bet-amount {
-            text-align: center;
-            color: #00ff00;
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
-
-        .bet-controls {
-            display: flex;
-            gap: 5px;
-        }
-
-        .bet-controls button {
-            flex: 1;
-            padding: 8px;
-            cursor: pointer;
-            border: none;
-            font-weight: bold;
-        }
-
-        .bet-win-1 { background: #00aa00; color: #fff; }
-        .bet-win-2 { background: #00aa00; color: #fff; }
-        .bet-cancel { background: #aa0000; color: #fff; }
-
-        .new-bet-form {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
             gap: 10px;
             margin-bottom: 10px;
         }
 
-        .new-bet-form select,
-        .new-bet-form input {
+        .control-row input,
+        .control-row select {
+            flex: 1;
             padding: 8px;
             background: #333;
             color: #fff;
             border: 1px solid #555;
         }
 
-        .new-bet-form button {
-            grid-column: 1 / -1;
-            padding: 10px;
-            background: #ff00ff;
-            color: #fff;
+        .control-row button {
+            padding: 8px 15px;
+            background: #00ff00;
+            color: #000;
             border: none;
             cursor: pointer;
             font-weight: bold;
         }
 
-        /* Tab Navigation for Admin */
-        .admin-tabs {
+        .control-row button.danger {
+            background: #aa0000;
+            color: #fff;
+        }
+
+        /* Matches Panel */
+        .matches-container {
             display: flex;
-            gap: 5px;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .match-card {
+            background: #333;
+            border: 2px solid #555;
+            padding: 15px;
+        }
+
+        .match-card.active {
+            border-color: #00ff00;
+            background: #1a3a1a;
+        }
+
+        .match-card.completed {
+            opacity: 0.7;
+        }
+
+        .match-teams {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .match-team {
+            flex: 1;
+            text-align: center;
+            padding: 10px;
+            background: #444;
+            font-weight: bold;
+        }
+
+        .match-team.winner {
+            background: #00aa00;
+        }
+
+        .match-vs {
+            padding: 0 15px;
+            color: #ffcc00;
+            font-weight: bold;
+        }
+
+        .match-controls {
+            display: flex;
+            gap: 10px;
+        }
+
+        .match-controls button {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .btn-win {
+            background: #00aa00;
+            color: #fff;
+        }
+
+        /* Betting Panel */
+        .betting-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .bet-section {
+            background: #2a2a2a;
+            border: 2px solid #ff9900;
+            padding: 15px;
+        }
+
+        .bet-section h3 {
+            color: #ff9900;
             margin-bottom: 15px;
         }
 
-        .admin-tab {
-            flex: 1;
-            padding: 10px;
+        .bet-card {
             background: #333;
-            color: #fff;
-            border: 2px solid #555;
-            cursor: pointer;
+            padding: 12px;
+            margin-bottom: 10px;
+            border-left: 3px solid #ff9900;
+        }
+
+        .bet-card.won {
+            border-left-color: #00ff00;
+        }
+
+        .bet-card.lost {
+            border-left-color: #aa0000;
+        }
+
+        .current-match-bet {
+            background: #1a3a1a;
+            border: 2px solid #00ff00;
+            padding: 20px;
+            margin-bottom: 15px;
             text-align: center;
+        }
+
+        .bet-option {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .bet-option button {
+            flex: 1;
+            padding: 15px;
+            border: none;
+            cursor: pointer;
             font-weight: bold;
-            font-size: 0.9em;
+            font-size: 1em;
         }
 
-        .admin-tab:hover {
+        /* Stats Panel */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .stat-card {
+            background: #333;
+            padding: 15px;
+            border-left: 3px solid #0099ff;
+        }
+
+        .stat-card h4 {
+            color: #0099ff;
+            margin-bottom: 10px;
+        }
+
+        .stat-value {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #00ff00;
+        }
+
+        /* Player Edit Modal */
+        .edit-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr auto;
+            gap: 8px;
+            margin-bottom: 8px;
+            padding: 8px;
+            background: #333;
+        }
+
+        .edit-row input {
+            padding: 6px;
             background: #444;
+            color: #fff;
+            border: 1px solid #555;
         }
 
-        .admin-tab.active {
-            background: #ffcc00;
-            color: #000;
-            border-color: #ffcc00;
+        .edit-row button {
+            padding: 6px 10px;
+            background: #aa0000;
+            color: #fff;
+            border: none;
+            cursor: pointer;
         }
 
-        .admin-section {
-            display: none;
+        /* Unavailable Section */
+        .unavailable-section {
+            background: #2a1a1a;
+            border: 2px solid #aa0000;
+            padding: 15px;
+            margin-top: 15px;
         }
 
-        .admin-section.active {
-            display: block;
+        .unavailable-section h4 {
+            color: #aa0000;
+            margin-bottom: 10px;
+        }
+
+        /* Card Usage Stats */
+        .usage-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .usage-stat {
+            background: #333;
+            padding: 8px;
+            text-align: center;
+        }
+
+        .usage-stat .count {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #ffcc00;
+        }
+
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .admin-grid {
+                grid-template-columns: 1fr;
+            }
+            .betting-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #1a1a1a;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #555;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #666;
         }
     </style>
 </head>
 <body>
-    <div id="loginModal" class="login-modal" style="display: none;">
-        <div class="login-box">
-            <h2>🔐 ADMIN LOGIN</h2>
-            <input type="text" class="login-input" id="loginUsername" placeholder="Username" value="Tack">
-            <input type="password" class="login-input" id="loginPassword" placeholder="Password" value="Tack123">
-            <button class="login-btn" onclick="adminLogin()">LOGIN</button>
-            <button class="login-btn" style="background: #666; margin-top: 10px;" onclick="closeLoginModal()">Cancel</button>
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal-overlay" style="display: none;">
+        <div class="modal-box">
+            <h2>ADMIN LOGIN</h2>
+            <input type="text" class="modal-input" id="loginUsername" placeholder="Username">
+            <input type="password" class="modal-input" id="loginPassword" placeholder="Password">
+            <button class="modal-btn" onclick="attemptLogin()">LOGIN</button>
+            <button class="modal-btn cancel" onclick="closeLoginModal()">Cancel</button>
+            <p id="loginError" style="color: #ff0000; margin-top: 10px; text-align: center;"></p>
         </div>
     </div>
 
-    <div id="playerEditModal" class="player-edit-modal" style="display: none;">
-        <div class="player-edit-box">
-            <h3>📝 EDIT PLAYERS & CARDS</h3>
-            <button onclick="closePlayerEditModal()" style="width: 100%; margin-bottom: 15px; padding: 8px; background: #666;">Close</button>
+    <!-- Player Edit Modal -->
+    <div id="playerEditModal" class="modal-overlay" style="display: none;">
+        <div class="modal-box" style="min-width: 600px;">
+            <h2>EDIT PLAYERS & CARDS</h2>
             <div id="playerEditContent"></div>
-            <button onclick="addNewWildCardModal()" style="width: 100%; margin-top: 15px; padding: 10px; background: #ff00ff; color: #fff; font-weight: bold; cursor: pointer;">+ Add New Wild Card</button>
-            <button onclick="addNewPlayerModal()" style="width: 100%; margin-top: 10px; padding: 10px; background: #00ff00; color: #000; font-weight: bold; cursor: pointer;">+ Add New Player</button>
+            <div style="display: flex; gap: 10px; margin-top: 15px;">
+                <button class="modal-btn" onclick="addNewPlayer('wildcard')">+ Add Wild Card</button>
+                <button class="modal-btn" onclick="addNewPlayer('tsuguko')">+ Add Tsuguko</button>
+                <button class="modal-btn" onclick="addNewPlayer('hinoe')">+ Add Hinoe</button>
+            </div>
+            <button class="modal-btn cancel" style="margin-top: 15px;" onclick="closePlayerEditModal()">Close</button>
         </div>
     </div>
 
-    <div class="container">
-        <header>
-            <h1>SUNRISE CITY SLAMDOWN - DRAFT & TOURNAMENT</h1>
-            <div class="navigation-buttons" style="margin-top: 15px; display: flex; gap: 10px; justify-content: center;">
-                <button class="nav-btn" onclick="openAdminLogin()" style="background: #ffcc00; color: #000;">⚙️ ADMIN</button>
-                <button class="nav-btn" onclick="switchMainView('spectator')" style="background: #0099ff;">👁️ SPECTATOR</button>
-                <button class="nav-btn" onclick="switchMainView('betting')" style="background: #ff9900;">💰 BETTING</button>
-            </div>
-        </header>
-
-        <div class="turn-info" id="turnInfo">
-            <div class="current-turn" id="currentTurnDisplay">CURRENT TURN: JUAN</div>
-            <div>Draft Order:</div>
-            <div class="draft-order" id="draftOrder"></div>
+    <!-- Add Captain Modal -->
+    <div id="addCaptainModal" class="modal-overlay" style="display: none;">
+        <div class="modal-box">
+            <h2>ADD NEW CAPTAIN</h2>
+            <input type="text" class="modal-input" id="newCaptainName" placeholder="Captain Name">
+            <input type="number" class="modal-input" id="newCaptainMoney" placeholder="Starting Money (default: 1000)" value="1000">
+            <button class="modal-btn" onclick="confirmAddCaptain()">Add Captain</button>
+            <button class="modal-btn cancel" onclick="closeAddCaptainModal()">Cancel</button>
         </div>
+    </div>
 
-        <div class="admin-panel" id="adminPanel" style="display: none;">
-            <h3>⚙️ ADMIN PANEL</h3>
+    <!-- Navigation -->
+    <nav class="top-nav">
+        <div class="nav-title">SUNRISE CITY SLAMDOWN</div>
+        <div class="nav-buttons">
+            <button class="nav-btn" id="navAdmin" onclick="showAdminLogin()">ADMIN</button>
+            <button class="nav-btn" id="navBetting" onclick="switchView('betting')">BETTING</button>
+            <button class="nav-btn" id="navSpectator" onclick="switchView('spectator')">SPECTATOR</button>
+        </div>
+    </nav>
 
-            <!-- Admin Tabs -->
-            <div class="admin-tabs">
-                <button class="admin-tab active" onclick="switchAdminTab('general')">General</button>
-                <button class="admin-tab" onclick="switchAdminTab('captains')">Capitanes</button>
-                <button class="admin-tab" onclick="switchAdminTab('roster')">Roster</button>
-                <button class="admin-tab" onclick="switchAdminTab('bets')">Apuestas</button>
-            </div>
+    <!-- Admin Panel -->
+    <div id="adminPanel" class="main-container">
+        <div class="admin-grid">
+            <!-- Left: Captain Selection & Controls -->
+            <div>
+                <div class="admin-section">
+                    <h3>SELECT CAPTAIN</h3>
+                    <p style="color: #aaa; font-size: 0.85em; margin-bottom: 10px;">Click a captain, then click a player to add them</p>
+                    <div class="captain-selector" id="captainSelector"></div>
+                    <button class="modal-btn" style="margin-top: 15px;" onclick="openAddCaptainModal()">+ Add New Captain</button>
+                </div>
 
-            <!-- General Section -->
-            <div id="adminGeneral" class="admin-section active">
-                <div style="margin-bottom: 15px;">
-                    <h4 style="color: #ffcc00; margin-bottom: 8px;">💰 Add Money</h4>
-                    <div class="admin-controls">
-                        <select id="adminSelectCaptain">
+                <div class="admin-controls-section" style="margin-top: 15px;">
+                    <h4>QUICK ACTIONS</h4>
+                    <div class="control-row">
+                        <select id="adminCaptainSelect">
                             <option value="">Select Captain</option>
                         </select>
-                        <input type="number" id="adminMoneyAmount" placeholder="Amount" min="1">
-                        <button onclick="addMoneyAdmin()" style="grid-column: 1 / -1;">Add Money</button>
+                        <input type="number" id="addMoneyAmount" placeholder="Amount">
+                        <button onclick="addMoney()">Add Money</button>
                     </div>
-                </div>
-
-                <div style="margin-bottom: 15px; border-top: 1px solid #555; padding-top: 10px;">
-                    <h4 style="color: #ffcc00; margin-bottom: 8px;">🔄 Manage Players</h4>
-                    <div class="admin-controls">
-                        <select id="adminSelectSourceTeam">
-                            <option value="">Select Team</option>
-                        </select>
-                        <select id="adminSelectPlayer">
-                            <option value="">Select Player</option>
-                        </select>
-                        <select id="adminSelectTargetTeam">
-                            <option value="">Target Team</option>
-                        </select>
-                        <button onclick="movePlayerAdmin()" style="grid-column: 1 / -1;">Move Player to Team</button>
-                        <button onclick="deletePlayerAdmin()" style="grid-column: 1 / -1; background: #aa0000;">Delete Player</button>
+                    <div class="control-row">
+                        <button onclick="openPlayerEditModal()" style="width: 100%;">Edit All Players & Prices</button>
                     </div>
-                </div>
-
-            <div style="margin-bottom: 15px; border-top: 1px solid #555; padding-top: 10px;">
-                    <h4 style="color: #ffcc00; margin-bottom: 8px;">📝 Player Management</h4>
-                    <button onclick="openPlayerEditModal()" style="width: 100%; padding: 8px; background: #00ff00; color: #000; cursor: pointer; font-weight: bold; border: none; margin-bottom: 8px;">✏️ Edit Players & Cards</button>
-                    <button onclick="manualTournamentSetup()" style="width: 100%; padding: 8px; background: #00aa00; color: #fff; cursor: pointer; font-weight: bold; border: none;">⚔️ Setup Tournament</button>
-                </div>
-            </div>
-
-            <!-- Captains Management Section -->
-            <div id="adminCaptains" class="admin-section">
-                <div class="captain-manager">
-                    <h4>👑 Gestion de Capitanes</h4>
-                    <p style="font-size: 0.85em; color: #aaa; margin-bottom: 10px;">Reordena, activa/desactiva o salta capitanes sin dinero</p>
-
-                    <div style="margin-bottom: 10px;">
-                        <input type="text" id="newCaptainName" placeholder="Nombre del nuevo capitan" style="padding: 8px; background: #333; color: #fff; border: 1px solid #555; width: calc(100% - 90px);">
-                        <button onclick="addNewCaptain()" style="padding: 8px 15px; background: #00aa00; color: #fff; border: none; cursor: pointer;">Agregar</button>
+                    <div class="control-row">
+                        <button onclick="setupMatches()" style="width: 100%; background: #0099ff;">Setup Matches</button>
                     </div>
-
-                    <div class="captain-list" id="captainList"></div>
-
-                    <div style="margin-top: 10px; padding-top: 10px; border-top: 1px solid #555;">
-                        <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
-                            <input type="checkbox" id="autoSkipNoMoney" onchange="toggleAutoSkip()">
-                            <span style="font-size: 0.9em;">Auto-saltar capitanes sin dinero</span>
-                        </label>
+                    <div class="control-row">
+                        <button onclick="resetAllData()" class="danger" style="width: 100%;">Reset All Data</button>
                     </div>
                 </div>
             </div>
 
-            <!-- Roster Management Section -->
-            <div id="adminRoster" class="admin-section">
-                <div class="roster-manager">
-                    <h4>📋 Gestion de Roster</h4>
-                    <p style="font-size: 0.85em; color: #aaa; margin-bottom: 10px;">Mueve jugadores entre equipos facilmente</p>
+            <!-- Center: Players -->
+            <div class="admin-section">
+                <h3>AVAILABLE PLAYERS <span id="selectedCaptainDisplay" style="color: #00ff00;"></span></h3>
+                <div class="players-container" id="playersContainer"></div>
 
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px;">
-                        <select id="rosterSourceTeam" onchange="renderRosterSource()">
-                            <option value="">Equipo Origen</option>
-                        </select>
-                        <select id="rosterTargetTeam" onchange="renderRosterTarget()">
-                            <option value="">Equipo Destino</option>
-                        </select>
-                    </div>
-
-                    <div class="roster-teams-container">
-                        <div class="roster-team-box">
-                            <h5 id="rosterSourceTitle">Origen</h5>
-                            <div id="rosterSourcePlayers"></div>
-                        </div>
-                        <div class="roster-arrows">
-                            <button onclick="moveSelectedToTarget()" title="Mover a destino">→</button>
-                            <button onclick="moveSelectedToSource()" title="Mover a origen">←</button>
-                            <button onclick="moveAllToTarget()" title="Mover todos a destino">⇒</button>
-                        </div>
-                        <div class="roster-team-box">
-                            <h5 id="rosterTargetTitle">Destino</h5>
-                            <div id="rosterTargetPlayers"></div>
-                        </div>
-                    </div>
+                <!-- Unavailable Players -->
+                <div class="unavailable-section" id="unavailableSection" style="display: none;">
+                    <h4>UNAVAILABLE PLAYERS (Cannot Fight)</h4>
+                    <div id="unavailablePlayers"></div>
                 </div>
             </div>
 
-            <!-- Betting Section -->
-            <div id="adminBets" class="admin-section">
-                <div class="betting-panel">
-                    <h4>🎲 Sistema de Apuestas</h4>
-                    <p style="font-size: 0.85em; color: #aaa; margin-bottom: 10px;">Crea apuestas entre equipos/personas. El ganador recibe el dinero.</p>
-
-                    <div class="new-bet-form">
-                        <select id="betTeam1">
-                            <option value="">Equipo/Persona 1</option>
-                        </select>
-                        <select id="betTeam2">
-                            <option value="">Equipo/Persona 2</option>
-                        </select>
-                        <input type="number" id="betAmount" placeholder="Cantidad apostada (YEN)" min="1" style="grid-column: 1 / -1;">
-                        <input type="text" id="betDescription" placeholder="Descripcion (opcional)" style="grid-column: 1 / -1;">
-                        <button onclick="createBet()">Crear Apuesta</button>
-                    </div>
-
-                    <div id="activeBets">
-                        <h5 style="color: #ff00ff; margin: 15px 0 10px 0;">Apuestas Activas:</h5>
-                        <div id="betsList"></div>
-                    </div>
-
-                    <div id="resolvedBets" style="margin-top: 15px;">
-                        <h5 style="color: #666; margin-bottom: 10px;">Historial de Apuestas:</h5>
-                        <div id="betsHistory"></div>
-                    </div>
-                </div>
-            </div>
-
-            <div style="border-top: 1px solid #555; padding-top: 10px; margin-top: 10px; display: flex; gap: 8px;">
-                <button onclick="toggleAdminPanel()" style="flex: 1; padding: 8px; background: #666; color: #fff; cursor: pointer;">✕ Close</button>
-                <button onclick="logoutAdmin()" style="flex: 1; padding: 8px; background: #aa0000; color: #fff; cursor: pointer; font-weight: bold;">🚪 Logout</button>
-            </div>
-
-            <div id="adminLog" style="font-size: 0.8em; color: #999; margin-top: 10px; max-height: 100px; overflow-y: auto;"></div>
-        </div>
-
-      
-
-        <div class="main-content">
-            <div class="sidebar">
-                <h3>CURRENT CAPTAIN</h3>
-                <div id="currentCaptainName" style="font-size: 1.3em; margin: 10px 0;">JUAN</div>
-                <div class="money" id="moneyDisplay">1000 YEN</div>
-                
-                <div style="margin-top: 20px;">
-                    <strong>WAYS TO EARN MONEY:</strong>
-                    <div style="margin-top: 10px; font-size: 0.9em;">
-                        <div>WIN: +300 YEN</div>
-                        <div>ACE: +500 YEN</div>
-                    </div>
-                </div>
-
-                <div class="teams-summary" id="teamsSummary"></div>
-            </div>
-
-            <div class="players-area" id="playersArea">
-                <div class="category-section">
-                    <div class="category-title">WILD CARDS</div>
-                    <div class="players-list" id="wildcards"></div>
-                </div>
-
-                <div class="category-section">
-                    <div class="category-title">TSUGUKOS (Max 2 per team)</div>
-                    <div class="players-list" id="tsugukos"></div>
-                </div>
-
-                <div class="category-section">
-                    <div class="category-title">HINOES</div>
-                    <div class="players-list" id="kinoe"></div>
-                </div>
-            </div>
-
-            <div class="right-panel">
-                <div id="teamsPanel"></div>
-                <div id="tournamentPanel"></div>
-                <div id="duelsPanel" style="display: none;"></div>
-                <div id="spectatorPanel" style="display: none;"></div>
-                <div id="bettingPanel" style="display: none;"></div>
+            <!-- Right: Teams -->
+            <div class="admin-section">
+                <h3>TEAMS</h3>
+                <div class="teams-panel" id="teamsPanel"></div>
             </div>
         </div>
 
-        <div class="final-teams" id="finalTeams">
-            <h2 style="margin-bottom: 20px;">FINAL TEAMS</h2>
-            <div id="finalTeamsList"></div>
+        <!-- Matches Section -->
+        <div class="admin-section" style="margin-top: 20px;">
+            <h3>MATCHES</h3>
+            <div class="matches-container" id="matchesContainer"></div>
+        </div>
+
+        <!-- Card Usage Stats -->
+        <div class="admin-section" style="margin-top: 20px;">
+            <h3>CARD USAGE STATISTICS</h3>
+            <div class="usage-stats" id="usageStats"></div>
+        </div>
+    </div>
+
+    <!-- Betting Panel -->
+    <div id="bettingPanel" class="main-container">
+        <h2 style="color: #ff9900; margin-bottom: 20px;">BETTING CENTER</h2>
+        <div class="betting-grid">
+            <div>
+                <div class="bet-section">
+                    <h3>CURRENT MATCH</h3>
+                    <div id="currentMatchBet"></div>
+                </div>
+
+                <div class="bet-section" style="margin-top: 20px;">
+                    <h3>PLACE YOUR BET</h3>
+                    <div class="control-row">
+                        <input type="text" id="bettorName" placeholder="Your Name">
+                    </div>
+                    <div class="control-row">
+                        <input type="number" id="betAmount" placeholder="Bet Amount">
+                    </div>
+                    <div id="betOptions"></div>
+                </div>
+            </div>
+
+            <div>
+                <div class="bet-section">
+                    <h3>ACTIVE BETS</h3>
+                    <div id="activeBetsList"></div>
+                </div>
+
+                <div class="bet-section" style="margin-top: 20px;">
+                    <h3>BET HISTORY</h3>
+                    <div id="betHistory"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- All Teams View for Bettors -->
+        <div class="admin-section" style="margin-top: 20px;">
+            <h3>TEAM STANDINGS</h3>
+            <div class="stats-grid" id="teamStandingsBetting"></div>
+        </div>
+    </div>
+
+    <!-- Spectator Panel -->
+    <div id="spectatorPanel" class="main-container">
+        <h2 style="color: #0099ff; margin-bottom: 20px;">SPECTATOR VIEW</h2>
+
+        <div class="betting-grid">
+            <div>
+                <div class="bet-section" style="border-color: #0099ff;">
+                    <h3 style="color: #0099ff;">LIVE MATCHES</h3>
+                    <div id="liveMatches"></div>
+                </div>
+
+                <div class="bet-section" style="margin-top: 20px; border-color: #0099ff;">
+                    <h3 style="color: #0099ff;">MATCH HISTORY</h3>
+                    <div id="matchHistory"></div>
+                </div>
+            </div>
+
+            <div>
+                <div class="bet-section" style="border-color: #0099ff;">
+                    <h3 style="color: #0099ff;">TEAM STANDINGS</h3>
+                    <div id="teamStandings"></div>
+                </div>
+
+                <div class="bet-section" style="margin-top: 20px; border-color: #0099ff;">
+                    <h3 style="color: #0099ff;">CARD USAGE</h3>
+                    <div id="cardUsageSpectator"></div>
+                </div>
+            </div>
         </div>
     </div>
 
     <script>
-        // Game Data - Using localStorage for persistence
-        let wildcards = [
-            { name: 'WILD CARD (MYTHICAL)', price: 1000, count: 3 },
-            { name: 'WILD CARD (LEGENDARY)', price: 500, count: 3 },
-            { name: 'WILD CARD (RARE)', price: 250, count: 3 }
-        ];
+        // ==========================================
+        // DATA STRUCTURES
+        // ==========================================
+        let gameData = {
+            captains: ['JUAN', 'RIOT', 'TACK', 'GLORY', 'SIMON', 'JUSTIN'],
+            captainMoney: {},
+            captainTeams: {},
+            wildcards: [
+                { name: 'WILD CARD (MYTHICAL)', price: 1000, count: 3, available: 3 },
+                { name: 'WILD CARD (LEGENDARY)', price: 500, count: 3, available: 3 },
+                { name: 'WILD CARD (RARE)', price: 250, count: 3, available: 3 }
+            ],
+            tsugukos: [
+                { name: 'UBUME', tier: 'B', price: 400 },
+                { name: 'AIDAN', tier: 'B', price: 300 },
+                { name: 'BEN', tier: 'A-', price: 300 },
+                { name: 'GIAN', tier: 'A-', price: 300 },
+                { name: 'HEISEI', tier: 'A+', price: 375 },
+                { name: 'JACOB', tier: 'A-', price: 300 },
+                { name: 'KAZUO', tier: 'C+', price: 400 },
+                { name: 'MAT', tier: 'S', price: 425 },
+                { name: 'MIKAMI', tier: 'S+', price: 400 },
+                { name: 'MIKU', tier: 'A', price: 450 },
+                { name: 'MIZUIRO', tier: 'B-', price: 300 },
+                { name: 'POG', tier: 'B', price: 300 },
+                { name: 'REL', tier: 'S', price: 425 },
+                { name: 'LUNAR', tier: 'S+', price: 400 },
+                { name: 'LIGHT', tier: 'C', price: 300 },
+                { name: 'SEV', tier: 'B', price: 350 },
+                { name: 'SOUL', tier: 'A-', price: 300 },
+                { name: 'STEFAN', tier: 'F+', price: 300 },
+                { name: 'CLOUD', tier: 'S', price: 375 },
+                { name: 'TSUYA', tier: 'C-', price: 350 },
+                { name: 'YAMI', tier: 'D+', price: 300, special: 'BUY 1 GET A HINOE FOR FREE' },
+                { name: 'ZAYA', tier: 'B+', price: 300 },
+                { name: 'CRUZ', tier: 'B', price: 300 },
+                { name: 'BEEFY', tier: 'S+', price: 1000 }
+            ],
+            hinoes: [
+                { name: 'MOZART', price: 150 },
+                { name: 'ALON MOR', price: 150 },
+                { name: 'SPONGEBOB', price: 150 },
+                { name: 'BLANCHE', price: 150 },
+                { name: 'AYAKA', price: 150 },
+                { name: 'BACONLAD', price: 150 },
+                { name: 'DARK', price: 150 },
+                { name: 'COMMTON', price: 150 },
+                { name: 'ETHAN', price: 150 },
+                { name: 'GIN', price: 150 },
+                { name: 'REMOVE', price: 150 },
+                { name: 'HINO', price: 150 },
+                { name: 'HOLY', price: 150 },
+                { name: 'ISAKI', price: 150 },
+                { name: 'JOHN PICKLER', price: 150 },
+                { name: 'AKARI', price: 150 },
+                { name: 'KUTA', price: 150 },
+                { name: 'LOGAN', price: 150 },
+                { name: 'MAKOTO', price: 150 },
+                { name: 'MAZE', price: 150 },
+                { name: 'JAYCAR', price: 150 },
+                { name: 'PANDA', price: 150 },
+                { name: 'AKIO', price: 150 },
+                { name: 'MERO', price: 700 },
+                { name: 'ZARETH', price: 250 },
+                { name: 'SAIN', price: 200 },
+                { name: 'GROOVY', price: 300 }
+            ],
+            assignedPlayers: {}, // { playerId: captainName }
+            playerStatus: {}, // { playerId: 'active'|'used'|'unavailable' }
+            cardUsageCount: {}, // { playerName: count }
+            matches: [],
+            matchHistory: [],
+            bets: [],
+            betHistory: [],
+            unavailablePlayers: [] // Players who can't fight
+        };
 
-        let tsugukos = [
-            { name: 'UBUME', tier: 'B', price: 400 },
-            { name: 'AIDAN', tier: 'B', price: 300 },
-            { name: 'BEN', tier: 'A-', price: 300 },
-            { name: 'GIAN', tier: 'A-', price: 300 },
-            { name: 'HEISEI', tier: 'A+', price: 375 },
-            { name: 'JACOB', tier: 'A-', price: 300 },
-            { name: 'KAZUO', tier: 'C+', price: 400 },
-            { name: 'MAT', tier: 'S', price: 425 },
-            { name: 'MIKAMI', tier: 'S+', price: 400 },
-            { name: 'MIKU', tier: 'A', price: 450 },
-            { name: 'MIZUIRO', tier: 'B-', price: 300 },
-            { name: 'POG', tier: 'B', price: 300 },
-            { name: 'REL', tier: 'S', price: 425 },
-            { name: 'LUNAR', tier: 'S+', price: 400 },
-            { name: 'LIGHT', tier: 'C', price: 300 },
-            { name: 'SEV', tier: 'B', price: 350 },
-            { name: 'SOUL', tier: 'A-', price: 300 },
-            { name: 'STEFAN', tier: 'F+', price: 300 },
-            { name: 'CLOUD', tier: 'S', price: 375 },
-            { name: 'TSUYA', tier: 'C-', price: 350 },
-            { name: 'YAMI', tier: 'D+', price: 300, special: 'BUY 1 GET A HINOE FOR FREE' },
-            { name: 'ZAYA', tier: 'B+', price: 300 },
-            { name: 'CRUZ', tier: 'B', price: 300 },
-            { name: 'BEEFY', tier: 'S+', price: 1000 }
-        ];
-
-        let kinoe = [
-            { name: 'MOZART', price: 150 },
-            { name: 'ALON MOR', price: 150 },
-            { name: 'SPONGEBOB', price: 150 },
-            { name: 'BLANCHE', price: 150 },
-            { name: 'AYAKA', price: 150 },
-            { name: 'BACONLAD', price: 150 },
-            { name: 'DARK', price: 150 },
-            { name: 'COMMTON', price: 150 },
-            { name: 'ETHAN', price: 150 },
-            { name: 'GIN', price: 150 },
-            { name: 'REMOVE', price: 150 },
-            { name: 'HINO', price: 150 },
-            { name: 'HOLY', price: 150 },
-            { name: 'ISAKI', price: 150 },
-            { name: 'JOHN PICKLER', price: 150 },
-            { name: 'AKARI', price: 150 },
-            { name: 'KUTA', price: 150 },
-            { name: 'LOGAN', price: 150 },
-            { name: 'MAKOTO', price: 150 },
-            { name: 'MAZE', price: 150 },
-            { name: 'JAYCAR', price: 150 },
-            { name: 'PANDA', price: 150 },
-            { name: 'AKIO', price: 150 },
-            { name: 'MERO', price: 700 },
-            { name: 'ZARETH', price: 250 },
-            { name: 'SAIN', price: 200 },
-            { name: 'GROOVY', price: 300 }
-        ];
-
-        // Draft order - now mutable
-        let draftOrder = ['JUAN', 'RIOT', 'TACK', 'GLORY', 'SIMON', 'JUSTIN'];
-        let captainStatus = {}; // Track if captain is active/inactive
-        let autoSkipNoMoney = false;
-        let currentTurnIndex = 0;
-        let roundNumber = 1;
-
-        // Game State
-        let captainMoney = {};
-        let captainTeams = {};
-        let soldPlayers = {};
-        let wildcardsAvailable = {};
-        let adminLog = [];
-        let tournamentMatches = [];
-        let cardStatus = {}; // Track card status per player
-        let currentView = 'draft'; // draft, admin, tournament, spectator, betting
-        let tournamentName = 'Tournament';
-        let duels = [];
-        let duelHistory = [];
-        let currentDuelIndex = 0;
-        let mainView = 'draft'; // draft, spectator, betting
+        let selectedCaptain = null;
         let isAdminLoggedIn = false;
+        let currentView = 'spectator';
+        let currentMatchIndex = 0;
 
-        // Betting System
-
-        // Spectator Mode
-        let spectatorName = localStorage.getItem('spectatorName') || 'Guest';
-
-        // Initialize from localStorage
-        function loadData() {
-            const saved = localStorage.getItem('gameData');
-            if (saved) {
-                const data = JSON.parse(saved);
-                captainMoney = data.captainMoney || {};
-                captainTeams = data.captainTeams || {};
-                duelHistory = data.duelHistory || [];
-                wildcardsAvailable = data.wildcardsAvailable || {};
-                tsugukos = data.tsugukos || tsugukos;
-                kinoe = data.kinoe || kinoe;
-                wildcards = data.wildcards || wildcards;
-            }
-        }
-
+        // ==========================================
+        // LOCAL STORAGE
+        // ==========================================
         function saveData() {
-            const data = {
-                captainMoney,
-                captainTeams,
-                duelHistory,
-                wildcardsAvailable,
-                tsugukos,
-                kinoe,
-                wildcards
-            };
-            localStorage.setItem('gameData', JSON.stringify(data));
+            localStorage.setItem('sunriseCitySlamdown', JSON.stringify(gameData));
         }
 
-        // Admin Panel Functions
-        function openAdminLogin() {
+        function loadData() {
+            const saved = localStorage.getItem('sunriseCitySlamdown');
+            if (saved) {
+                const parsed = JSON.parse(saved);
+                gameData = { ...gameData, ...parsed };
+            }
+            initializeCaptains();
+        }
+
+        function initializeCaptains() {
+            gameData.captains.forEach(captain => {
+                if (gameData.captainMoney[captain] === undefined) {
+                    gameData.captainMoney[captain] = 1000;
+                }
+                if (!gameData.captainTeams[captain]) {
+                    gameData.captainTeams[captain] = [];
+                }
+            });
+        }
+
+        // ==========================================
+        // AUTHENTICATION
+        // ==========================================
+        function showAdminLogin() {
             if (isAdminLoggedIn) {
-                currentView = 'admin';
-                renderView();
+                switchView('admin');
             } else {
                 document.getElementById('loginModal').style.display = 'flex';
             }
@@ -1300,31 +919,457 @@
 
         function closeLoginModal() {
             document.getElementById('loginModal').style.display = 'none';
+            document.getElementById('loginError').textContent = '';
         }
 
-        function adminLogin() {
+        function attemptLogin() {
             const username = document.getElementById('loginUsername').value;
             const password = document.getElementById('loginPassword').value;
-            
+
             if (username === 'Tack' && password === 'Tack123') {
                 isAdminLoggedIn = true;
                 closeLoginModal();
-                currentView = 'admin';
-                mainView = 'draft';
-                renderView();
+                switchView('admin');
             } else {
-                alert('Invalid credentials!');
+                document.getElementById('loginError').textContent = 'Invalid credentials!';
             }
         }
 
-        function logoutAdmin() {
-            isAdminLoggedIn = false;
-            currentView = 'draft';
-            document.getElementById('adminPanel').style.display = 'none';
-            renderView();
+        // ==========================================
+        // VIEW SWITCHING
+        // ==========================================
+        function switchView(view) {
+            currentView = view;
+
+            // Hide all panels
+            document.querySelectorAll('.main-container').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
+
+            // Show selected panel
+            if (view === 'admin' && isAdminLoggedIn) {
+                document.getElementById('adminPanel').classList.add('active');
+                document.getElementById('navAdmin').classList.add('active');
+                renderAdminPanel();
+            } else if (view === 'betting') {
+                document.getElementById('bettingPanel').classList.add('active');
+                document.getElementById('navBetting').classList.add('active');
+                renderBettingPanel();
+            } else {
+                document.getElementById('spectatorPanel').classList.add('active');
+                document.getElementById('navSpectator').classList.add('active');
+                renderSpectatorPanel();
+            }
         }
 
-        // Player Edit Modal
+        // ==========================================
+        // ADMIN PANEL RENDERING
+        // ==========================================
+        function renderAdminPanel() {
+            renderCaptainSelector();
+            renderPlayersContainer();
+            renderTeamsPanel();
+            renderMatchesContainer();
+            renderUsageStats();
+            renderUnavailablePlayers();
+            updateAdminCaptainSelect();
+        }
+
+        function renderCaptainSelector() {
+            const container = document.getElementById('captainSelector');
+            container.innerHTML = '';
+
+            gameData.captains.forEach(captain => {
+                const money = gameData.captainMoney[captain] || 0;
+                const playerCount = (gameData.captainTeams[captain] || []).length;
+                const isSelected = selectedCaptain === captain;
+
+                const div = document.createElement('div');
+                div.className = `captain-item ${isSelected ? 'selected' : ''}`;
+                div.innerHTML = `
+                    <div>
+                        <strong>${captain}</strong>
+                        <div class="captain-players-count">${playerCount} players</div>
+                    </div>
+                    <div>
+                        <span class="captain-money">${money} YEN</span>
+                        <button onclick="event.stopPropagation(); removeCaptain('${captain}')" style="background: #aa0000; color: #fff; border: none; padding: 4px 8px; margin-left: 8px; cursor: pointer;">X</button>
+                    </div>
+                `;
+                div.onclick = () => selectCaptain(captain);
+                container.appendChild(div);
+            });
+        }
+
+        function selectCaptain(captain) {
+            selectedCaptain = captain;
+            document.getElementById('selectedCaptainDisplay').textContent = `- Adding to: ${captain}`;
+            renderCaptainSelector();
+            renderPlayersContainer();
+        }
+
+        function renderPlayersContainer() {
+            const container = document.getElementById('playersContainer');
+            container.innerHTML = '';
+
+            // Wild Cards
+            const wildcardsHtml = renderPlayerCategory('WILD CARDS', gameData.wildcards, 'wildcard', true);
+            container.innerHTML += wildcardsHtml;
+
+            // Tsugukos
+            const tsugukosHtml = renderPlayerCategory('TSUGUKOS (Max 2 per team)', gameData.tsugukos, 'tsuguko');
+            container.innerHTML += tsugukosHtml;
+
+            // Hinoes
+            const hinoesHtml = renderPlayerCategory('HINOES', gameData.hinoes, 'hinoe');
+            container.innerHTML += hinoesHtml;
+        }
+
+        function renderPlayerCategory(title, players, category, isWildcard = false) {
+            let html = `<div class="player-category"><h4>${title}</h4><div class="players-grid">`;
+
+            players.forEach((player, index) => {
+                const playerId = `${category}-${index}`;
+                const isAssigned = gameData.assignedPlayers[playerId];
+                const isUnavailable = gameData.unavailablePlayers.includes(playerId);
+
+                if (isWildcard) {
+                    const available = player.available || player.count;
+                    if (available <= 0) return;
+
+                    html += `
+                        <div class="player-card ${selectedCaptain ? '' : 'assigned'}" onclick="assignPlayer('${playerId}', ${index}, '${category}')">
+                            <div class="player-name">${player.name}</div>
+                            <div class="player-price">${player.price} YEN</div>
+                            <div class="player-count">Available: ${available}/${player.count}</div>
+                        </div>
+                    `;
+                } else {
+                    html += `
+                        <div class="player-card ${isAssigned ? 'assigned' : ''} ${isUnavailable ? 'unavailable' : ''}"
+                            onclick="${!isAssigned && !isUnavailable ? `assignPlayer('${playerId}', ${index}, '${category}')` : ''}">
+                            <div class="player-name">${player.name}</div>
+                            ${player.tier ? `<span class="player-tier">${player.tier}</span>` : ''}
+                            <div class="player-price">${player.price} YEN</div>
+                            ${player.special ? `<div style="font-size: 0.75em; color: #ffcc00; margin-top: 4px;">${player.special}</div>` : ''}
+                            ${isAssigned ? `<div style="color: #888; font-size: 0.8em;">Assigned to: ${isAssigned}</div>` : ''}
+                            ${isUnavailable ? `<div style="color: #aa0000; font-size: 0.8em;">UNAVAILABLE</div>` : ''}
+                        </div>
+                    `;
+                }
+            });
+
+            html += '</div></div>';
+            return html;
+        }
+
+        function assignPlayer(playerId, index, category) {
+            if (!selectedCaptain) {
+                alert('Please select a captain first!');
+                return;
+            }
+
+            const captain = selectedCaptain;
+            let player, price;
+
+            if (category === 'wildcard') {
+                player = gameData.wildcards[index];
+                if (player.available <= 0) {
+                    alert('No more cards available!');
+                    return;
+                }
+            } else if (category === 'tsuguko') {
+                player = gameData.tsugukos[index];
+                // Check tsuguko limit
+                const tsugukoCount = (gameData.captainTeams[captain] || []).filter(p => p.category === 'tsuguko').length;
+                if (tsugukoCount >= 2) {
+                    alert('Maximum 2 Tsugukos per team!');
+                    return;
+                }
+            } else {
+                player = gameData.hinoes[index];
+            }
+
+            price = player.price;
+
+            // Check money
+            if (gameData.captainMoney[captain] < price) {
+                alert('Not enough money!');
+                return;
+            }
+
+            // Deduct money
+            gameData.captainMoney[captain] -= price;
+
+            // Add to team
+            const playerData = {
+                ...player,
+                id: `${captain}-${playerId}-${Date.now()}`,
+                playerId: playerId,
+                category: category,
+                status: 'active'
+            };
+
+            if (!gameData.captainTeams[captain]) {
+                gameData.captainTeams[captain] = [];
+            }
+            gameData.captainTeams[captain].push(playerData);
+
+            // Mark as assigned (not for wildcards)
+            if (category === 'wildcard') {
+                gameData.wildcards[index].available--;
+            } else {
+                gameData.assignedPlayers[playerId] = captain;
+            }
+
+            // YAMI bonus
+            if (player.name === 'YAMI') {
+                const availableHinoe = gameData.hinoes.findIndex((h, i) => !gameData.assignedPlayers[`hinoe-${i}`]);
+                if (availableHinoe !== -1) {
+                    const bonusPlayer = gameData.hinoes[availableHinoe];
+                    const bonusId = `hinoe-${availableHinoe}`;
+                    gameData.captainTeams[captain].push({
+                        ...bonusPlayer,
+                        id: `${captain}-${bonusId}-bonus`,
+                        playerId: bonusId,
+                        category: 'hinoe',
+                        status: 'active',
+                        bonus: true
+                    });
+                    gameData.assignedPlayers[bonusId] = captain;
+                    alert(`BONUS! ${bonusPlayer.name} added for FREE!`);
+                }
+            }
+
+            saveData();
+            renderAdminPanel();
+        }
+
+        function renderTeamsPanel() {
+            const container = document.getElementById('teamsPanel');
+            container.innerHTML = '';
+
+            gameData.captains.forEach(captain => {
+                const team = gameData.captainTeams[captain] || [];
+                const money = gameData.captainMoney[captain] || 0;
+
+                let html = `
+                    <div class="team-card">
+                        <h4>
+                            <span>${captain}</span>
+                            <span class="team-money">${money} YEN</span>
+                        </h4>
+                `;
+
+                if (team.length === 0) {
+                    html += '<div style="color: #888; font-size: 0.9em;">No players</div>';
+                } else {
+                    team.forEach((player, idx) => {
+                        const status = player.status || 'active';
+                        html += `
+                            <div class="team-player ${status}">
+                                <span>${player.name} ${player.tier ? `(${player.tier})` : ''} ${player.bonus ? '[FREE]' : ''}</span>
+                                <div>
+                                    <button class="card-status-btn" onclick="cyclePlayerStatus('${captain}', ${idx})">${status.toUpperCase()}</button>
+                                    <button class="remove-player-btn" onclick="removePlayerFromTeam('${captain}', ${idx})">X</button>
+                                </div>
+                            </div>
+                        `;
+                    });
+                }
+
+                html += '</div>';
+                container.innerHTML += html;
+            });
+        }
+
+        function cyclePlayerStatus(captain, playerIndex) {
+            const team = gameData.captainTeams[captain];
+            if (!team || !team[playerIndex]) return;
+
+            const statuses = ['active', 'used', 'unavailable'];
+            const currentStatus = team[playerIndex].status || 'active';
+            const currentIndex = statuses.indexOf(currentStatus);
+            team[playerIndex].status = statuses[(currentIndex + 1) % statuses.length];
+
+            // Track usage
+            if (team[playerIndex].status === 'used') {
+                const name = team[playerIndex].name;
+                gameData.cardUsageCount[name] = (gameData.cardUsageCount[name] || 0) + 1;
+            }
+
+            saveData();
+            renderTeamsPanel();
+            renderUsageStats();
+        }
+
+        function removePlayerFromTeam(captain, playerIndex) {
+            const team = gameData.captainTeams[captain];
+            if (!team || !team[playerIndex]) return;
+
+            const player = team[playerIndex];
+
+            if (!confirm(`Remove ${player.name} from ${captain}'s team?`)) return;
+
+            // Restore wildcard count or unassign player
+            if (player.category === 'wildcard') {
+                const wcIndex = gameData.wildcards.findIndex(w => w.name === player.name);
+                if (wcIndex !== -1) {
+                    gameData.wildcards[wcIndex].available++;
+                }
+            } else {
+                delete gameData.assignedPlayers[player.playerId];
+            }
+
+            // Remove from team
+            team.splice(playerIndex, 1);
+
+            saveData();
+            renderAdminPanel();
+        }
+
+        function renderUsageStats() {
+            const container = document.getElementById('usageStats');
+            const entries = Object.entries(gameData.cardUsageCount);
+
+            if (entries.length === 0) {
+                container.innerHTML = '<p style="color: #888;">No cards used yet</p>';
+                return;
+            }
+
+            container.innerHTML = entries.sort((a, b) => b[1] - a[1]).map(([name, count]) => `
+                <div class="usage-stat">
+                    <div>${name}</div>
+                    <div class="count">${count}x used</div>
+                </div>
+            `).join('');
+        }
+
+        function renderUnavailablePlayers() {
+            const container = document.getElementById('unavailablePlayers');
+            const section = document.getElementById('unavailableSection');
+
+            // Find all unavailable players from teams
+            let unavailable = [];
+            gameData.captains.forEach(captain => {
+                const team = gameData.captainTeams[captain] || [];
+                team.forEach(player => {
+                    if (player.status === 'unavailable') {
+                        unavailable.push({ ...player, captain });
+                    }
+                });
+            });
+
+            if (unavailable.length === 0) {
+                section.style.display = 'none';
+                return;
+            }
+
+            section.style.display = 'block';
+            container.innerHTML = unavailable.map(p => `
+                <div class="team-player unavailable">
+                    <span>${p.name} (${p.captain})</span>
+                    <span style="color: #aa0000;">Cannot fight</span>
+                </div>
+            `).join('');
+        }
+
+        // ==========================================
+        // CAPTAIN MANAGEMENT
+        // ==========================================
+        function openAddCaptainModal() {
+            document.getElementById('addCaptainModal').style.display = 'flex';
+        }
+
+        function closeAddCaptainModal() {
+            document.getElementById('addCaptainModal').style.display = 'none';
+        }
+
+        function confirmAddCaptain() {
+            const name = document.getElementById('newCaptainName').value.trim().toUpperCase();
+            const money = parseInt(document.getElementById('newCaptainMoney').value) || 1000;
+
+            if (!name) {
+                alert('Please enter a name!');
+                return;
+            }
+
+            if (gameData.captains.includes(name)) {
+                alert('Captain already exists!');
+                return;
+            }
+
+            gameData.captains.push(name);
+            gameData.captainMoney[name] = money;
+            gameData.captainTeams[name] = [];
+
+            saveData();
+            closeAddCaptainModal();
+            renderAdminPanel();
+
+            alert(`Captain ${name} added with ${money} YEN!`);
+        }
+
+        function removeCaptain(captain) {
+            if (!confirm(`Remove captain ${captain}? Their players will be unassigned.`)) return;
+
+            // Unassign all players
+            const team = gameData.captainTeams[captain] || [];
+            team.forEach(player => {
+                if (player.category !== 'wildcard') {
+                    delete gameData.assignedPlayers[player.playerId];
+                } else {
+                    const wcIndex = gameData.wildcards.findIndex(w => w.name === player.name);
+                    if (wcIndex !== -1) {
+                        gameData.wildcards[wcIndex].available++;
+                    }
+                }
+            });
+
+            // Remove captain
+            gameData.captains = gameData.captains.filter(c => c !== captain);
+            delete gameData.captainMoney[captain];
+            delete gameData.captainTeams[captain];
+
+            if (selectedCaptain === captain) {
+                selectedCaptain = null;
+                document.getElementById('selectedCaptainDisplay').textContent = '';
+            }
+
+            saveData();
+            renderAdminPanel();
+        }
+
+        function updateAdminCaptainSelect() {
+            const select = document.getElementById('adminCaptainSelect');
+            select.innerHTML = '<option value="">Select Captain</option>';
+            gameData.captains.forEach(captain => {
+                select.innerHTML += `<option value="${captain}">${captain} (${gameData.captainMoney[captain]} YEN)</option>`;
+            });
+        }
+
+        function addMoney() {
+            const captain = document.getElementById('adminCaptainSelect').value;
+            const amount = parseInt(document.getElementById('addMoneyAmount').value);
+
+            if (!captain) {
+                alert('Select a captain!');
+                return;
+            }
+            if (!amount || amount <= 0) {
+                alert('Enter a valid amount!');
+                return;
+            }
+
+            gameData.captainMoney[captain] += amount;
+            saveData();
+            renderAdminPanel();
+
+            alert(`Added ${amount} YEN to ${captain}!`);
+        }
+
+        // ==========================================
+        // PLAYER EDIT MODAL
+        // ==========================================
         function openPlayerEditModal() {
             document.getElementById('playerEditModal').style.display = 'flex';
             renderPlayerEditContent();
@@ -1335,1981 +1380,487 @@
         }
 
         function renderPlayerEditContent() {
-            const content = document.getElementById('playerEditContent');
-            let html = '<h4 style="color: #ffcc00; margin-bottom: 10px;">WILD CARDS</h4>';
-            
-            // Wildcards
-            wildcards.forEach((card, idx) => {
+            const container = document.getElementById('playerEditContent');
+            let html = '';
+
+            // Wild Cards
+            html += '<h4 style="color: #ffcc00; margin: 15px 0 10px;">WILD CARDS</h4>';
+            gameData.wildcards.forEach((card, idx) => {
                 html += `
-                    <div class="edit-player-row">
-                        <input type="text" value="${card.name}" onchange="wildcards[${idx}].name = this.value; saveData();">
-                        <input type="number" value="${card.price}" onchange="wildcards[${idx}].price = parseInt(this.value); saveData();">
-                        <input type="number" value="${card.count}" min="1" max="10" style="width: 60px; text-align: center;" onchange="wildcards[${idx}].count = parseInt(this.value); initializeWildcardsAvailable(); saveData(); renderPlayerEditContent();" placeholder="Count">
-                        <button onclick="deleteWildCard(${idx})">Delete</button>
+                    <div class="edit-row">
+                        <input type="text" value="${card.name}" onchange="gameData.wildcards[${idx}].name = this.value; saveData();">
+                        <input type="number" value="${card.price}" onchange="gameData.wildcards[${idx}].price = parseInt(this.value); saveData();" placeholder="Price">
+                        <input type="number" value="${card.count}" min="1" onchange="gameData.wildcards[${idx}].count = parseInt(this.value); gameData.wildcards[${idx}].available = Math.min(gameData.wildcards[${idx}].available, parseInt(this.value)); saveData();" placeholder="Count">
+                        <button onclick="deletePlayer('wildcard', ${idx})">Delete</button>
                     </div>
                 `;
-            });
-
-            html += '<h4 style="color: #ffcc00; margin-bottom: 10px; margin-top: 15px;">TSUGUKOS</h4>';
-            tsugukos.forEach((player, idx) => {
-                html += `
-                    <div class="edit-player-row">
-                        <input type="text" value="${player.name}" onchange="tsugukos[${idx}].name = this.value; saveData();">
-                        <input type="number" value="${player.price}" onchange="tsugukos[${idx}].price = parseInt(this.value); saveData();">
-                        <button onclick="deleteTsuguko(${idx})">Delete</button>
-                    </div>
-                `;
-            });
-
-            html += '<h4 style="color: #ffcc00; margin-bottom: 10px; margin-top: 15px;">HINOES</h4>';
-            kinoe.forEach((player, idx) => {
-                html += `
-                    <div class="edit-player-row">
-                        <input type="text" value="${player.name}" onchange="kinoe[${idx}].name = this.value; saveData();">
-                        <input type="number" value="${player.price}" onchange="kinoe[${idx}].price = parseInt(this.value); saveData();">
-                        <button onclick="deleteHinoe(${idx})">Delete</button>
-                    </div>
-                `;
-            });
-
-            content.innerHTML = html;
-        }
-
-        function deleteTsuguko(idx) {
-            if (confirm('Delete this player?')) {
-                tsugukos.splice(idx, 1);
-                saveData();
-                renderPlayerEditContent();
-                renderPlayers();
-            }
-        }
-
-        function deleteHinoe(idx) {
-            if (confirm('Delete this player?')) {
-                kinoe.splice(idx, 1);
-                saveData();
-                renderPlayerEditContent();
-                renderPlayers();
-            }
-        }
-
-        function deleteWildCard(idx) {
-            if (confirm('Delete this wild card?')) {
-                wildcards.splice(idx, 1);
-                initializeWildcardsAvailable();
-                saveData();
-                renderPlayerEditContent();
-                renderPlayers();
-            }
-        }
-
-        function addNewPlayerModal() {
-            const name = prompt('Enter player name:');
-            if (!name) return;
-            const price = prompt('Enter player price:');
-            if (!price) return;
-            
-            kinoe.push({ name, price: parseInt(price) });
-            saveData();
-            renderPlayerEditContent();
-            renderPlayers();
-        }
-
-        function addNewWildCardModal() {
-            const name = prompt('Enter wild card name:');
-            if (!name) return;
-            const price = prompt('Enter wild card price:');
-            if (!price) return;
-            const count = prompt('Enter number of cards available:', '3');
-            if (!count) return;
-            
-            wildcards.push({ name, price: parseInt(price), count: parseInt(count) });
-            initializeWildcardsAvailable();
-            saveData();
-            renderPlayerEditContent();
-            renderPlayers();
-        }
-
-        // Main View Switching
-        function switchMainView(view) {
-            mainView = view;
-            currentView = view;
-            renderView();
-        }
-
-        // Betting System
-        let bets = [];
-        let betsHistory = [];
-        let betIdCounter = 1;
-
-        // Roster Management
-        let selectedSourcePlayers = [];
-        let selectedTargetPlayers = [];
-
-        // Initialize
-        draftOrder.forEach(captain => {
-            captainMoney[captain] = 1000;
-            captainTeams[captain] = [];
-            captainStatus[captain] = 'active'; // active, inactive, skipped
-        });
-
-        wildcards.forEach((card, i) => {
-            wildcardsAvailable[i] = card.count;
-        });
-
-        function getCurrentCaptain() {
-            return draftOrder[currentTurnIndex];
-        }
-
-        function nextTurn() {
-            currentTurnIndex++;
-            if (currentTurnIndex >= draftOrder.length) {
-                currentTurnIndex = 0;
-                roundNumber++;
-            }
-            updateTurnDisplay();
-            renderTeamsSummary();
-            renderRightPanel();
-        }
-
-        function updateTurnDisplay() {
-            const current = getCurrentCaptain();
-            document.getElementById('currentTurnDisplay').textContent = `CURRENT TURN: ${current}`;
-            document.getElementById('currentCaptainName').textContent = current;
-            document.getElementById('moneyDisplay').textContent = `${captainMoney[current]} YEN`;
-
-            const orderContainer = document.getElementById('draftOrder');
-            orderContainer.innerHTML = '';
-            draftOrder.forEach((captain, i) => {
-                const div = document.createElement('div');
-                div.className = 'captain-turn';
-                if (i === currentTurnIndex) div.classList.add('active');
-                if (i < currentTurnIndex) div.classList.add('done');
-                div.textContent = `${i + 1}. ${captain}`;
-                orderContainer.appendChild(div);
-            });
-        }
-
-        function renderPlayers() {
-            const current = getCurrentCaptain();
-            const currentTeam = captainTeams[current];
-
-            // Wildcards
-            const wildcardsContainer = document.getElementById('wildcards');
-            wildcardsContainer.innerHTML = '';
-            wildcards.forEach((card, index) => {
-                const available = wildcardsAvailable[index];
-                if (available > 0) {
-                    const cardEl = document.createElement('div');
-                    cardEl.className = 'player-card';
-                    cardEl.innerHTML = `
-                        <div class="player-name">${card.name}</div>
-                        <div class="player-price">${card.price} YEN</div>
-                        <div style="font-size: 0.9em; margin-top: 5px;">Available: ${available}</div>
-                    `;
-                    cardEl.onclick = () => draftPlayer(card, `wildcard-${index}`, 'wildcard', index);
-                    wildcardsContainer.appendChild(cardEl);
-                }
             });
 
             // Tsugukos
-            const tsugukosContainer = document.getElementById('tsugukos');
-            tsugukosContainer.innerHTML = '';
-            tsugukos.forEach((player, index) => {
-                const isSold = soldPlayers[`tsuguko-${index}`];
-                const cardEl = document.createElement('div');
-                cardEl.className = `player-card ${isSold ? 'sold' : ''}`;
-                cardEl.innerHTML = `
-                    <div class="player-name">${player.name}</div>
-                    <span class="player-tier">${player.tier}</span>
-                    <div class="player-price">${player.price} YEN</div>
-                    ${player.special ? `<div style="font-size: 0.8em; color: #ffcc00; margin-top: 5px;">${player.special}</div>` : ''}
+            html += '<h4 style="color: #ffcc00; margin: 15px 0 10px;">TSUGUKOS</h4>';
+            gameData.tsugukos.forEach((player, idx) => {
+                html += `
+                    <div class="edit-row">
+                        <input type="text" value="${player.name}" onchange="gameData.tsugukos[${idx}].name = this.value; saveData();">
+                        <input type="text" value="${player.tier || ''}" onchange="gameData.tsugukos[${idx}].tier = this.value; saveData();" placeholder="Tier">
+                        <input type="number" value="${player.price}" onchange="gameData.tsugukos[${idx}].price = parseInt(this.value); saveData();" placeholder="Price">
+                        <button onclick="deletePlayer('tsuguko', ${idx})">Delete</button>
+                    </div>
                 `;
-                if (!isSold) {
-                    cardEl.onclick = () => draftPlayer(player, `tsuguko-${index}`, 'tsuguko');
-                }
-                tsugukosContainer.appendChild(cardEl);
             });
 
-            // Kinoe
-            const kinoeContainer = document.getElementById('kinoe');
-            kinoeContainer.innerHTML = '';
-            kinoe.forEach((player, index) => {
-                const isSold = soldPlayers[`kinoe-${index}`];
-                const cardEl = document.createElement('div');
-                cardEl.className = `player-card ${isSold ? 'sold' : ''}`;
-                cardEl.innerHTML = `
-                    <div class="player-name">${player.name}</div>
-                    <div class="player-price">${player.price} YEN</div>
+            // Hinoes
+            html += '<h4 style="color: #ffcc00; margin: 15px 0 10px;">HINOES</h4>';
+            gameData.hinoes.forEach((player, idx) => {
+                html += `
+                    <div class="edit-row">
+                        <input type="text" value="${player.name}" onchange="gameData.hinoes[${idx}].name = this.value; saveData();">
+                        <input type="text" value="-" disabled>
+                        <input type="number" value="${player.price}" onchange="gameData.hinoes[${idx}].price = parseInt(this.value); saveData();" placeholder="Price">
+                        <button onclick="deletePlayer('hinoe', ${idx})">Delete</button>
+                    </div>
                 `;
-                if (!isSold) {
-                    cardEl.onclick = () => draftPlayer(player, `kinoe-${index}`, 'kinoe');
-                }
-                kinoeContainer.appendChild(cardEl);
             });
+
+            container.innerHTML = html;
         }
 
-        function draftPlayer(player, playerId, category, wildcardIndex) {
-            const current = getCurrentCaptain();
-            const currentTeam = captainTeams[current];
+        function deletePlayer(category, index) {
+            if (!confirm('Delete this player?')) return;
 
-            // Check Tsuguko limit
-            if (category === 'tsuguko') {
-                const tsugukoCount = currentTeam.filter(p => p.category === 'tsuguko').length;
-                if (tsugukoCount >= 2) {
-                    alert('Maximum 2 Tsugukos per team!');
-                    return;
-                }
-            }
-
-            // Check money
-            if (captainMoney[current] < player.price) {
-                alert('Not enough money!');
-                return;
-            }
-
-            // Deduct money
-            captainMoney[current] -= player.price;
-
-            // Mark as sold
             if (category === 'wildcard') {
-                wildcardsAvailable[wildcardIndex]--;
+                gameData.wildcards.splice(index, 1);
+            } else if (category === 'tsuguko') {
+                gameData.tsugukos.splice(index, 1);
             } else {
-                soldPlayers[playerId] = current;
+                gameData.hinoes.splice(index, 1);
             }
 
-            // Add to team with ID
-            const playerId_unique = `${current}-${playerId}`;
-            currentTeam.push({
-                ...player,
-                category: category,
-                id: playerId_unique,
-                purchaseId: playerId
-            });
-            
-            // Initialize card status
-            cardStatus[playerId_unique] = 'active';
-
-            // YAMI bonus
-            if (player.name === 'YAMI') {
-                const availableKinoe = kinoe.filter((k, i) => !soldPlayers[`kinoe-${i}`]);
-                if (availableKinoe.length > 0) {
-                    const bonusPlayer = availableKinoe[0];
-                    const bonusIndex = kinoe.indexOf(bonusPlayer);
-                    soldPlayers[`kinoe-${bonusIndex}`] = current;
-                    const bonusPlayerId = `${current}-kinoe-${bonusIndex}`;
-                    currentTeam.push({
-                        ...bonusPlayer,
-                        category: 'kinoe',
-                        bonus: true,
-                        id: bonusPlayerId
-                    });
-                    cardStatus[bonusPlayerId] = 'active';
-                    alert(`BONUS! ${bonusPlayer.name} added for FREE!`);
-                }
-            }
-
-            // Check if out of money
-            if (captainMoney[current] <= 0) {
-                alert(`${current} is out of money!`);
-                checkDraftEnd();
-            }
-
-            nextTurn();
-            renderPlayers();
-        }
-
-        function checkDraftEnd() {
-            const allOutOfMoney = draftOrder.every(cap => captainMoney[cap] <= 0);
-            if (allOutOfMoney) {
-                showFinalTeams();
-            }
-        }
-
-        function showFinalTeams() {
-            document.getElementById('playersArea').style.display = 'none';
-            document.getElementById('turnInfo').style.display = 'none';
-            const finalTeamsDiv = document.getElementById('finalTeams');
-            finalTeamsDiv.classList.add('show');
-
-            const listDiv = document.getElementById('finalTeamsList');
-            listDiv.innerHTML = '';
-
-            draftOrder.forEach(captain => {
-                const teamDiv = document.createElement('div');
-                teamDiv.className = 'team-final';
-                
-                let html = `<h3>${captain} - Remaining: ${captainMoney[captain]} YEN</h3>`;
-                
-                if (captainTeams[captain].length === 0) {
-                    html += '<div>No players drafted</div>';
-                } else {
-                    captainTeams[captain].forEach(player => {
-                        html += `
-                            <div class="picked-player">
-                                ${player.name} ${player.tier ? `(${player.tier})` : ''} - ${player.bonus ? 'FREE' : player.price + ' YEN'}
-                            </div>
-                        `;
-                    });
-                }
-                
-                teamDiv.innerHTML = html;
-                listDiv.appendChild(teamDiv);
-            });
-
-            // Add tournament setup button
-            const setupBtn = document.createElement('button');
-            setupBtn.textContent = '⚔️ Setup Custom Tournament';
-            setupBtn.style.cssText = 'width: 100%; padding: 12px; margin-top: 15px; background: #00ff00; color: #000; font-weight: bold; cursor: pointer; border: none; font-size: 1.1em;';
-            setupBtn.onclick = manualTournamentSetup;
-            listDiv.parentElement.appendChild(setupBtn);
-        }
-
-        function renderTeamsSummary() {
-            const summaryDiv = document.getElementById('teamsSummary');
-            summaryDiv.innerHTML = '<h3 style="margin-top: 20px; margin-bottom: 10px;">TEAMS</h3>';
-
-            draftOrder.forEach(captain => {
-                const isActive = captain === getCurrentCaptain();
-                const teamDiv = document.createElement('div');
-                teamDiv.className = `team-item ${isActive ? 'active' : ''}`;
-                
-                const playerCount = captainTeams[captain].length;
-                teamDiv.innerHTML = `
-                    <strong>${captain}</strong>
-                    <div style="font-size: 0.9em; margin-top: 5px;">
-                        Players: ${playerCount} | ${captainMoney[captain]} YEN
-                    </div>
-                `;
-                summaryDiv.appendChild(teamDiv);
-            });
-        }
-
-        // Admin Panel Functions
-        function toggleAdminPanel() {
-            const adminPanel = document.getElementById('adminPanel');
-            adminPanel.style.display = adminPanel.style.display === 'none' ? 'block' : 'none';
-            
-            // Populate captains dropdown
-            const selectCaptain = document.getElementById('adminSelectCaptain');
-            selectCaptain.innerHTML = '<option value="">Select Captain</option>';
-            draftOrder.forEach(captain => {
-                const option = document.createElement('option');
-                option.value = captain;
-                option.textContent = captain;
-                selectCaptain.appendChild(option);
-            });
-
-            // Populate team selectors
-            populateTeamSelectors();
-        }
-
-        function populateTeamSelectors() {
-            const sourceTeam = document.getElementById('adminSelectSourceTeam');
-            const targetTeam = document.getElementById('adminSelectTargetTeam');
-            
-            sourceTeam.innerHTML = '<option value="">Select Team</option>';
-            targetTeam.innerHTML = '<option value="">Target Team</option>';
-            
-            draftOrder.forEach(captain => {
-                const opt1 = document.createElement('option');
-                opt1.value = captain;
-                opt1.textContent = captain;
-                sourceTeam.appendChild(opt1);
-
-                const opt2 = document.createElement('option');
-                opt2.value = captain;
-                opt2.textContent = captain;
-                targetTeam.appendChild(opt2);
-            });
-        }
-
-        function updatePlayerDropdown() {
-            const sourceTeam = document.getElementById('adminSelectSourceTeam').value;
-            const playerSelect = document.getElementById('adminSelectPlayer');
-            
-            playerSelect.innerHTML = '<option value="">Select Player</option>';
-            
-            if (!sourceTeam) return;
-            
-            const team = captainTeams[sourceTeam];
-            team.forEach((player, index) => {
-                const option = document.createElement('option');
-                option.value = index;
-                option.textContent = `${player.name} (${player.tier || 'Regular'})`;
-                playerSelect.appendChild(option);
-            });
-        }
-
-        function addMoneyAdmin() {
-            const captain = document.getElementById('adminSelectCaptain').value;
-            const amount = parseInt(document.getElementById('adminMoneyAmount').value);
-            
-            if (!captain) {
-                alert('Select a captain!');
-                return;
-            }
-            
-            if (!amount || amount <= 0) {
-                alert('Enter a valid amount!');
-                return;
-            }
-            
-            captainMoney[captain] += amount;
-            const logEntry = `${new Date().toLocaleTimeString()}: Added ${amount} YEN to ${captain} (Total: ${captainMoney[captain]} YEN)`;
-            adminLog.push(logEntry);
-            
-            document.getElementById('adminMoneyAmount').value = '';
-            document.getElementById('adminLog').textContent = adminLog.slice(-3).join('\n');
-            
-            updateTurnDisplay();
-            renderRightPanel();
-            
-            alert(`✓ ${amount} YEN added to ${captain}!`);
-        }
-
-        function movePlayerAdmin() {
-            const sourceTeam = document.getElementById('adminSelectSourceTeam').value;
-            const playerIndex = parseInt(document.getElementById('adminSelectPlayer').value);
-            const targetTeam = document.getElementById('adminSelectTargetTeam').value;
-            
-            if (!sourceTeam || playerIndex === undefined || playerIndex === -1 || !targetTeam) {
-                alert('Please select all fields!');
-                return;
-            }
-            
-            if (sourceTeam === targetTeam) {
-                alert('Source and target teams must be different!');
-                return;
-            }
-            
-            // Get player from source team
-            const player = captainTeams[sourceTeam][playerIndex];
-            
-            // Remove from source
-            captainTeams[sourceTeam].splice(playerIndex, 1);
-            
-            // Add to target
-            const newPlayerId = `${targetTeam}-${player.purchaseId}`;
-            player.id = newPlayerId;
-            captainTeams[targetTeam].push(player);
-            
-            const logEntry = `${new Date().toLocaleTimeString()}: Moved ${player.name} from ${sourceTeam} to ${targetTeam}`;
-            adminLog.push(logEntry);
-            document.getElementById('adminLog').textContent = adminLog.slice(-3).join('\n');
-            
-            alert(`✓ ${player.name} moved from ${sourceTeam} to ${targetTeam}!`);
-            renderPlayers();
-            renderRightPanel();
-            updatePlayerDropdown();
-        }
-
-        function deletePlayerAdmin() {
-            const sourceTeam = document.getElementById('adminSelectSourceTeam').value;
-            const playerIndex = parseInt(document.getElementById('adminSelectPlayer').value);
-
-            if (!sourceTeam || playerIndex === undefined || playerIndex === -1) {
-                alert('Please select team and player!');
-                return;
-            }
-
-            const player = captainTeams[sourceTeam][playerIndex];
-
-            if (!confirm(`Delete ${player.name} from ${sourceTeam}?`)) {
-                return;
-            }
-
-            captainTeams[sourceTeam].splice(playerIndex, 1);
-
-            const logEntry = `${new Date().toLocaleTimeString()}: Deleted ${player.name} from ${sourceTeam}`;
-            adminLog.push(logEntry);
-            document.getElementById('adminLog').textContent = adminLog.slice(-3).join('\n');
-
-            alert(`✓ ${player.name} deleted!`);
-            renderPlayers();
-            renderRightPanel();
-            updatePlayerDropdown();
-        }
-
-        // ==========================================
-        // ADMIN TABS NAVIGATION
-        // ==========================================
-        function switchAdminTab(tabName) {
-            // Update tab buttons
-            document.querySelectorAll('.admin-tab').forEach(tab => {
-                tab.classList.remove('active');
-            });
-            event.target.classList.add('active');
-
-            // Update sections
-            document.querySelectorAll('.admin-section').forEach(section => {
-                section.classList.remove('active');
-            });
-
-            const sectionId = 'admin' + tabName.charAt(0).toUpperCase() + tabName.slice(1);
-            document.getElementById(sectionId).classList.add('active');
-
-            // Render content for the active tab
-            if (tabName === 'captains') {
-                renderCaptainList();
-            } else if (tabName === 'roster') {
-                populateRosterSelectors();
-            } else if (tabName === 'bets') {
-                populateBetSelectors();
-                renderBetsList();
-            }
-        }
-
-        // ==========================================
-        // CAPTAIN MANAGEMENT FUNCTIONS
-        // ==========================================
-        function renderCaptainList() {
-            const container = document.getElementById('captainList');
-            container.innerHTML = '';
-
-            draftOrder.forEach((captain, index) => {
-                const money = captainMoney[captain] || 0;
-                const status = captainStatus[captain] || 'active';
-                const isCurrentTurn = index === currentTurnIndex;
-                const hasNoMoney = money <= 0;
-
-                let itemClass = 'captain-list-item';
-                if (status === 'inactive') itemClass += ' inactive';
-                if (hasNoMoney && status === 'active') itemClass += ' no-money';
-
-                const statusIcon = status === 'active' ? '✓' : '✗';
-                const turnIndicator = isCurrentTurn ? '→ ' : '';
-
-                container.innerHTML += `
-                    <div class="${itemClass}" data-captain="${captain}">
-                        <div class="captain-info">
-                            <span>${turnIndicator}${index + 1}. ${captain}</span>
-                            <span style="color: ${money > 0 ? '#00ff00' : '#ff0000'}; font-size: 0.85em;">${money} YEN</span>
-                            <span style="font-size: 0.8em; color: ${status === 'active' ? '#00ff00' : '#aa0000'};">${statusIcon}</span>
-                        </div>
-                        <div class="captain-actions">
-                            <button class="btn-up" onclick="moveCaptain('${captain}', -1)" ${index === 0 ? 'disabled' : ''}>↑</button>
-                            <button class="btn-down" onclick="moveCaptain('${captain}', 1)" ${index === draftOrder.length - 1 ? 'disabled' : ''}>↓</button>
-                            <button class="btn-skip" onclick="skipCaptainTurn('${captain}')" title="Saltar turno">⏭</button>
-                            ${status === 'active'
-                                ? `<button class="btn-remove" onclick="toggleCaptainStatus('${captain}')" title="Desactivar">✗</button>`
-                                : `<button class="btn-activate" onclick="toggleCaptainStatus('${captain}')" title="Activar">✓</button>`
-                            }
-                        </div>
-                    </div>
-                `;
-            });
-        }
-
-        function addNewCaptain() {
-            const input = document.getElementById('newCaptainName');
-            const name = input.value.trim().toUpperCase();
-
-            if (!name) {
-                alert('Ingresa un nombre para el capitan');
-                return;
-            }
-
-            if (draftOrder.includes(name)) {
-                alert('Este capitan ya existe');
-                return;
-            }
-
-            draftOrder.push(name);
-            captainMoney[name] = 1000;
-            captainTeams[name] = [];
-            captainStatus[name] = 'active';
-
-            input.value = '';
-
-            const logEntry = `${new Date().toLocaleTimeString()}: Nuevo capitan agregado: ${name}`;
-            adminLog.push(logEntry);
-            document.getElementById('adminLog').textContent = adminLog.slice(-3).join('\n');
-
-            renderCaptainList();
-            updateTurnDisplay();
-            renderTeamsSummary();
-            renderRightPanel();
-            populateTeamSelectors();
-
-            alert(`✓ Capitan ${name} agregado con 1000 YEN!`);
-        }
-
-        function moveCaptain(captain, direction) {
-            const currentIndex = draftOrder.indexOf(captain);
-            const newIndex = currentIndex + direction;
-
-            if (newIndex < 0 || newIndex >= draftOrder.length) return;
-
-            // Swap positions
-            [draftOrder[currentIndex], draftOrder[newIndex]] = [draftOrder[newIndex], draftOrder[currentIndex]];
-
-            // Adjust current turn index if needed
-            if (currentIndex === currentTurnIndex) {
-                currentTurnIndex = newIndex;
-            } else if (newIndex === currentTurnIndex) {
-                currentTurnIndex = currentIndex;
-            }
-
-            renderCaptainList();
-            updateTurnDisplay();
-            renderTeamsSummary();
-        }
-
-        function toggleCaptainStatus(captain) {
-            if (captainStatus[captain] === 'active') {
-                captainStatus[captain] = 'inactive';
-
-                // If this was the current captain, skip to next
-                if (draftOrder[currentTurnIndex] === captain) {
-                    findNextActiveCaptain();
-                }
-            } else {
-                captainStatus[captain] = 'active';
-            }
-
-            renderCaptainList();
-            updateTurnDisplay();
-            renderTeamsSummary();
-        }
-
-        function skipCaptainTurn(captain) {
-            const captainIndex = draftOrder.indexOf(captain);
-
-            if (captainIndex === currentTurnIndex) {
-                findNextActiveCaptain();
-                renderCaptainList();
-                updateTurnDisplay();
-                renderTeamsSummary();
-            } else {
-                alert('Solo puedes saltar el turno del capitan actual');
-            }
-        }
-
-        function findNextActiveCaptain() {
-            let attempts = 0;
-            const maxAttempts = draftOrder.length;
-
-            do {
-                currentTurnIndex++;
-                if (currentTurnIndex >= draftOrder.length) {
-                    currentTurnIndex = 0;
-                    roundNumber++;
-                }
-                attempts++;
-
-                const currentCaptain = draftOrder[currentTurnIndex];
-                const isActive = captainStatus[currentCaptain] === 'active';
-                const hasMoney = captainMoney[currentCaptain] > 0;
-
-                // Skip if inactive or (auto-skip enabled and no money)
-                if (isActive && (!autoSkipNoMoney || hasMoney)) {
-                    break;
-                }
-            } while (attempts < maxAttempts);
-
-            if (attempts >= maxAttempts) {
-                alert('No hay capitanes activos con dinero disponible!');
-            }
-        }
-
-        function toggleAutoSkip() {
-            autoSkipNoMoney = document.getElementById('autoSkipNoMoney').checked;
-
-            // Check if current captain needs to be skipped
-            const currentCaptain = getCurrentCaptain();
-            if (autoSkipNoMoney && captainMoney[currentCaptain] <= 0) {
-                findNextActiveCaptain();
-                updateTurnDisplay();
-                renderTeamsSummary();
-            }
-        }
-
-        // ==========================================
-        // ROSTER MANAGEMENT FUNCTIONS
-        // ==========================================
-        function populateRosterSelectors() {
-            const sourceSelect = document.getElementById('rosterSourceTeam');
-            const targetSelect = document.getElementById('rosterTargetTeam');
-
-            sourceSelect.innerHTML = '<option value="">Equipo Origen</option>';
-            targetSelect.innerHTML = '<option value="">Equipo Destino</option>';
-
-            draftOrder.forEach(captain => {
-                const playerCount = captainTeams[captain]?.length || 0;
-                sourceSelect.innerHTML += `<option value="${captain}">${captain} (${playerCount} jugadores)</option>`;
-                targetSelect.innerHTML += `<option value="${captain}">${captain} (${playerCount} jugadores)</option>`;
-            });
-
-            selectedSourcePlayers = [];
-            selectedTargetPlayers = [];
-            renderRosterSource();
-            renderRosterTarget();
-        }
-
-        function renderRosterSource() {
-            const team = document.getElementById('rosterSourceTeam').value;
-            const container = document.getElementById('rosterSourcePlayers');
-            const title = document.getElementById('rosterSourceTitle');
-
-            selectedSourcePlayers = [];
-
-            if (!team) {
-                title.textContent = 'Origen';
-                container.innerHTML = '<p style="color: #666; font-size: 0.9em;">Selecciona un equipo</p>';
-                return;
-            }
-
-            title.textContent = team;
-            const players = captainTeams[team] || [];
-
-            if (players.length === 0) {
-                container.innerHTML = '<p style="color: #666; font-size: 0.9em;">Sin jugadores</p>';
-                return;
-            }
-
-            container.innerHTML = players.map((player, index) => `
-                <div class="roster-player-item" data-index="${index}" onclick="toggleSourcePlayer(${index})">
-                    <span>${player.name}</span>
-                    <span style="font-size: 0.8em; color: #888;">${player.tier || 'Regular'}</span>
-                </div>
-            `).join('');
-        }
-
-        function renderRosterTarget() {
-            const team = document.getElementById('rosterTargetTeam').value;
-            const container = document.getElementById('rosterTargetPlayers');
-            const title = document.getElementById('rosterTargetTitle');
-
-            selectedTargetPlayers = [];
-
-            if (!team) {
-                title.textContent = 'Destino';
-                container.innerHTML = '<p style="color: #666; font-size: 0.9em;">Selecciona un equipo</p>';
-                return;
-            }
-
-            title.textContent = team;
-            const players = captainTeams[team] || [];
-
-            if (players.length === 0) {
-                container.innerHTML = '<p style="color: #666; font-size: 0.9em;">Sin jugadores</p>';
-                return;
-            }
-
-            container.innerHTML = players.map((player, index) => `
-                <div class="roster-player-item" data-index="${index}" onclick="toggleTargetPlayer(${index})">
-                    <span>${player.name}</span>
-                    <span style="font-size: 0.8em; color: #888;">${player.tier || 'Regular'}</span>
-                </div>
-            `).join('');
-        }
-
-        function toggleSourcePlayer(index) {
-            const items = document.querySelectorAll('#rosterSourcePlayers .roster-player-item');
-            const item = items[index];
-
-            if (selectedSourcePlayers.includes(index)) {
-                selectedSourcePlayers = selectedSourcePlayers.filter(i => i !== index);
-                item.classList.remove('selected');
-            } else {
-                selectedSourcePlayers.push(index);
-                item.classList.add('selected');
-            }
-        }
-
-        function toggleTargetPlayer(index) {
-            const items = document.querySelectorAll('#rosterTargetPlayers .roster-player-item');
-            const item = items[index];
-
-            if (selectedTargetPlayers.includes(index)) {
-                selectedTargetPlayers = selectedTargetPlayers.filter(i => i !== index);
-                item.classList.remove('selected');
-            } else {
-                selectedTargetPlayers.push(index);
-                item.classList.add('selected');
-            }
-        }
-
-        function moveSelectedToTarget() {
-            const sourceTeam = document.getElementById('rosterSourceTeam').value;
-            const targetTeam = document.getElementById('rosterTargetTeam').value;
-
-            if (!sourceTeam || !targetTeam) {
-                alert('Selecciona ambos equipos');
-                return;
-            }
-
-            if (sourceTeam === targetTeam) {
-                alert('Los equipos deben ser diferentes');
-                return;
-            }
-
-            if (selectedSourcePlayers.length === 0) {
-                alert('Selecciona jugadores para mover');
-                return;
-            }
-
-            // Sort in descending order to remove from end first
-            const sortedIndices = [...selectedSourcePlayers].sort((a, b) => b - a);
-            const movedPlayers = [];
-
-            sortedIndices.forEach(index => {
-                const player = captainTeams[sourceTeam][index];
-                movedPlayers.push(player.name);
-
-                // Update player ID for new team
-                player.id = `${targetTeam}-${player.purchaseId}`;
-
-                // Add to target team
-                captainTeams[targetTeam].push(player);
-
-                // Remove from source
-                captainTeams[sourceTeam].splice(index, 1);
-            });
-
-            const logEntry = `${new Date().toLocaleTimeString()}: Movidos ${movedPlayers.join(', ')} de ${sourceTeam} a ${targetTeam}`;
-            adminLog.push(logEntry);
-            document.getElementById('adminLog').textContent = adminLog.slice(-3).join('\n');
-
-            selectedSourcePlayers = [];
-            populateRosterSelectors();
-            renderRightPanel();
-
-            alert(`✓ ${movedPlayers.length} jugador(es) movidos a ${targetTeam}!`);
-        }
-
-        function moveSelectedToSource() {
-            const sourceTeam = document.getElementById('rosterSourceTeam').value;
-            const targetTeam = document.getElementById('rosterTargetTeam').value;
-
-            if (!sourceTeam || !targetTeam) {
-                alert('Selecciona ambos equipos');
-                return;
-            }
-
-            if (sourceTeam === targetTeam) {
-                alert('Los equipos deben ser diferentes');
-                return;
-            }
-
-            if (selectedTargetPlayers.length === 0) {
-                alert('Selecciona jugadores para mover');
-                return;
-            }
-
-            // Sort in descending order to remove from end first
-            const sortedIndices = [...selectedTargetPlayers].sort((a, b) => b - a);
-            const movedPlayers = [];
-
-            sortedIndices.forEach(index => {
-                const player = captainTeams[targetTeam][index];
-                movedPlayers.push(player.name);
-
-                // Update player ID for new team
-                player.id = `${sourceTeam}-${player.purchaseId}`;
-
-                // Add to source team
-                captainTeams[sourceTeam].push(player);
-
-                // Remove from target
-                captainTeams[targetTeam].splice(index, 1);
-            });
-
-            const logEntry = `${new Date().toLocaleTimeString()}: Movidos ${movedPlayers.join(', ')} de ${targetTeam} a ${sourceTeam}`;
-            adminLog.push(logEntry);
-            document.getElementById('adminLog').textContent = adminLog.slice(-3).join('\n');
-
-            selectedTargetPlayers = [];
-            populateRosterSelectors();
-            renderRightPanel();
-
-            alert(`✓ ${movedPlayers.length} jugador(es) movidos a ${sourceTeam}!`);
-        }
-
-        function moveAllToTarget() {
-            const sourceTeam = document.getElementById('rosterSourceTeam').value;
-            const targetTeam = document.getElementById('rosterTargetTeam').value;
-
-            if (!sourceTeam || !targetTeam) {
-                alert('Selecciona ambos equipos');
-                return;
-            }
-
-            if (sourceTeam === targetTeam) {
-                alert('Los equipos deben ser diferentes');
-                return;
-            }
-
-            const players = captainTeams[sourceTeam];
-            if (players.length === 0) {
-                alert('No hay jugadores para mover');
-                return;
-            }
-
-            if (!confirm(`¿Mover TODOS los jugadores de ${sourceTeam} a ${targetTeam}?`)) {
-                return;
-            }
-
-            const movedPlayers = players.map(p => p.name);
-
-            // Move all players
-            players.forEach(player => {
-                player.id = `${targetTeam}-${player.purchaseId}`;
-                captainTeams[targetTeam].push(player);
-            });
-
-            // Clear source team
-            captainTeams[sourceTeam] = [];
-
-            const logEntry = `${new Date().toLocaleTimeString()}: Movidos TODOS (${movedPlayers.join(', ')}) de ${sourceTeam} a ${targetTeam}`;
-            adminLog.push(logEntry);
-            document.getElementById('adminLog').textContent = adminLog.slice(-3).join('\n');
-
-            populateRosterSelectors();
-            renderRightPanel();
-
-            alert(`✓ ${movedPlayers.length} jugadores movidos a ${targetTeam}!`);
-        }
-
-        // ==========================================
-        // BETTING SYSTEM FUNCTIONS
-        // ==========================================
-        function populateBetSelectors() {
-            const bet1 = document.getElementById('betTeam1');
-            const bet2 = document.getElementById('betTeam2');
-
-            bet1.innerHTML = '<option value="">Equipo/Persona 1</option>';
-            bet2.innerHTML = '<option value="">Equipo/Persona 2</option>';
-
-            draftOrder.forEach(captain => {
-                const money = captainMoney[captain] || 0;
-                bet1.innerHTML += `<option value="${captain}">${captain} (${money} YEN)</option>`;
-                bet2.innerHTML += `<option value="${captain}">${captain} (${money} YEN)</option>`;
-            });
-        }
-
-        function createBet() {
-            const team1 = document.getElementById('betTeam1').value;
-            const team2 = document.getElementById('betTeam2').value;
-            const amount = parseInt(document.getElementById('betAmount').value);
-            const description = document.getElementById('betDescription').value.trim();
-
-            if (!team1 || !team2) {
-                alert('Selecciona ambos equipos/personas');
-                return;
-            }
-
-            if (team1 === team2) {
-                alert('Los equipos deben ser diferentes');
-                return;
-            }
-
-            if (!amount || amount <= 0) {
-                alert('Ingresa una cantidad valida');
-                return;
-            }
-
-            const bet = {
-                id: betIdCounter++,
-                team1: team1,
-                team2: team2,
-                amount: amount,
-                description: description || `${team1} vs ${team2}`,
-                winner: null,
-                resolved: false,
-                createdAt: new Date().toLocaleTimeString()
-            };
-
-            bets.push(bet);
-
-            // Clear form
-            document.getElementById('betAmount').value = '';
-            document.getElementById('betDescription').value = '';
-
-            const logEntry = `${new Date().toLocaleTimeString()}: Nueva apuesta creada: ${team1} vs ${team2} por ${amount} YEN`;
-            adminLog.push(logEntry);
-            document.getElementById('adminLog').textContent = adminLog.slice(-3).join('\n');
-
-            renderBetsList();
-            alert(`✓ Apuesta creada: ${team1} vs ${team2} por ${amount} YEN`);
-        }
-
-        function renderBetsList() {
-            const activeBetsContainer = document.getElementById('betsList');
-            const historyContainer = document.getElementById('betsHistory');
-
-            // Active bets
-            const activeBets = bets.filter(b => !b.resolved);
-            if (activeBets.length === 0) {
-                activeBetsContainer.innerHTML = '<p style="color: #666; font-size: 0.9em;">No hay apuestas activas</p>';
-            } else {
-                activeBetsContainer.innerHTML = activeBets.map(bet => `
-                    <div class="bet-card">
-                        <div class="bet-teams">
-                            <div class="bet-team">${bet.team1}</div>
-                            <div class="bet-vs">VS</div>
-                            <div class="bet-team">${bet.team2}</div>
-                        </div>
-                        <div class="bet-amount">${bet.amount} YEN</div>
-                        ${bet.description ? `<p style="font-size: 0.85em; color: #aaa; text-align: center; margin-bottom: 10px;">${bet.description}</p>` : ''}
-                        <div class="bet-controls">
-                            <button class="bet-win-1" onclick="resolveBet(${bet.id}, '${bet.team1}')">✓ ${bet.team1} Gana</button>
-                            <button class="bet-win-2" onclick="resolveBet(${bet.id}, '${bet.team2}')">✓ ${bet.team2} Gana</button>
-                            <button class="bet-cancel" onclick="cancelBet(${bet.id})">✗</button>
-                        </div>
-                    </div>
-                `).join('');
-            }
-
-            // History
-            if (betsHistory.length === 0) {
-                historyContainer.innerHTML = '<p style="color: #666; font-size: 0.9em;">Sin historial</p>';
-            } else {
-                historyContainer.innerHTML = betsHistory.slice(-5).reverse().map(bet => `
-                    <div class="bet-card resolved ${bet.winner === bet.team1 ? 'winner-1' : 'winner-2'}">
-                        <div style="font-size: 0.85em;">
-                            <strong>${bet.team1}</strong> vs <strong>${bet.team2}</strong>
-                            <span style="color: #00ff00; margin-left: 10px;">→ ${bet.winner} gano ${bet.amount} YEN</span>
-                        </div>
-                    </div>
-                `).join('');
-            }
-        }
-
-        function resolveBet(betId, winner) {
-            const betIndex = bets.findIndex(b => b.id === betId);
-            if (betIndex === -1) return;
-
-            const bet = bets[betIndex];
-
-            if (!confirm(`¿Confirmar que ${winner} gano la apuesta de ${bet.amount} YEN?`)) {
-                return;
-            }
-
-            // Add money to winner
-            captainMoney[winner] += bet.amount;
-
-            // Mark as resolved
-            bet.winner = winner;
-            bet.resolved = true;
-            bet.resolvedAt = new Date().toLocaleTimeString();
-
-            // Move to history
-            betsHistory.push(bet);
-            bets.splice(betIndex, 1);
-
-            const logEntry = `${new Date().toLocaleTimeString()}: ${winner} gano apuesta vs ${winner === bet.team1 ? bet.team2 : bet.team1}: +${bet.amount} YEN`;
-            adminLog.push(logEntry);
-            document.getElementById('adminLog').textContent = adminLog.slice(-3).join('\n');
-
-            renderBetsList();
-            populateBetSelectors();
-            updateTurnDisplay();
-            renderTeamsSummary();
-            renderRightPanel();
-
-            alert(`✓ ${winner} recibio ${bet.amount} YEN!`);
-        }
-
-        function cancelBet(betId) {
-            const betIndex = bets.findIndex(b => b.id === betId);
-            if (betIndex === -1) return;
-
-            const bet = bets[betIndex];
-
-            if (!confirm(`¿Cancelar apuesta entre ${bet.team1} y ${bet.team2}?`)) {
-                return;
-            }
-
-            bets.splice(betIndex, 1);
-
-            const logEntry = `${new Date().toLocaleTimeString()}: Apuesta cancelada: ${bet.team1} vs ${bet.team2}`;
-            adminLog.push(logEntry);
-            document.getElementById('adminLog').textContent = adminLog.slice(-3).join('\n');
-
-            renderBetsList();
-            alert('Apuesta cancelada');
-        }
-
-        function manualTournamentSetup() {
-            // Hide draft and show tournament setup
-            document.getElementById('playersArea').style.display = 'none';
-            document.getElementById('turnInfo').style.display = 'none';
-            document.getElementById('adminPanel').style.display = 'none';
-            
-            showTournamentSetup();
-        }
-
-        function showTournamentSetup() {
-            const finalTeamsDiv = document.getElementById('finalTeams');
-            finalTeamsDiv.classList.add('show');
-            finalTeamsDiv.innerHTML = `
-                <h2 style="margin-bottom: 20px;">⚔️ TOURNAMENT SETUP</h2>
-                <div id="tournamentSetupArea"></div>
-                <button onclick="startTournament()" style="width: 100%; padding: 12px; margin-top: 20px; background: #00ff00; color: #000; font-weight: bold; cursor: pointer; border: none; font-size: 1.1em;">START TOURNAMENT</button>
-            `;
-            
-            const setupArea = document.getElementById('tournamentSetupArea');
-            const teams = draftOrder.filter(t => captainTeams[t].length > 0);
-            
-            // Show all teams with their info
-            let html = '<div style="margin-bottom: 20px;">';
-            teams.forEach((team, idx) => {
-                html += `
-                    <div style="background: #333; padding: 10px; margin-bottom: 8px; border-left: 3px solid #ffcc00;">
-                        <strong>${idx + 1}. ${team}</strong> - ${captainTeams[team].length} Players
-                    </div>
-                `;
-            });
-            html += '</div>';
-            
-            // Create manual bracket builder
-            html += '<h3 style="color: #ffcc00; margin: 20px 0;">Build Your Bracket:</h3>';
-            html += '<div id="bracketBuilder"></div>';
-            
-            setupArea.innerHTML = html;
-            
-            const bracketBuilder = document.getElementById('bracketBuilder');
-            
-            // Calculate number of matches needed
-            const numTeams = teams.length;
-            const numMatches = Math.ceil(numTeams / 2);
-            
-            for (let i = 0; i < numMatches; i++) {
-                const matchDiv = document.createElement('div');
-                matchDiv.style.cssText = 'background: #1a1a1a; border: 2px solid #555; padding: 12px; margin-bottom: 12px;';
-                matchDiv.innerHTML = `
-                    <div style="margin-bottom: 10px; font-weight: bold;">MATCH ${i + 1}</div>
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
-                        <select class="match-team-select" data-match="${i}" data-slot="team1">
-                            <option value="">Select Team 1</option>
-                            ${teams.map(t => `<option value="${t}">${t}</option>`).join('')}
-                        </select>
-                        <select class="match-team-select" data-match="${i}" data-slot="team2">
-                            <option value="">Select Team 2</option>
-                            ${teams.map(t => `<option value="${t}">${t}</option>`).join('')}
-                        </select>
-                    </div>
-                `;
-                bracketBuilder.appendChild(matchDiv);
-            }
-            
-            // Store teams globally for tournament setup
-            window.tournamentTeams = teams;
-        }
-
-        function startTournament() {
-            tournamentMatches = [];
-            const matches = document.querySelectorAll('.match-team-select');
-            let matchIndex = 0;
-            const processedMatches = new Map();
-            
-            matches.forEach(select => {
-                const matchNum = parseInt(select.getAttribute('data-match'));
-                const slot = select.getAttribute('data-slot');
-                
-                if (!processedMatches.has(matchNum)) {
-                    processedMatches.set(matchNum, { team1: null, team2: null });
-                }
-                
-                const match = processedMatches.get(matchNum);
-                match[slot] = select.value;
-            });
-            
-            // Convert map to tournament matches
-            processedMatches.forEach((match, idx) => {
-                if (match.team1 && match.team2 && match.team1 !== match.team2) {
-                    tournamentMatches.push({
-                        team1: match.team1,
-                        team2: match.team2,
-                        winner: null,
-                        round: 1
-                    });
-                }
-            });
-            
-            if (tournamentMatches.length === 0) {
-                alert('Please setup valid matches!');
-                return;
-            }
-
-            // Create duels from matches
-            duels = tournamentMatches.map(match => ({
-                team1: match.team1,
-                team2: match.team2,
-                winner: null,
-                loser: null,
-                completed: false,
-                sub1: null,
-                sub2: null
-            }));
-            
-            document.getElementById('finalTeams').classList.remove('show');
-            document.getElementById('finalTeams').innerHTML = '';
-            
-            currentView = 'tournament';
-            currentDuelIndex = 0;
-            duelHistory = [];
-            renderView();
-        }
-
-        function renderView() {
-            const adminPanel = document.getElementById('adminPanel');
-            const playersArea = document.getElementById('playersArea');
-            const turnInfo = document.getElementById('turnInfo');
-            const finalTeams = document.getElementById('finalTeams');
-            const teamsPanel = document.getElementById('teamsPanel');
-            const tournamentPanel = document.getElementById('tournamentPanel');
-            const duelsPanel = document.getElementById('duelsPanel');
-            const spectatorPanel = document.getElementById('spectatorPanel');
-            const bettingPanel = document.getElementById('bettingPanel');
-            const sidebar = document.querySelector('.sidebar');
-
-            // Hide all
-            adminPanel.style.display = 'none';
-            playersArea.style.display = 'none';
-            turnInfo.style.display = 'none';
-            finalTeams.classList.remove('show');
-            teamsPanel.innerHTML = '';
-            tournamentPanel.innerHTML = '';
-            duelsPanel.innerHTML = '';
-            duelsPanel.style.display = 'none';
-            spectatorPanel.style.display = 'none';
-            bettingPanel.style.display = 'none';
-
-            // Show based on view
-            if (currentView === 'draft') {
-                playersArea.style.display = 'block';
-                turnInfo.style.display = 'block';
-                sidebar.style.display = 'block';
-                renderRightPanel();
-            } else if (currentView === 'admin') {
-                adminPanel.style.display = 'block';
-                playersArea.style.display = 'block';
-                turnInfo.style.display = 'block';
-                sidebar.style.display = 'block';
-                renderRightPanel();
-            } else if (currentView === 'tournament') {
-                duelsPanel.style.display = 'block';
-                renderDuelsView();
-            } else if (currentView === 'spectator') {
-                spectatorPanel.style.display = 'block';
-                renderSpectatorPanel();
-            } else if (currentView === 'betting') {
-                bettingPanel.style.display = 'block';
-                renderBettingPanel();
-            }
-        }
-
-        function switchView(view) {
-            currentView = view;
-            renderView();
-        }
-
-        function renderDuelsView() {
-            const duelsPanel = document.getElementById('duelsPanel');
-            const sidebar = document.querySelector('.sidebar');
-            
-            duelsPanel.innerHTML = `
-                <div class="navigation-buttons">
-                    <button class="nav-btn" onclick="switchView('admin')">⚙️ ADMIN</button>
-                    <button class="nav-btn" onclick="finishTournament()">✓ FINISH</button>
-                </div>
-                
-                <div class="tournament-info">
-                    <h4>⚔️ TOURNAMENT: ${tournamentName}</h4>
-                    <input type="text" class="tournament-input" value="${tournamentName}" 
-                        onchange="tournamentName = this.value; renderDuelsView();" placeholder="Tournament Name">
-                    <div style="font-size: 0.9em; color: #00ff00;">Duel ${currentDuelIndex + 1} of ${duels.length}</div>
-                </div>
-
-                <div id="currentDuelContainer"></div>
-                <div id="duelHistoryContainer"></div>
-            `;
-
-            // Render current duel
-            if (currentDuelIndex < duels.length) {
-                renderCurrentDuel();
-            } else {
-                document.getElementById('currentDuelContainer').innerHTML = '<div style="background: #1a3a1a; padding: 12px; border: 2px solid #00ff00; text-align: center; color: #00ff00; font-weight: bold;">🏆 All Duels Complete!</div>';
-            }
-
-            // Render history
-            renderDuelHistory();
-
-            // Show sidebar with navigation
-            sidebar.style.display = 'block';
-            sidebar.innerHTML = `
-                <h3>Tournament Info</h3>
-                <div style="margin-top: 15px;">
-                    <div style="margin-bottom: 15px;">
-                        <strong>Completed Duels</strong>
-                        <div style="font-size: 1.3em; color: #00ff00; margin-top: 5px;">${duelHistory.length}/${duels.length}</div>
-                    </div>
-                </div>
-                <div class="teams-summary" id="tournamentTeamsSummary"></div>
-            `;
-
-            renderTournamentTeamsSummary();
-        }
-
-        function renderCurrentDuel() {
-            if (currentDuelIndex >= duels.length) return;
-
-            const duel = duels[currentDuelIndex];
-            const container = document.getElementById('currentDuelContainer');
-            
-            let team1Display = duel.team1;
-            let team2Display = duel.team2;
-
-            if (duel.sub1) {
-                team1Display = `${duel.team1} → <span style="color: #ffcc00;">${duel.sub1}</span>`;
-            }
-            if (duel.sub2) {
-                team2Display = `${duel.team2} → <span style="color: #ffcc00;">${duel.sub2}</span>`;
-            }
-
-            const html = `
-                <div class="duel-card">
-                    <div style="margin-bottom: 12px; font-weight: bold; color: #ffcc00; text-align: center;">CURRENT DUEL</div>
-                    
-                    <div class="duel-vs">
-                        <div class="duel-team" style="background: ${duel.winner === duel.team1 ? '#00aa00' : '#333'}; cursor: pointer;" 
-                            onclick="changeDuelTeam(1)">${team1Display}</div>
-                        <div class="duel-vs-text">VS</div>
-                        <div class="duel-team" style="background: ${duel.winner === duel.team2 ? '#00aa00' : '#333'}; cursor: pointer;"
-                            onclick="changeDuelTeam(2)">${team2Display}</div>
-                    </div>
-
-                    <div class="duel-controls">
-                        <button class="winner-btn" onclick="completeDuel('${duel.team1}')">✓ ${duel.team1} Wins</button>
-                        <button class="loser-btn" onclick="completeDuel('${duel.team2}')">✗ ${duel.team2} Wins</button>
-                    </div>
-
-                    <div style="margin-top: 10px; font-size: 0.85em; color: #aaa;">
-                        <div style="margin-bottom: 5px;"><strong>Substitutions:</strong></div>
-                        <button class="sub-btn" style="width: 100%; margin-bottom: 5px;" onclick="openSubstitution(1)">🔄 Sub from ${duel.team1}</button>
-                        <button class="sub-btn" style="width: 100%;" onclick="openSubstitution(2)">🔄 Sub from ${duel.team2}</button>
-                    </div>
-                </div>
-            `;
-
-            container.innerHTML = html;
-        }
-
-        function openSubstitution(teamSlot) {
-            if (currentDuelIndex >= duels.length) return;
-
-            const duel = duels[currentDuelIndex];
-            const sourceTeam = teamSlot === 1 ? duel.team1 : duel.team2;
-            
-            const players = captainTeams[sourceTeam];
-            if (!players || players.length === 0) {
-                alert(`No players available in ${sourceTeam}`);
-                return;
-            }
-
-            let playerList = 'Select player to replace:\n\n';
-            players.forEach((p, i) => {
-                playerList += `${i + 1}. ${p.name} (${p.tier || 'Regular'})\n`;
-            });
-
-            const selected = prompt(playerList + '\nEnter number (or cancel):', '');
-            if (selected === null) return;
-
-            const playerIndex = parseInt(selected) - 1;
-            if (playerIndex >= 0 && playerIndex < players.length) {
-                const player = players[playerIndex];
-                if (teamSlot === 1) {
-                    duel.sub1 = player.name;
-                } else {
-                    duel.sub2 = player.name;
-                }
-                renderCurrentDuel();
-            }
-        }
-
-        function changeDuelTeam(slot) {
-            if (currentDuelIndex >= duels.length) return;
-            
-            const duel = duels[currentDuelIndex];
-            const teams = draftOrder.filter(t => captainTeams[t].length > 0);
-            
-            let teamList = 'Select new team:\n\n';
-            teams.forEach((t, i) => {
-                teamList += `${i + 1}. ${t}\n`;
-            });
-
-            const selected = prompt(teamList + '\nEnter number (or cancel):', '');
-            if (selected === null) return;
-
-            const teamIndex = parseInt(selected) - 1;
-            if (teamIndex >= 0 && teamIndex < teams.length) {
-                if (slot === 1) {
-                    duel.team1 = teams[teamIndex];
-                    duel.sub1 = null;
-                } else {
-                    duel.team2 = teams[teamIndex];
-                    duel.sub2 = null;
-                }
-                renderCurrentDuel();
-            }
-        }
-
-        function completeDuel(winner) {
-            if (currentDuelIndex >= duels.length) return;
-
-            const duel = duels[currentDuelIndex];
-            duel.winner = winner;
-            duel.loser = winner === duel.team1 ? duel.team2 : duel.team1;
-            duel.completed = true;
-
-            // Add to history
-            const historyEntry = {
-                duelNum: duelHistory.length + 1,
-                team1: duel.team1,
-                team2: duel.team2,
-                winner: winner,
-                sub1: duel.sub1,
-                sub2: duel.sub2
-            };
-            duelHistory.push(historyEntry);
-
-            // Persist data to localStorage
             saveData();
-
-            // Move to next duel
-            currentDuelIndex++;
-            renderDuelsView();
+            renderPlayerEditContent();
+            renderPlayersContainer();
         }
 
-        function renderDuelHistory() {
-            const container = document.getElementById('duelHistoryContainer');
-            
-            if (duelHistory.length === 0) {
-                container.innerHTML = '';
+        function addNewPlayer(category) {
+            const name = prompt('Enter player name:');
+            if (!name) return;
+
+            const price = parseInt(prompt('Enter price:', '150'));
+            if (!price) return;
+
+            if (category === 'wildcard') {
+                const count = parseInt(prompt('How many available?', '3')) || 3;
+                gameData.wildcards.push({ name, price, count, available: count });
+            } else if (category === 'tsuguko') {
+                const tier = prompt('Enter tier (e.g., S+, A, B-):', 'B');
+                gameData.tsugukos.push({ name, tier, price });
+            } else {
+                gameData.hinoes.push({ name, price });
+            }
+
+            saveData();
+            renderPlayerEditContent();
+            renderPlayersContainer();
+        }
+
+        // ==========================================
+        // MATCHES
+        // ==========================================
+        function setupMatches() {
+            const teamsWithPlayers = gameData.captains.filter(c => (gameData.captainTeams[c] || []).length > 0);
+
+            if (teamsWithPlayers.length < 2) {
+                alert('Need at least 2 teams with players!');
                 return;
             }
 
-            let html = '<div style="margin-top: 15px;"><strong style="color: #00ff00;">Completed Duels:</strong>';
-            
-            duelHistory.forEach(entry => {
-                const subInfo = entry.sub1 || entry.sub2 ? ` (Subs: ${entry.sub1 || '-'} vs ${entry.sub2 || '-'})` : '';
-                html += `<div class="duel-history">#${entry.duelNum}: ${entry.team1} vs ${entry.team2} → <span style="color: #00ff00; font-weight: bold;">${entry.winner} WIN</span>${subInfo}</div>`;
-            });
+            // Simple modal for match setup
+            let html = '<h3 style="color: #ffcc00; margin-bottom: 15px;">Setup Matches</h3>';
+            html += '<div id="matchSetupList">';
+
+            const numMatches = Math.floor(teamsWithPlayers.length / 2);
+            for (let i = 0; i < Math.max(numMatches, 3); i++) {
+                html += `
+                    <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+                        <select id="match${i}team1" style="flex: 1; padding: 8px; background: #333; color: #fff; border: 1px solid #555;">
+                            <option value="">Team 1</option>
+                            ${teamsWithPlayers.map(t => `<option value="${t}">${t}</option>`).join('')}
+                        </select>
+                        <span style="padding: 8px;">VS</span>
+                        <select id="match${i}team2" style="flex: 1; padding: 8px; background: #333; color: #fff; border: 1px solid #555;">
+                            <option value="">Team 2</option>
+                            ${teamsWithPlayers.map(t => `<option value="${t}">${t}</option>`).join('')}
+                        </select>
+                    </div>
+                `;
+            }
 
             html += '</div>';
-            container.innerHTML = html;
+            html += '<button class="modal-btn" onclick="confirmMatchSetup()">Start Matches</button>';
+            html += '<button class="modal-btn cancel" onclick="closeMatchSetupModal()">Cancel</button>';
+
+            // Show in a temporary modal
+            const modal = document.createElement('div');
+            modal.id = 'matchSetupModal';
+            modal.className = 'modal-overlay';
+            modal.innerHTML = `<div class="modal-box">${html}</div>`;
+            document.body.appendChild(modal);
         }
 
-        function renderTournamentTeamsSummary() {
-            const container = document.getElementById('tournamentTeamsSummary');
-            
-            let html = '';
-            draftOrder.forEach(team => {
-                const duelStats = {
-                    wins: duelHistory.filter(d => d.winner === team).length,
-                    losses: duelHistory.filter(d => d.loser === team).length
-                };
-
-                html += `
-                    <div class="team-item" style="border-left-color: ${duelStats.wins > 0 ? '#00ff00' : '#666'};">
-                        <strong>${team}</strong>
-                        <div style="font-size: 0.9em; margin-top: 5px;">
-                            W: ${duelStats.wins} | L: ${duelStats.losses}
-                        </div>
-                    </div>
-                `;
-            });
-
-            container.innerHTML = html;
+        function closeMatchSetupModal() {
+            const modal = document.getElementById('matchSetupModal');
+            if (modal) modal.remove();
         }
 
-        function finishTournament() {
-            if (duelHistory.length === 0) {
-                alert('Complete at least one duel!');
+        function confirmMatchSetup() {
+            gameData.matches = [];
+
+            for (let i = 0; i < 10; i++) {
+                const team1El = document.getElementById(`match${i}team1`);
+                const team2El = document.getElementById(`match${i}team2`);
+
+                if (!team1El || !team2El) continue;
+
+                const team1 = team1El.value;
+                const team2 = team2El.value;
+
+                if (team1 && team2 && team1 !== team2) {
+                    gameData.matches.push({
+                        id: Date.now() + i,
+                        team1,
+                        team2,
+                        winner: null,
+                        completed: false
+                    });
+                }
+            }
+
+            if (gameData.matches.length === 0) {
+                alert('Setup at least one valid match!');
                 return;
             }
 
-            // Calculate tournament winner
-            const standings = draftOrder.map(team => ({
-                team: team,
-                wins: duelHistory.filter(d => d.winner === team).length,
-                losses: duelHistory.filter(d => d.loser === team).length
-            })).sort((a, b) => b.wins - a.wins);
+            currentMatchIndex = 0;
+            saveData();
+            closeMatchSetupModal();
+            renderMatchesContainer();
 
-            let finalHtml = `<h2 style="margin-bottom: 20px; text-align: center; color: #00ff00;">🏆 ${tournamentName.toUpperCase()} - FINAL RESULTS</h2>`;
-            
-            standings.forEach((s, i) => {
-                const medal = i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : '  ';
-                finalHtml += `
-                    <div class="team-final" style="border-left-color: ${i === 0 ? '#ffcc00' : '#888'};">
-                        <h3>${medal} #${i + 1} - ${s.team}</h3>
-                        <div style="font-size: 1.1em;">
-                            <strong>Wins: ${s.wins}</strong> | Losses: ${s.losses}
-                        </div>
-                    </div>
-                `;
-            });
-
-            finalHtml += `
-                <div style="margin-top: 20px; display: flex; gap: 10px;">
-                    <button onclick="switchView('admin')" style="flex: 1; padding: 10px; background: #333; color: #fff; cursor: pointer;">⚙️ ADMIN</button>
-                    <button onclick="switchView('draft')" style="flex: 1; padding: 10px; background: #333; color: #fff; cursor: pointer;">📊 DRAFT</button>
-                </div>
-            `;
-
-            document.getElementById('finalTeams').classList.add('show');
-            document.getElementById('finalTeamsList').innerHTML = finalHtml;
+            alert(`${gameData.matches.length} matches created!`);
         }
 
-        // Right Panel (Teams + Tournament)
-        function renderRightPanel() {
-            renderTeamsPanel();
-            renderTournamentPanel();
-        }
+        function renderMatchesContainer() {
+            const container = document.getElementById('matchesContainer');
 
-        function renderTeamsPanel() {
-            const panel = document.getElementById('teamsPanel');
-            panel.innerHTML = '<h3 style="color: #ffcc00; margin-bottom: 12px;">📋 TEAMS</h3>';
-
-            draftOrder.forEach(captain => {
-                const team = captainTeams[captain];
-                const teamDiv = document.createElement('div');
-                const isTournamentWinner = tournamentMatches.some(m => m.winner === captain);
-                teamDiv.className = `team-card ${isTournamentWinner ? 'tournament-winner' : ''}`;
-                
-                let html = `<h4>${captain}</h4>`;
-                html += `<div class="team-card-money">💰 ${captainMoney[captain]} YEN</div>`;
-                
-                if (team.length === 0) {
-                    html += '<div style="font-size: 0.9em; color: #999;">No players</div>';
-                } else {
-                    html += '<div class="team-players">';
-                    team.forEach(player => {
-                        const cardState = cardStatus[player.id] || 'active';
-                        let stateClass = '';
-                        let stateText = '';
-                        
-                        if (cardState === 'active') {
-                            stateClass = 'active';
-                            stateText = '✓ Active';
-                        } else if (cardState === 'used') {
-                            stateClass = 'used';
-                            stateText = '⚡ Used';
-                        } else if (cardState === 'abandoned') {
-                            stateClass = 'abandoned';
-                            stateText = '✗ Abandoned';
-                        }
-                        
-                        html += `
-                            <div class="player-entry">
-                                <span>${player.name} ${player.tier ? `(${player.tier})` : ''}</span>
-                                <div style="display: flex; gap: 4px;">
-                                    <span class="card-status ${stateClass}" onclick="toggleCardStatus('${player.id}')" style="cursor: pointer;">${stateText}</span>
-                                </div>
-                            </div>
-                        `;
-                    });
-                    html += '</div>';
-                }
-                
-                teamDiv.innerHTML = html;
-                panel.appendChild(teamDiv);
-            });
-        }
-
-        function toggleCardStatus(playerId) {
-            const statuses = ['active', 'used', 'abandoned', 'active'];
-            const currentIndex = statuses.indexOf(cardStatus[playerId] || 'active');
-            cardStatus[playerId] = statuses[(currentIndex + 1) % statuses.length];
-            renderTeamsPanel();
-        }
-
-        function generateTournamentBracket() {
-            tournamentMatches = [];
-            const teams = [...draftOrder];
-            
-            // Create round 1 matches
-            for (let i = 0; i < teams.length; i += 2) {
-                if (teams[i + 1]) {
-                    tournamentMatches.push({
-                        team1: teams[i],
-                        team2: teams[i + 1],
-                        winner: null,
-                        round: 1
-                    });
-                }
+            if (gameData.matches.length === 0) {
+                container.innerHTML = '<p style="color: #888;">No matches set up. Click "Setup Matches" to create matches.</p>';
+                return;
             }
-            renderRightPanel();
+
+            container.innerHTML = gameData.matches.map((match, idx) => `
+                <div class="match-card ${!match.completed && idx === currentMatchIndex ? 'active' : ''} ${match.completed ? 'completed' : ''}">
+                    <div style="margin-bottom: 10px; color: ${match.completed ? '#888' : '#ffcc00'};">
+                        Match ${idx + 1} ${match.completed ? '- COMPLETED' : idx === currentMatchIndex ? '- CURRENT' : ''}
+                    </div>
+                    <div class="match-teams">
+                        <div class="match-team ${match.winner === match.team1 ? 'winner' : ''}">${match.team1}</div>
+                        <div class="match-vs">VS</div>
+                        <div class="match-team ${match.winner === match.team2 ? 'winner' : ''}">${match.team2}</div>
+                    </div>
+                    ${!match.completed ? `
+                        <div class="match-controls">
+                            <button class="btn-win" onclick="setMatchWinner(${idx}, '${match.team1}')">${match.team1} WINS</button>
+                            <button class="btn-win" onclick="setMatchWinner(${idx}, '${match.team2}')">${match.team2} WINS</button>
+                        </div>
+                    ` : `
+                        <div style="text-align: center; color: #00ff00; font-weight: bold;">Winner: ${match.winner}</div>
+                    `}
+                </div>
+            `).join('');
         }
 
         function setMatchWinner(matchIndex, winner) {
-            tournamentMatches[matchIndex].winner = winner;
-            
-            const nextRound = tournamentMatches[matchIndex].round + 1;
-            const matchesInCurrentRound = tournamentMatches.filter(m => m.round === tournamentMatches[matchIndex].round).length;
-            const currentMatchNumber = matchIndex % matchesInCurrentRound;
-            
-            // Create next round match if it doesn't exist
-            if (currentMatchNumber % 2 === 0) {
-                const nextMatchIndex = tournamentMatches.filter(m => m.round === nextRound).length;
-                if (nextMatchIndex * 2 === currentMatchNumber) {
-                    tournamentMatches.push({
-                        team1: null,
-                        team2: null,
-                        winner: null,
-                        round: nextRound
-                    });
-                }
-            }
-            
-            // Add winner to next round
-            const nextRoundMatches = tournamentMatches.filter(m => m.round === nextRound);
-            const nextMatchIndex = Math.floor(currentMatchNumber / 2);
-            if (nextMatchIndex < nextRoundMatches.length) {
-                if (nextRoundMatches[nextMatchIndex].team1 === null) {
-                    nextRoundMatches[nextMatchIndex].team1 = winner;
-                } else {
-                    nextRoundMatches[nextMatchIndex].team2 = winner;
-                }
-            }
-            
-            renderRightPanel();
-        }
+            const match = gameData.matches[matchIndex];
+            if (!match || match.completed) return;
 
-        function renderTournamentPanel() {
-            const panel = document.getElementById('tournamentPanel');
-            
-            if (tournamentMatches.length === 0) {
-                panel.innerHTML = '';
-                return;
-            }
-            
-            panel.innerHTML = '<div class="tournament-section"><h3>🏆 TOURNAMENT</h3><div class="tournament-bracket" id="bracket"></div></div>';
-            const bracket = document.getElementById('bracket');
-            
-            const rounds = Math.max(...tournamentMatches.map(m => m.round));
-            
-            for (let round = 1; round <= rounds; round++) {
-                const roundMatches = tournamentMatches.filter(m => m.round === round);
-                
-                if (roundMatches.length === 0) continue;
-                
-                const roundDiv = document.createElement('div');
-                roundDiv.innerHTML = `<div style="font-weight: bold; color: #00ff00; margin-top: 10px; margin-bottom: 5px;">Round ${round}</div>`;
-                
-                roundMatches.forEach((match, i) => {
-                    const matchDiv = document.createElement('div');
-                    matchDiv.className = 'match';
-                    
-                    const match1Html = match.team1 ? `
-                        <div class="match-team ${match.winner === match.team1 ? 'match-winner' : ''}">
-                            ${match.team1} ${match.winner === match.team1 ? '✓' : ''}
-                        </div>
-                    ` : '<div class="match-team" style="color: #666;">TBD</div>';
-                    
-                    const match2Html = match.team2 ? `
-                        <div class="match-team ${match.winner === match.team2 ? 'match-winner' : ''}">
-                            ${match.team2} ${match.winner === match.team2 ? '✓' : ''}
-                        </div>
-                    ` : '<div class="match-team" style="color: #666;">TBD</div>';
-                    
-                    let buttonHtml = '';
-                    if (match.team1 && match.team2 && !match.winner) {
-                        const matchIndex = tournamentMatches.indexOf(match);
-                        buttonHtml = `
-                            <div style="display: flex; gap: 5px; margin-top: 5px; font-size: 0.8em;">
-                                <button onclick="setMatchWinner(${matchIndex}, '${match.team1}')" style="flex: 1; padding: 4px; background: #333; color: #0f0; cursor: pointer; border: 1px solid #0f0;">
-                                    ${match.team1}
-                                </button>
-                                <button onclick="setMatchWinner(${matchIndex}, '${match.team2}')" style="flex: 1; padding: 4px; background: #333; color: #0f0; cursor: pointer; border: 1px solid #0f0;">
-                                    ${match.team2}
-                                </button>
-                            </div>
-                        `;
-                    }
-                    
-                    matchDiv.innerHTML = match1Html + match2Html + buttonHtml;
-                    roundDiv.appendChild(matchDiv);
-                });
-                
-                bracket.appendChild(roundDiv);
-            }
-        }
+            match.winner = winner;
+            match.completed = true;
 
-        function renderCurrentDuel() {
-            if (currentDuelIndex >= duels.length) return;
-
-            const duel = duels[currentDuelIndex];
-            const container = document.getElementById('currentDuelContainer');
-            
-            let team1Display = duel.team1;
-            let team2Display = duel.team2;
-
-            if (duel.sub1) {
-                team1Display = `${duel.team1} → <span style="color: #ffcc00;">${duel.sub1}</span>`;
-            }
-            if (duel.sub2) {
-                team2Display = `${duel.team2} → <span style="color: #ffcc00;">${duel.sub2}</span>`;
-            }
-
-            const html = `
-                <div class="duel-card">
-                    <div style="margin-bottom: 12px; font-weight: bold; color: #ffcc00; text-align: center;">CURRENT DUEL</div>
-                    
-                    <div class="duel-vs">
-                        <div class="duel-team" style="background: ${duel.winner === duel.team1 ? '#00aa00' : '#333'}; cursor: pointer;" 
-                            onclick="changeDuelTeam(1)">${team1Display}</div>
-                        <div class="duel-vs-text">VS</div>
-                        <div class="duel-team" style="background: ${duel.winner === duel.team2 ? '#00aa00' : '#333'}; cursor: pointer;"
-                            onclick="changeDuelTeam(2)">${team2Display}</div>
-                    </div>
-
-                    <div class="duel-controls">
-                        <button class="winner-btn" onclick="completeDuel('${duel.team1}')">✓ ${duel.team1} Wins</button>
-                        <button class="loser-btn" onclick="completeDuel('${duel.team2}')">✗ ${duel.team2} Wins</button>
-                    </div>
-
-                    <div style="margin-top: 10px; font-size: 0.85em; color: #aaa;">
-                        <div style="margin-bottom: 5px;"><strong>Substitutions:</strong></div>
-                        <button class="sub-btn" style="width: 100%; margin-bottom: 5px;" onclick="openSubstitution(1)">🔄 Sub from ${duel.team1}</button>
-                        <button class="sub-btn" style="width: 100%;" onclick="openSubstitution(2)">🔄 Sub from ${duel.team2}</button>
-                    </div>
-                </div>
-            `;
-
-            container.innerHTML = html;
-        }
-
-        function openSubstitution(teamSlot) {
-            if (currentDuelIndex >= duels.length) return;
-
-            const duel = duels[currentDuelIndex];
-            const sourceTeam = teamSlot === 1 ? duel.team1 : duel.team2;
-            
-            const players = captainTeams[sourceTeam];
-            if (!players || players.length === 0) {
-                alert(`No players available in ${sourceTeam}`);
-                return;
-            }
-
-            let playerList = 'Select player to replace:\n\n';
-            players.forEach((p, i) => {
-                playerList += `${i + 1}. ${p.name} (${p.tier || 'Regular'})\n`;
+            // Add to history
+            gameData.matchHistory.push({
+                ...match,
+                completedAt: new Date().toISOString()
             });
 
-            const selected = prompt(playerList + '\nEnter number (or cancel):', '');
-            if (selected === null) return;
+            // Resolve bets
+            resolveBetsForMatch(match);
 
-            const playerIndex = parseInt(selected) - 1;
-            if (playerIndex >= 0 && playerIndex < players.length) {
-                const player = players[playerIndex];
-                if (teamSlot === 1) {
-                    duel.sub1 = player.name;
-                } else {
-                    duel.sub2 = player.name;
-                }
-                renderCurrentDuel();
-            }
-                html += `<div class="duel-history">#${entry.duelNum}: ${entry.team1} vs ${entry.team2} → <span style="color: #00ff00; font-weight: bold;">${entry.winner} WIN</span>${subInfo}</div>`;
-            
-
-            html += '</div>';
-            container.innerHTML = html;
-        }
-
-        function renderTournamentTeamsSummary() {
-            const container = document.getElementById('tournamentTeamsSummary');
-            
-            let html = '';
-            draftOrder.forEach(team => {
-                const duelStats = {
-                    wins: duelHistory.filter(d => d.winner === team).length,
-                    losses: duelHistory.filter(d => d.loser === team).length
-                };
-
-                html += `
-                    <div class="team-item" style="border-left-color: ${duelStats.wins > 0 ? '#00ff00' : '#666'};">
-                        <strong>${team}</strong>
-                        <div style="font-size: 0.9em; margin-top: 5px;">
-                            W: ${duelStats.wins} | L: ${duelStats.losses}
-                        </div>
-                    </div>
-                `;
-            });
-
-            container.innerHTML = html;
-        }
-
-        function finishTournament() {
-            if (duelHistory.length === 0) {
-                alert('Complete at least one duel!');
-                return;
+            // Move to next match
+            if (currentMatchIndex === matchIndex) {
+                currentMatchIndex++;
             }
 
-            // Calculate tournament winner
-            const standings = draftOrder.map(team => ({
-                team: team,
-                wins: duelHistory.filter(d => d.winner === team).length,
-                losses: duelHistory.filter(d => d.loser === team).length
-            })).sort((a, b) => b.wins - a.wins);
-
-            let finalHtml = `<h2 style="margin-bottom: 20px; text-align: center; color: #00ff00;">🏆 ${tournamentName.toUpperCase()} - FINAL RESULTS</h2>`;
-            
-            standings.forEach((s, i) => {
-                const medal = i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : '  ';
-                finalHtml += `
-                    <div class="team-final" style="border-left-color: ${i === 0 ? '#ffcc00' : '#888'};">
-                        <h3>${medal} #${i + 1} - ${s.team}</h3>
-                        <div style="font-size: 1.1em;">
-                            <strong>Wins: ${s.wins}</strong> | Losses: ${s.losses}
-                        </div>
-                    </div>
-                `;
-            });
-
-            finalHtml += `
-                <div style="margin-top: 20px; display: flex; gap: 10px;">
-                    <button onclick="switchView('admin')" style="flex: 1; padding: 10px; background: #333; color: #fff; cursor: pointer;">⚙️ ADMIN</button>
-                    <button onclick="switchView('draft')" style="flex: 1; padding: 10px; background: #333; color: #fff; cursor: pointer;">📊 DRAFT</button>
-                </div>
-            `;
-
-            document.getElementById('finalTeams').classList.add('show');
-            document.getElementById('finalTeamsList').innerHTML = finalHtml;
+            saveData();
+            renderMatchesContainer();
+            renderBettingPanel();
+            renderSpectatorPanel();
         }
 
-        // Spectator Panel
-        function renderSpectatorPanel() {
-            const panel = document.getElementById('spectatorPanel');
-            
-            let html = `
-                <div style="margin-bottom: 15px;">
-                    <input type="text" value="${spectatorName}" onchange="spectatorName = this.value; localStorage.setItem('spectatorName', this.value);" 
-                        style="width: 100%; padding: 8px; background: #333; color: #fff; border: 1px solid #555; margin-bottom: 8px;" placeholder="Enter your name">
-                </div>
-
-                <div class="spectator-panel">
-                    <h3>⚔️ LIVE MATCHES</h3>
-            `;
-
-            if (duelHistory.length === 0 && duels.length === 0) {
-                html += '<div style="color: #aaa; font-size: 0.9em;">Waiting for tournament to start...</div>';
-            } else {
-                duelHistory.forEach(duel => {
-                    html += `
-                        <div class="live-match">
-                            <div><strong>${duel.team1}</strong> vs <strong>${duel.team2}</strong></div>
-                            <div class="match-result">✓ ${duel.winner} WINS</div>
-                            ${duel.sub1 || duel.sub2 ? `<div style="font-size: 0.8em; color: #ffcc00;">Subs: ${duel.sub1 || '-'} vs ${duel.sub2 || '-'}</div>` : ''}
-                        </div>
-                    `;
-                });
-            }
-
-            html += `</div>
-
-            <div class="spectator-panel" style="margin-top: 15px;">
-                <h3>📊 STANDINGS</h3>
-            `;
-
-            draftOrder.forEach(team => {
-                const wins = duelHistory.filter(d => d.winner === team).length;
-                const losses = duelHistory.filter(d => d.loser === team).length;
-                html += `
-                    <div style="background: #333; padding: 8px; margin-bottom: 5px;">
-                        <strong>${team}</strong> - W: ${wins} | L: ${losses}
-                    </div>
-                `;
-            });
-
-            html += '</div>';
-            panel.innerHTML = html;
-        }
-
-        // Betting Panel
+        // ==========================================
+        // BETTING SYSTEM
+        // ==========================================
         function renderBettingPanel() {
-            const panel = document.getElementById('bettingPanel');
-            
-            let html = `
-                <div style="margin-bottom: 15px;">
-                    <input type="text" value="${spectatorName}" onchange="spectatorName = this.value; localStorage.setItem('spectatorName', this.value);" 
-                        style="width: 100%; padding: 8px; background: #333; color: #fff; border: 1px solid #555; margin-bottom: 8px;" placeholder="Your name">
-                </div>
-
-                <div class="bets-panel">
-                    <h3>💰 PLACE BETS</h3>
-            `;
-
-            if (currentDuelIndex < duels.length && duels[currentDuelIndex]) {
-                const duel = duels[currentDuelIndex];
-                html += `<div style="margin-bottom: 10px; font-size: 0.9em; color: #ffcc00;"><strong>Current Duel:</strong> ${duel.team1} vs ${duel.team2}</div>`;
-                
-                html += `
-                    <div class="bet-option" onclick="placeBet('${duel.team1}', '${duel.team2}')">
-                        <strong>✓ ${duel.team1} WINS</strong>
-                        <div style="font-size: 0.8em; margin-top: 5px;">Bet on ${duel.team1}</div>
-                    </div>
-                    <div class="bet-option" onclick="placeBet('${duel.team2}', '${duel.team1}')">
-                        <strong>✓ ${duel.team2} WINS</strong>
-                        <div style="font-size: 0.8em; margin-top: 5px;">Bet on ${duel.team2}</div>
-                    </div>
-                `;
-            } else {
-                html += '<div style="color: #aaa; font-size: 0.9em;">No active duel</div>';
-            }
-
-            html += '</div>';
-
-            // Show betting history
-            html += '<div class="bets-panel"><h3>📋 YOUR BETS</h3>';
-            if (currentBets.length === 0) {
-                html += '<div style="color: #aaa; font-size: 0.9em;">No bets placed yet</div>';
-            } else {
-                currentBets.forEach((bet, idx) => {
-                    const won = duelHistory.some(d => d.duelNum === bet.duelNum && d.winner === bet.team);
-                    const status = won ? '<span style="color: #00ff00;">✓ WON</span>' : '<span style="color: #ff0000;">✗ LOST</span>';
-                    if (won !== undefined) {
-                        html += `<div style="background: #333; padding: 8px; margin-bottom: 5px;">
-                            <strong>${bet.bettor}</strong> bet on <strong>${bet.team}</strong> - ${status}
-                        </div>`;
-                    }
-                });
-            }
-            html += '</div>';
-
-            panel.innerHTML = html;
+            renderCurrentMatchBet();
+            renderBetOptions();
+            renderActiveBets();
+            renderBetHistory();
+            renderTeamStandingsBetting();
         }
 
-        function placeBet(team, opponent) {
-            if (!spectatorName || spectatorName.trim() === '') {
-                alert('Please enter your name first!');
+        function renderCurrentMatchBet() {
+            const container = document.getElementById('currentMatchBet');
+            const currentMatch = gameData.matches[currentMatchIndex];
+
+            if (!currentMatch || currentMatch.completed) {
+                container.innerHTML = '<p style="color: #888;">No active match</p>';
+                return;
+            }
+
+            container.innerHTML = `
+                <div class="current-match-bet">
+                    <h4 style="color: #00ff00; margin-bottom: 10px;">CURRENT MATCH</h4>
+                    <div style="font-size: 1.3em;">
+                        <strong>${currentMatch.team1}</strong> VS <strong>${currentMatch.team2}</strong>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderBetOptions() {
+            const container = document.getElementById('betOptions');
+            const currentMatch = gameData.matches[currentMatchIndex];
+
+            if (!currentMatch || currentMatch.completed) {
+                container.innerHTML = '<p style="color: #888;">No betting available</p>';
+                return;
+            }
+
+            container.innerHTML = `
+                <div class="bet-option">
+                    <button onclick="placeBet('${currentMatch.team1}')" style="background: #00aa00; color: #fff;">
+                        Bet on ${currentMatch.team1}
+                    </button>
+                    <button onclick="placeBet('${currentMatch.team2}')" style="background: #0099ff; color: #fff;">
+                        Bet on ${currentMatch.team2}
+                    </button>
+                </div>
+            `;
+        }
+
+        function placeBet(team) {
+            const name = document.getElementById('bettorName').value.trim();
+            const amount = parseInt(document.getElementById('betAmount').value);
+            const currentMatch = gameData.matches[currentMatchIndex];
+
+            if (!name) {
+                alert('Enter your name!');
+                return;
+            }
+            if (!amount || amount <= 0) {
+                alert('Enter a valid bet amount!');
+                return;
+            }
+            if (!currentMatch) {
+                alert('No active match!');
                 return;
             }
 
             const bet = {
-                id: betIdCounter++,
-                duelNum: currentDuelIndex + 1,
-                bettor: spectatorName,
-                team: team,
-                opponent: opponent,
-                timestamp: new Date().toLocaleTimeString()
+                id: Date.now(),
+                bettor: name,
+                amount,
+                team,
+                opponent: team === currentMatch.team1 ? currentMatch.team2 : currentMatch.team1,
+                matchId: currentMatch.id,
+                matchIndex: currentMatchIndex,
+                resolved: false,
+                won: null
             };
 
-            currentBets.push(bet);
-            localStorage.setItem('bets', JSON.stringify(currentBets));
+            gameData.bets.push(bet);
+            saveData();
+
+            document.getElementById('betAmount').value = '';
             renderBettingPanel();
-            alert(`✓ Bet placed on ${team}!`);
+
+            alert(`Bet placed: ${amount} on ${team}!`);
         }
 
-        // Initialize
+        function resolveBetsForMatch(match) {
+            gameData.bets.forEach(bet => {
+                if (bet.matchId === match.id && !bet.resolved) {
+                    bet.resolved = true;
+                    bet.won = bet.team === match.winner;
+
+                    gameData.betHistory.push({
+                        ...bet,
+                        resolvedAt: new Date().toISOString()
+                    });
+                }
+            });
+
+            // Remove resolved bets from active
+            gameData.bets = gameData.bets.filter(b => !b.resolved);
+        }
+
+        function renderActiveBets() {
+            const container = document.getElementById('activeBetsList');
+
+            if (gameData.bets.length === 0) {
+                container.innerHTML = '<p style="color: #888;">No active bets</p>';
+                return;
+            }
+
+            container.innerHTML = gameData.bets.map(bet => `
+                <div class="bet-card">
+                    <div><strong>${bet.bettor}</strong> bet ${bet.amount} YEN</div>
+                    <div style="color: #ffcc00;">${bet.team} to win against ${bet.opponent}</div>
+                </div>
+            `).join('');
+        }
+
+        function renderBetHistory() {
+            const container = document.getElementById('betHistory');
+
+            if (gameData.betHistory.length === 0) {
+                container.innerHTML = '<p style="color: #888;">No bet history</p>';
+                return;
+            }
+
+            container.innerHTML = gameData.betHistory.slice(-10).reverse().map(bet => `
+                <div class="bet-card ${bet.won ? 'won' : 'lost'}">
+                    <div><strong>${bet.bettor}</strong> bet ${bet.amount} YEN on ${bet.team}</div>
+                    <div style="color: ${bet.won ? '#00ff00' : '#aa0000'}; font-weight: bold;">
+                        ${bet.won ? 'WON!' : 'LOST'}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderTeamStandingsBetting() {
+            const container = document.getElementById('teamStandingsBetting');
+            renderStandings(container);
+        }
+
+        // ==========================================
+        // SPECTATOR PANEL
+        // ==========================================
+        function renderSpectatorPanel() {
+            renderLiveMatches();
+            renderSpectatorMatchHistory();
+            renderTeamStandings();
+            renderCardUsageSpectator();
+        }
+
+        function renderLiveMatches() {
+            const container = document.getElementById('liveMatches');
+            const currentMatch = gameData.matches[currentMatchIndex];
+
+            if (!currentMatch || currentMatch.completed) {
+                container.innerHTML = '<p style="color: #888;">No active match</p>';
+                return;
+            }
+
+            container.innerHTML = `
+                <div class="match-card active">
+                    <h4 style="color: #00ff00;">NOW PLAYING</h4>
+                    <div class="match-teams" style="margin-top: 10px;">
+                        <div class="match-team">${currentMatch.team1}</div>
+                        <div class="match-vs">VS</div>
+                        <div class="match-team">${currentMatch.team2}</div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderSpectatorMatchHistory() {
+            const container = document.getElementById('matchHistory');
+
+            if (gameData.matchHistory.length === 0) {
+                container.innerHTML = '<p style="color: #888;">No completed matches</p>';
+                return;
+            }
+
+            container.innerHTML = gameData.matchHistory.slice(-10).reverse().map(match => `
+                <div class="match-card completed">
+                    <div class="match-teams">
+                        <div class="match-team ${match.winner === match.team1 ? 'winner' : ''}">${match.team1}</div>
+                        <div class="match-vs">VS</div>
+                        <div class="match-team ${match.winner === match.team2 ? 'winner' : ''}">${match.team2}</div>
+                    </div>
+                    <div style="text-align: center; color: #00ff00; margin-top: 8px;">Winner: ${match.winner}</div>
+                </div>
+            `).join('');
+        }
+
+        function renderTeamStandings() {
+            const container = document.getElementById('teamStandings');
+            renderStandings(container);
+        }
+
+        function renderStandings(container) {
+            const standings = gameData.captains.map(captain => {
+                const wins = gameData.matchHistory.filter(m => m.winner === captain).length;
+                const losses = gameData.matchHistory.filter(m =>
+                    (m.team1 === captain || m.team2 === captain) && m.winner !== captain
+                ).length;
+                return { captain, wins, losses };
+            }).sort((a, b) => b.wins - a.wins || a.losses - b.losses);
+
+            container.innerHTML = standings.map((s, idx) => `
+                <div class="stat-card" style="${idx === 0 && s.wins > 0 ? 'border-left-color: #ffcc00;' : ''}">
+                    <h4>${idx === 0 && s.wins > 0 ? '1st - ' : ''}${s.captain}</h4>
+                    <div>
+                        <span style="color: #00ff00;">${s.wins}W</span> /
+                        <span style="color: #aa0000;">${s.losses}L</span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderCardUsageSpectator() {
+            const container = document.getElementById('cardUsageSpectator');
+            const entries = Object.entries(gameData.cardUsageCount);
+
+            if (entries.length === 0) {
+                container.innerHTML = '<p style="color: #888;">No cards used yet</p>';
+                return;
+            }
+
+            container.innerHTML = '<div class="usage-stats">' +
+                entries.sort((a, b) => b[1] - a[1]).map(([name, count]) => `
+                    <div class="usage-stat">
+                        <div>${name}</div>
+                        <div class="count">${count}x</div>
+                    </div>
+                `).join('') + '</div>';
+        }
+
+        // ==========================================
+        // RESET
+        // ==========================================
+        function resetAllData() {
+            if (!confirm('WARNING: This will delete ALL data. Are you sure?')) return;
+            if (!confirm('This cannot be undone. Really delete everything?')) return;
+
+            localStorage.removeItem('sunriseCitySlamdown');
+            location.reload();
+        }
+
+        // ==========================================
+        // INITIALIZATION
+        // ==========================================
         loadData();
-        updateTurnDisplay();
-        renderPlayers();
-        renderTeamsSummary();
-        renderRightPanel();
+        switchView('spectator');
     </script>
 </body>
 </html>
