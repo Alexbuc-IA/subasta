@@ -863,6 +863,12 @@
                 </div>
             </div>
         </div>
+
+        <!-- Captain Teams Section -->
+        <div class="bet-section" style="margin-top: 20px; border-color: #0099ff;">
+            <h3 style="color: #0099ff;">CAPTAIN TEAMS</h3>
+            <div id="captainTeamsSpectator" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 15px; margin-top: 15px;"></div>
+        </div>
     </div>
 
     <script>
@@ -2122,6 +2128,7 @@
             renderSpectatorMatchHistory();
             renderTeamStandings();
             renderCardUsageSpectator();
+            renderCaptainTeamsSpectator();
         }
 
         function renderLiveMatches() {
@@ -2211,6 +2218,58 @@
                         <div class="count">${count}x</div>
                     </div>
                 `).join('') + '</div>';
+        }
+
+        function renderCaptainTeamsSpectator() {
+            const container = document.getElementById('captainTeamsSpectator');
+            if (!container) return;
+
+            const hasAnyPlayers = gameData.captains.some(captain =>
+                gameData.captainTeams[captain] && gameData.captainTeams[captain].length > 0
+            );
+
+            if (!hasAnyPlayers) {
+                container.innerHTML = '<p style="color: #888;">No teams formed yet</p>';
+                return;
+            }
+
+            container.innerHTML = gameData.captains.map(captain => {
+                const team = gameData.captainTeams[captain] || [];
+                const money = gameData.captainMoney[captain] || 0;
+
+                return `
+                    <div style="background: #1a1a2e; border: 2px solid #0099ff; padding: 12px; border-radius: 8px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; border-bottom: 1px solid #333; padding-bottom: 8px;">
+                            <h4 style="color: #ffcc00; margin: 0;">${captain}</h4>
+                            <span style="color: #00ff00; font-size: 0.9em;">${money} YEN</span>
+                        </div>
+                        <div style="font-size: 0.85em;">
+                            ${team.length === 0 ?
+                                '<p style="color: #666; margin: 0;">No players yet</p>' :
+                                team.map(player => {
+                                    const status = gameData.playerStatus[player.id] || player.status || 'active';
+                                    const statusColor = status === 'active' ? '#00ff00' :
+                                                       status === 'used' ? '#ff9900' : '#aa0000';
+                                    const tierDisplay = player.tier ? `<span style="color: #888;">[${player.tier}]</span>` : '';
+                                    const categoryIcon = player.category === 'wildcard' ? '🃏' :
+                                                        player.category === 'tsuguko' ? '⭐' : '🔷';
+                                    const bonusTag = player.bonus ? '<span style="color: #ff00ff; font-size: 0.8em;"> (BONUS)</span>' : '';
+
+                                    return `
+                                        <div class="team-player ${status}" style="font-size: 0.9em;">
+                                            <span>${categoryIcon} ${player.name} ${tierDisplay}${bonusTag}</span>
+                                            <span style="color: ${statusColor}; text-transform: uppercase; font-size: 0.75em;">${status}</span>
+                                        </div>
+                                    `;
+                                }).join('')
+                            }
+                        </div>
+                        <div style="margin-top: 8px; padding-top: 8px; border-top: 1px solid #333; color: #888; font-size: 0.8em;">
+                            Total: ${team.length} player${team.length !== 1 ? 's' : ''}
+                        </div>
+                    </div>
+                `;
+            }).join('');
         }
 
         // ==========================================
