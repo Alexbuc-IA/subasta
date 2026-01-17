@@ -2690,47 +2690,10 @@
             }
         }
 
-        // Auto-refresh for spectators every 60 seconds
-        let autoRefreshInterval = null;
-
-        async function autoRefreshForSpectators() {
-            const statusEl = document.getElementById('spectatorSyncStatus');
-            if (statusEl) {
-                statusEl.textContent = 'Actualizando...';
-                statusEl.style.color = '#ffcc00';
-            }
-
-            try {
-                const response = await fetch(`https://api.jsonbin.io/v3/b/${CLOUD_BIN_ID}/latest`);
-                const result = await response.json();
-
-                if (response.ok && result.record) {
-                    gameData = { ...gameData, ...result.record };
-                    initializeCaptains();
-                    saveData();
-                    renderAll();
-                    if (statusEl) {
-                        const now = new Date();
-                        statusEl.textContent = `Actualizado: ${now.toLocaleTimeString()}`;
-                        statusEl.style.color = '#00ff00';
-                    }
-                }
-            } catch (error) {
-                console.error('Auto-refresh error:', error);
-                if (statusEl) {
-                    statusEl.textContent = 'Error al actualizar';
-                    statusEl.style.color = '#ff6666';
-                }
-            }
-        }
-
         // Start auto-save every 20 seconds
         autoSaveInterval = setInterval(autoSaveToCloud, 20000);
 
-        // Start auto-refresh every 60 seconds
-        autoRefreshInterval = setInterval(autoRefreshForSpectators, 60000);
-
-        console.log('Auto-save (20s) and auto-refresh (60s) enabled');
+        console.log('Auto-save (20s) enabled');
     </script>
 </body>
 </html>
