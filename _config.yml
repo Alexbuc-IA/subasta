@@ -1,0 +1,37 @@
+# Jekyll Configuration for SUNRISE CITY SLAMDOWN Tournament Manager
+
+# Site settings
+title: SUNRISE CITY SLAMDOWN
+description: Tournament Manager Application
+baseurl: "" # the subpath of your site, e.g. /blog
+url: "" # the base hostname & protocol for your site
+
+# Build settings
+markdown: kramdown
+
+# Exclude from processing
+exclude:
+  - .sass-cache/
+  - .jekyll-cache/
+  - gemfiles/
+  - Gemfile
+  - Gemfile.lock
+  - node_modules/
+  - vendor/bundle/
+  - vendor/cache/
+  - vendor/gems/
+  - vendor/ruby/
+  - README.md
+
+# Plugins
+plugins:
+  - jekyll-feed
+  - jekyll-seo-tag
+
+# Theme settings (using default minima theme for GitHub Pages compatibility)
+# Uncomment below if you want to use a theme
+# theme: minima
+
+# Sass settings
+sass:
+  style: compressed
