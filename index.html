@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SUNRISE CITY SLAMDOWN - Tournament Manager</title>
+    <link rel="icon" href="nice.jpg" type="image/jpeg">
     <style>
         * {
             margin: 0;
@@ -654,7 +655,8 @@
             <div style="display: flex; gap: 10px; margin-top: 15px;">
                 <button class="modal-btn" onclick="addNewPlayer('wildcard')">+ Add Wild Card</button>
                 <button class="modal-btn" onclick="addNewPlayer('tsuguko')">+ Add Tsuguko</button>
-                <button class="modal-btn" onclick="addNewPlayer('hinoe')">+ Add Hinoe</button>
+                <button class="modal-btn" onclick="addNewPlayer('kinoe')">+ Add Kinoe</button>
+                <button class="modal-btn" style="background: #ff9900; margin-top: 10px;" onclick="addNewCategory()">+ Add New Category</button>
             </div>
             <button class="modal-btn cancel" style="margin-top: 15px;" onclick="closePlayerEditModal()">Close</button>
         </div>
@@ -706,20 +708,19 @@
                         </div>
                         <div id="selectedCaptainBalance" style="color: #ffcc00; text-align: center; margin-bottom: 10px; font-weight: bold;"></div>
                         <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 10px;">
-                            <button onclick="quickDeposit(100)" class="quick-buy-btn">BUY<br>+100</button>
-                            <button onclick="quickDeposit(250)" class="quick-buy-btn">BUY<br>+250</button>
-                            <button onclick="quickDeposit(500)" class="quick-buy-btn">BUY<br>+500</button>
-                            <button onclick="quickDeposit(1000)" class="quick-buy-btn">BUY<br>+1000</button>
+                            <button onclick="quickDeposit(100)" class="quick-buy-btn">ADD<br>+100</button>
+                            <button onclick="quickDeposit(250)" class="quick-buy-btn">ADD<br>+250</button>
+                            <button onclick="quickDeposit(500)" class="quick-buy-btn">ADD<br>+500</button>
+                            <button onclick="quickDeposit(1000)" class="quick-buy-btn">ADD<br>+1000</button>
                         </div>
-                        <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 10px;">
-                            <button onclick="quickDeposit(-100)" class="quick-buy-btn" style="background: #ff4444;">REDUCIR<br>-100</button>
-                            <button onclick="quickDeposit(-250)" class="quick-buy-btn" style="background: #ff4444;">REDUCIR<br>-250</button>
-                            <button onclick="quickDeposit(-500)" class="quick-buy-btn" style="background: #ff4444;">REDUCIR<br>-500</button>
-                            <button onclick="quickDeposit(-1000)" class="quick-buy-btn" style="background: #ff4444;">REDUCIR<br>-1000</button>
+                        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-bottom: 10px;">
+                              <button onclick="quickDeposit(-50)" class="quick-buy-btn" style="background: #ff4444;">-<br>-50</button>
+                            <button onclick="quickDeposit(-100)" class="quick-buy-btn" style="background: #ff4444;">-<br>-100</button>
+                            <button onclick="quickDeposit(-200)" class="quick-buy-btn" style="background: #ff4444;">-<br>-200</button>
                         </div>
                         <div class="control-row" style="margin-bottom: 0;">
                             <input type="number" id="customDepositAmount" placeholder="Custom amount" style="flex: 2;">
-                            <button onclick="quickDepositCustom()" style="background: #00ff00; color: #000; flex: 1;">BUY</button>
+                            <button onclick="quickDepositCustom()" style="background: #00ff00; color: #000; flex: 1;">ADD</button>
                         </div>
                     </div>
 
@@ -783,6 +784,23 @@
         <div class="admin-section" style="margin-top: 20px;">
             <h3>CARD USAGE STATISTICS</h3>
             <div class="usage-stats" id="usageStats"></div>
+        </div>
+
+        <!-- Admin Betting Overview -->
+        <div class="admin-section" style="margin-top: 20px;">
+            <h3>YOUR BETTING OVERVIEW</h3>
+            <div class="control-row" style="margin-bottom: 15px;">
+                <input type="text" id="adminBettorFilter" placeholder="Enter your bettor name to filter..." style="flex: 1; padding: 10px;">
+                <button onclick="filterAdminBets()" style="background: #0099ff; color: #fff; padding: 10px 20px;">FILTER</button>
+            </div>
+            <div id="adminBettingStats" style="margin-bottom: 15px;"></div>
+            <div id="adminBetsList"></div>
+        </div>
+
+        <!-- Participants Win/Lose Status -->
+        <div class="admin-section" style="margin-top: 20px;">
+            <h3>PARTICIPANTES - WIN/LOSE STATUS</h3>
+            <div id="participantsStatus"></div>
         </div>
     </div>
 
@@ -899,12 +917,12 @@
                 { name: 'STEFAN', tier: 'F+', price: 300 },
                 { name: 'CLOUD', tier: 'S', price: 375 },
                 { name: 'TSUYA', tier: 'C-', price: 350 },
-                { name: 'YAMI', tier: 'D+', price: 300, special: 'BUY 1 GET A HINOE FOR FREE' },
+                { name: 'YAMI', tier: 'D+', price: 300, special: 'BUY 1 GET A KINOE FOR FREE' },
                 { name: 'ZAYA', tier: 'B+', price: 300 },
                 { name: 'CRUZ', tier: 'B', price: 300 },
                 { name: 'BEEFY', tier: 'S+', price: 1000 }
             ],
-            hinoes: [
+            kinoes: [
                 { name: 'MOZART', price: 150 },
                 { name: 'ALON MOR', price: 150 },
                 { name: 'SPONGEBOB', price: 150 },
@@ -1183,6 +1201,8 @@
             renderUnavailablePlayers();
             updateAdminCaptainSelect();
             updateQuickDepositSelect();
+            renderAdminBettingOverview();
+            renderParticipantsStatus();
         }
 
         function renderCaptainSelector() {
@@ -1232,9 +1252,9 @@
             const tsugukosHtml = renderPlayerCategory('TSUGUKOS (Max 2 per team)', gameData.tsugukos, 'tsuguko');
             container.innerHTML += tsugukosHtml;
 
-            // Hinoes
-            const hinoesHtml = renderPlayerCategory('HINOES', gameData.hinoes, 'hinoe');
-            container.innerHTML += hinoesHtml;
+            // Kinoes
+            const kinoesHtml = renderPlayerCategory('KINOES', gameData.kinoes, 'kinoe');
+            container.innerHTML += kinoesHtml;
         }
 
         function renderPlayerCategory(title, players, category, isWildcard = false) {
@@ -1299,7 +1319,7 @@
                     return;
                 }
             } else {
-                player = gameData.hinoes[index];
+                player = gameData.kinoes[index];
             }
 
             price = player.price;
@@ -1336,15 +1356,15 @@
 
             // YAMI bonus
             if (player.name === 'YAMI') {
-                const availableHinoe = gameData.hinoes.findIndex((h, i) => !gameData.assignedPlayers[`hinoe-${i}`]);
-                if (availableHinoe !== -1) {
-                    const bonusPlayer = gameData.hinoes[availableHinoe];
-                    const bonusId = `hinoe-${availableHinoe}`;
+                const availableKinoe = gameData.kinoes.findIndex((h, i) => !gameData.assignedPlayers[`kinoe-${i}`]);
+                if (availableKinoe !== -1) {
+                    const bonusPlayer = gameData.kinoes[availableKinoe];
+                    const bonusId = `kinoe-${availableKinoe}`;
                     gameData.captainTeams[captain].push({
                         ...bonusPlayer,
                         id: `${captain}-${bonusId}-bonus`,
                         playerId: bonusId,
-                        category: 'hinoe',
+                        category: 'kinoe',
                         status: 'active',
                         bonus: true
                     });
@@ -1766,15 +1786,15 @@
                 `;
             });
 
-            // Hinoes
-            html += '<h4 style="color: #ffcc00; margin: 15px 0 10px;">HINOES</h4>';
-            gameData.hinoes.forEach((player, idx) => {
+            // Kinoes
+            html += '<h4 style="color: #ffcc00; margin: 15px 0 10px;">KINOES</h4>';
+            gameData.kinoes.forEach((player, idx) => {
                 html += `
                     <div class="edit-row">
-                        <input type="text" value="${player.name}" onchange="gameData.hinoes[${idx}].name = this.value; saveData();">
+                        <input type="text" value="${player.name}" onchange="gameData.kinoes[${idx}].name = this.value; saveData();">
                         <input type="text" value="-" disabled>
-                        <input type="number" value="${player.price}" onchange="gameData.hinoes[${idx}].price = parseInt(this.value); saveData();" placeholder="Price">
-                        <button onclick="deletePlayer('hinoe', ${idx})">Delete</button>
+                        <input type="number" value="${player.price}" onchange="gameData.kinoes[${idx}].price = parseInt(this.value); saveData();" placeholder="Price">
+                        <button onclick="deletePlayer('kinoe', ${idx})">Delete</button>
                     </div>
                 `;
             });
@@ -1790,7 +1810,7 @@
             } else if (category === 'tsuguko') {
                 gameData.tsugukos.splice(index, 1);
             } else {
-                gameData.hinoes.splice(index, 1);
+                gameData.kinoes.splice(index, 1);
             }
 
             saveData();
@@ -1812,7 +1832,7 @@
                 const tier = prompt('Enter tier (e.g., S+, A, B-):', 'B');
                 gameData.tsugukos.push({ name, tier, price });
             } else {
-                gameData.hinoes.push({ name, price });
+                gameData.kinoes.push({ name, price });
             }
 
             saveData();
@@ -1958,7 +1978,7 @@
             }
 
             saveData();
-            renderMatchesContainer();
+            renderAdminPanel();
             renderBettingPanel();
             renderSpectatorPanel();
         }
@@ -2225,13 +2245,350 @@
         }
 
         // ==========================================
+        // UNAVAILABLE PLAYERS SECTION
+        // ==========================================
+        function renderUnavailablePlayers() {
+            const section = document.getElementById('unavailablePlayersSection');
+            const container = document.getElementById('unavailablePlayersContainer');
+            const unavailable = [];
+
+            gameData.captains.forEach(captain => {
+                const team = gameData.captainTeams[captain] || [];
+                team.forEach(player => {
+                    if (player.category !== 'wildcard' && player.unavailable) {
+                        unavailable.push({ name: player.name, captain });
+                    }
+                });
+            });
+            if (!section || !container) return;
+
+            if (unavailable.length === 0) {
+                section.style.display = 'none';
+                return;
+            }
+
+            section.style.display = 'block';
+            container.innerHTML = unavailable.map(player => `
+                <div>${player.name} (Captain: ${player.captain})</div>
+            `).join('');
+        }
+
+        // ==========================================
+        // ADMIN BETTING OVERVIEW
+        // ==========================================
+        let currentAdminBettorFilter = '';
+
+        function filterAdminBets() {
+            const input = document.getElementById('adminBettorFilter');
+            if (input) {
+                currentAdminBettorFilter = input.value.trim();
+            }
+            renderAdminBettingOverview();
+        }
+
+        function renderAdminBettingOverview() {
+            const statsContainer = document.getElementById('adminBettingStats');
+            const listContainer = document.getElementById('adminBetsList');
+            
+            if (!statsContainer || !listContainer) return;
+
+            // Filter bets
+            let allBets = [...gameData.bets, ...gameData.betHistory];
+            
+            if (currentAdminBettorFilter) {
+                allBets = allBets.filter(bet => 
+                    bet.bettor.toLowerCase().includes(currentAdminBettorFilter.toLowerCase())
+                );
+            }
+
+            // Calculate stats
+            const totalBets = allBets.length;
+            const activeBets = allBets.filter(b => !b.resolved).length;
+            const wonBets = allBets.filter(b => b.resolved && b.won).length;
+            const lostBets = allBets.filter(b => b.resolved && !b.won).length;
+            const totalWagered = allBets.reduce((sum, bet) => sum + bet.amount, 0);
+            const totalWon = allBets.filter(b => b.resolved && b.won).reduce((sum, bet) => sum + bet.amount, 0);
+            const totalLost = allBets.filter(b => b.resolved && !b.won).reduce((sum, bet) => sum + bet.amount, 0);
+            const netProfit = totalWon - totalLost;
+
+            // Display stats
+            statsContainer.innerHTML = `
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; background: #1a1a2e; padding: 15px; border-radius: 5px;">
+                    <div style="text-align: center;">
+                        <div style="color: #888; font-size: 0.85em;">Total Apuestas</div>
+                        <div style="color: #fff; font-size: 1.5em; font-weight: bold;">${totalBets}</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="color: #888; font-size: 0.85em;">Activas</div>
+                        <div style="color: #ffcc00; font-size: 1.5em; font-weight: bold;">${activeBets}</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="color: #888; font-size: 0.85em;">Total Apostado</div>
+                        <div style="color: #0099ff; font-size: 1.5em; font-weight: bold;">${totalWagered}</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="color: #888; font-size: 0.85em;">Ganadas</div>
+                        <div style="color: #00ff00; font-size: 1.5em; font-weight: bold;">${wonBets}</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="color: #888; font-size: 0.85em;">Perdidas</div>
+                        <div style="color: #ff4444; font-size: 1.5em; font-weight: bold;">${lostBets}</div>
+                    </div>
+                    <div style="text-align: center;">
+                        <div style="color: #888; font-size: 0.85em;">Ganancia/Pérdida</div>
+                        <div style="color: ${netProfit >= 0 ? '#00ff00' : '#ff4444'}; font-size: 1.5em; font-weight: bold;">
+                            ${netProfit >= 0 ? '+' : ''}${netProfit}
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            // Sort bets by tier ranking (resolved first, then by result)
+            const sortedBets = sortBetsByTier(allBets);
+
+            // Display bet list
+            if (sortedBets.length === 0) {
+                listContainer.innerHTML = '<p style="color: #888; text-align: center; padding: 20px;">No hay apuestas para mostrar</p>';
+                return;
+            }
+
+            listContainer.innerHTML = sortedBets.map(bet => {
+                const resultClass = bet.resolved ? (bet.won ? 'won' : 'lost') : 'pending';
+                const resultText = bet.resolved ? (bet.won ? 'GANÓ' : 'PERDIÓ') : 'PENDIENTE';
+                const resultColor = bet.resolved ? (bet.won ? '#00ff00' : '#ff4444') : '#ffcc00';
+                const profitLoss = bet.resolved ? (bet.won ? `+${bet.amount}` : `-${bet.amount}`) : '-';
+                
+                return `
+                    <div class="bet-card ${resultClass}" style="margin-bottom: 10px; background: #2a2a2a; padding: 12px; border-left: 4px solid ${resultColor};">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                            <strong>${bet.bettor}</strong>
+                            <span style="color: ${resultColor}; font-weight: bold;">${resultText}</span>
+                        </div>
+                        <div style="color: #aaa; font-size: 0.9em;">
+                            Apostó ${bet.amount} YEN en ${bet.team}
+                        </div>
+                        <div style="display: flex; justify-content: space-between; margin-top: 5px; font-size: 0.85em;">
+                            <span style="color: #888;">${bet.team} vs ${bet.opponent}</span>
+                            <span style="color: ${bet.resolved && bet.won ? '#00ff00' : bet.resolved ? '#ff4444' : '#888'}; font-weight: bold;">
+                                ${profitLoss}
+                            </span>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function sortBetsByTier(bets) {
+            // Sort: pending first, then won, then lost
+            // Within each group, sort by amount (highest first)
+            return bets.sort((a, b) => {
+                if (a.resolved !== b.resolved) {
+                    return a.resolved ? 1 : -1; // Pending first
+                }
+                if (a.resolved) {
+                    if (a.won !== b.won) {
+                        return a.won ? -1 : 1; // Won before lost
+                    }
+                }
+                return b.amount - a.amount; // Higher amounts first
+            });
+        }
+
+        // ==========================================
+        // ADD NEW CATEGORY
+        // ==========================================
+        function addNewCategory() {
+            const categoryName = prompt('Enter new category name (e.g., "HASHIRA", "PILLARS"):');
+            if (!categoryName) return;
+
+            const categoryKey = categoryName.toLowerCase().replace(/\s+/g, '');
+            
+            if (gameData[categoryKey]) {
+                alert('Category already exists!');
+                return;
+            }
+
+            // Initialize new category
+            gameData[categoryKey] = [];
+            
+            // Add sample player
+            const addSample = confirm('Do you want to add a sample player to this category?');
+            if (addSample) {
+                const name = prompt('Enter player name:');
+                if (name) {
+                    const price = parseInt(prompt('Enter price:', '300')) || 300;
+                    const tier = prompt('Enter tier (optional, e.g., S+, A, B-):', '');
+                    
+                    const player = { name, price };
+                    if (tier) player.tier = tier;
+                    
+                    gameData[categoryKey].push(player);
+                }
+            }
+
+            saveData();
+            alert(`Category "${categoryName}" created! You can now add more players through "Edit All Players & Prices"`);
+            renderAdminPanel();
+        }
+
+        // ==========================================
+        // TIER SORTING UTILITY
+        // ==========================================
+        function getTierValue(tier) {
+            if (!tier) return 0;
+            const tierMap = {
+                'S+': 13, 'S': 12, 'S-': 11,
+                'A+': 10, 'A': 9, 'A-': 8,
+                'B+': 7, 'B': 6, 'B-': 5,
+                'C+': 4, 'C': 3, 'C-': 2,
+                'D+': 1, 'D': 0, 'D-': -1,
+                'F+': -2, 'F': -3, 'F-': -4
+            };
+            return tierMap[tier] || 0;
+        }
+
+        function sortPlayersByTier(players) {
+            return players.sort((a, b) => getTierValue(b.tier) - getTierValue(a.tier));
+        }
+
+        // ==========================================
+        // PARTICIPANTS STATUS (WIN/LOSE)
+        // ==========================================
+        function renderParticipantsStatus() {
+            const container = document.getElementById('participantsStatus');
+            if (!container) return;
+
+            // Collect all participants (captain teams and their players)
+            const participants = [];
+
+            gameData.captains.forEach(captain => {
+                const team = gameData.captainTeams[captain] || [];
+                const teamPlayers = team.map(p => p.name).join(', ') || 'Sin jugadores';
+                
+                // Get match results for this captain
+                const captainMatches = gameData.matches.filter(m => 
+                    (m.team1 === captain || m.team2 === captain) && m.winner
+                );
+
+                let wins = 0;
+                let losses = 0;
+
+                captainMatches.forEach(match => {
+                    if (match.winner === captain) {
+                        wins++;
+                    } else {
+                        losses++;
+                    }
+                });
+
+                participants.push({
+                    name: captain,
+                    type: 'Captain',
+                    players: teamPlayers,
+                    wins,
+                    losses,
+                    status: wins > losses ? 'WIN' : losses > wins ? 'LOSE' : 'EMPATE'
+                });
+
+                // Add individual players
+                team.forEach(player => {
+                    participants.push({
+                        name: player.name,
+                        type: player.category.toUpperCase(),
+                        captain: captain,
+                        wins,
+                        losses,
+                        status: wins > losses ? 'WIN' : losses > wins ? 'LOSE' : 'EMPATE'
+                    });
+                });
+            });
+
+            if (participants.length === 0) {
+                container.innerHTML = '<p style="color: #888; text-align: center; padding: 20px;">No hay participantes todavía</p>';
+                return;
+            }
+
+            // Group by captain
+            const groupedByCaptain = {};
+            participants.forEach(p => {
+                if (p.type === 'Captain') {
+                    groupedByCaptain[p.name] = { captain: p, players: [] };
+                }
+            });
+
+            participants.forEach(p => {
+                if (p.type !== 'Captain' && p.captain) {
+                    if (groupedByCaptain[p.captain]) {
+                        groupedByCaptain[p.captain].players.push(p);
+                    }
+                }
+            });
+
+            let html = '<div style="display: grid; gap: 15px;">';
+
+            Object.keys(groupedByCaptain).forEach(captainName => {
+                const group = groupedByCaptain[captainName];
+                const captain = group.captain;
+                const statusColor = captain.status === 'WIN' ? '#00ff00' : captain.status === 'LOSE' ? '#ff4444' : '#ffcc00';
+                const statusBg = captain.status === 'WIN' ? '#1a3a1a' : captain.status === 'LOSE' ? '#3a1a1a' : '#3a3a1a';
+
+                html += `
+                    <div style="background: ${statusBg}; border: 2px solid ${statusColor}; border-radius: 8px; padding: 15px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                            <div>
+                                <strong style="font-size: 1.2em; color: #fff;">${captain.name}</strong>
+                                <span style="color: #888; margin-left: 10px; font-size: 0.85em;">(Captain)</span>
+                            </div>
+                            <div style="text-align: right;">
+                                <div style="color: ${statusColor}; font-weight: bold; font-size: 1.3em; margin-bottom: 3px;">
+                                    ${captain.status}
+                                </div>
+                                <div style="color: #aaa; font-size: 0.85em;">
+                                    ${captain.wins}W - ${captain.losses}L
+                                </div>
+                            </div>
+                        </div>
+                        <div style="color: #888; font-size: 0.9em; margin-bottom: 10px; padding-top: 10px; border-top: 1px solid #444;">
+                            <strong style="color: #ffcc00;">Jugadores del equipo:</strong>
+                        </div>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 8px;">
+                `;
+
+                if (group.players.length === 0) {
+                    html += '<div style="color: #666; font-style: italic; padding: 8px;">Sin jugadores</div>';
+                } else {
+                    group.players.forEach(player => {
+                        html += `
+                            <div style="background: #2a2a2a; padding: 8px 12px; border-radius: 4px; border-left: 3px solid ${statusColor};">
+                                <div style="color: #fff; font-weight: bold;">${player.name}</div>
+                                <div style="color: #888; font-size: 0.8em;">${player.type}</div>
+                            </div>
+                        `;
+                    });
+                }
+
+                html += `
+                        </div>
+                    </div>
+                `;
+            });
+
+            html += '</div>';
+            container.innerHTML = html;
+        }
+
+        // ==========================================
         // INITIALIZATION
         // ==========================================
         loadData();
         switchView('spectator');
-
+        renderUnavailablePlayers();
+        renderAdminPanel();
+        renderPlayersContainer();
         // Auto-load from cloud on page load
         loadFromCloudPublic();
     </script>
 </body>
 </html>
+
+        
